@@ -1,0 +1,44 @@
+
+.navbar{
+    width: 100%;
+    background-color: $mainGreen;
+    &__top{
+        height: 3.875rem;
+        font-size: 1rem;
+        padding: 0 1.875rem;
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba($mainWhite, 0.7);
+        &__brand{
+            font-size: 2.5rem;
+            font-style: italic;
+            font-weight: 700;
+            letter-spacing: .2rem;
+        }
+        &__link{
+            margin-left: 14px;
+            &:hover{
+                color: $darkGray;
+            }
+        }
+        
+        [class^="icon-"]{
+            font-weight: 700;
+            font-size: 1.5rem;
+            vertical-align: middle;
+        }
+        li{
+            list-style: none;
+        }
+    }
+    &__bottom{
+        padding: 5px 0px;
+        display: flex;
+        &__icon{
+            width: 80px;
+        }
+
+    }
+}
