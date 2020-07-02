@@ -2,42 +2,69 @@
 .navbar{
     width: 100%;
     background-color: $mainGreen;
+    border-radius: 0 0px 30px 30px;
     &__top{
         height: 3.875rem;
         font-size: 1rem;
-        padding: 0 1.875rem;
+        padding: 0 1.25rem;
         margin: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid rgba($mainWhite, 0.7);
         &__brand{
-            font-size: 2.5rem;
-            font-style: italic;
-            font-weight: 700;
-            letter-spacing: .2rem;
+            height: 40px;
+            margin-top: 10px;
         }
         &__link{
             margin-left: 14px;
             &:hover{
-                color: $darkGray;
+                color: rgba($darkGray, .7);
+            }
+            span{
+
+                vertical-align: middle;
             }
         }
         
         [class^="icon-"]{
             font-weight: 700;
             font-size: 1.5rem;
-            vertical-align: middle;
         }
         li{
             list-style: none;
         }
     }
     &__bottom{
-        padding: 5px 0px;
+        padding: 10px 0px;
         display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
         &__icon{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             width: 80px;
+            margin: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: $mainWhite;
+            @include hover-focus-active{
+                color: $mainRed;
+                cursor: pointer;
+            }
+
+            [class^="icon-"]{
+                font-size: 1.7rem;
+                margin-bottom: 5px;
+            }
+
+            span{
+                display: inline-block;
+                text-align: center;
+                font-size: 12px;
+            }
         }
 
     }

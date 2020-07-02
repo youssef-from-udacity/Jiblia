@@ -1,0 +1,268 @@
+.main{
+    max-width: 1150px;
+    margin: auto;
+    padding: 20px 10px 60px 10px;
+    @include media-breakpoint-up(sm,(sm:774px)) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    &:only-child{
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    &__features{
+        display: flex;
+        flex-wrap: wrap;
+        &__item{
+            flex: 0 0 33.33333%;
+            max-width: 33.33333%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px;
+            background-color: $mainWhite;
+            &:first-child{
+                border-right: 1px solid $mainBeige;
+                border-bottom-left-radius: 10px;
+                border-top-left-radius: 10px;
+            }
+            &:last-child{
+                border-left: 1px solid $mainBeige;
+                border-bottom-right-radius: 10px;
+                border-top-right-radius: 10px;
+
+                @include hover-focus-active{
+                    cursor: pointer;
+                    &,[class^="icon-"]{
+                        color: $mainRed;
+                    }
+                }
+            }
+
+            span{
+                display: inline-block;
+                text-align: center;
+                padding: 5px;
+                font-size: 0.875rem;
+                &:first-child{
+                    color: $mainRed;
+                }
+            }
+            [class^="icon-"]{
+                font-size: 1.7rem;
+                color: $mainGreen;
+            }
+        }
+    }
+    
+    &__steps{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        &__title{
+            font-size: 1.75rem;
+            font-weight: 300;
+            width: 100%;
+        }
+        &__item{
+            flex: 0 0 100%;
+            max-width: 100%;
+            @include media-breakpoint-up(sm,(sm:774px)) {
+                flex: 0 0 31.888888%;
+                max-width: 31.888888%;
+            }
+            &__container{
+                height: 100%;
+                padding: 10px 20px 20px 20px;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                background-color: $mainWhite;
+                border-radius: 10px;
+            }
+        }
+        svg{
+            margin-top: 5px;
+        }
+        h6{
+            font-size: 1.375rem;
+            font-weight: 300;
+            margin: 25px 0;
+        }
+        span{
+            display: inline-block;
+            color: #7D7D7D;
+            margin-top: auto;
+            font-style: italic;
+        }
+
+    }
+
+    &__popular{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        &__title{
+            font-size: 1.5rem;
+            font-weight: 300;
+            width: 100%;
+            text-align: left;
+        }
+        &__products{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            &__item{
+                flex: 0 0 50%;
+                max-width: 50%;
+                height: 100%;
+                padding: 0;
+                margin-bottom: 15px;
+                @include media-breakpoint-up(xs,(xs:309px)) {
+                    flex: 0 0 30.26%;
+                    max-width: 30.26%;
+                }
+                @include media-breakpoint-up(sm,(sm:800px)) {
+                    flex: 0 0 15.217%;
+                    max-width: 15.217%;
+                    height: auto;
+                }
+                &__container{
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
+                    background-color: $mainWhite;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    border: 1px solid rgba($mainGreen, .5);
+                    padding: 0 5px;
+    
+                }
+                span{
+                    display: inline-block;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+    }
+
+    &__delivery{
+        @extend .main__popular;
+        text-align: left;
+        font-weight: 300;
+        &__title{
+            @extend .main__popular__title;
+        }
+        &__container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            @include media-breakpoint-up(sm,(sm:900px)) {
+                height: auto;
+            }
+            &>div{
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+                @include media-breakpoint-up(sm,(sm:900px)) {
+                    flex: 0 0 49%;
+                    max-width: 49%;
+                }
+
+            }
+            
+        }
+        &__cost{
+            background-image: url('../../assets/img/cover/store-map.jpg');
+            padding: 20px;
+            border-radius: 10px;
+            height: 100%;
+            &__table{
+                width: 100%;
+                height: 100%;
+                padding: 20px 20px 0 20px;
+            }
+            &__title{
+                color: $mainRed;
+                margin-top: 0;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+            &__row{
+                margin-bottom: 10px;
+                display: flex;
+                font-size: 14px;
+                &>div:first-child{
+                    margin-right: auto;
+                }
+            }
+            &__price{
+                font-weight: bold;
+            }
+            &__footer{
+                font-size: 12px;
+                margin: 30px 0 0 0;
+                @include media-breakpoint-up(sm,(sm:900px)) {
+                p{
+                    margin-bottom: 0;
+                    color: rgba($darkGray, .5);
+                }
+                a{
+                    color: $mainGreen;
+                    text-decoration: underline;
+                }
+                }
+            }
+            &>div{
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                background-color: $mainWhite;
+                border-radius: 10px;
+                overflow: hidden;
+            }
+        }
+        &__info{
+            padding: 20px;
+            border-radius: 10px;
+            background-color: $mainWhite;
+            display: flex;
+            flex-wrap: wrap;
+            height: 100%;
+            &__container{
+                display: flex;
+                flex-wrap: wrap;
+                align-content: space-between;
+                width: 100%;
+                padding: 20px 0;
+            }
+            &__item{
+                flex: 0 0 50%;
+                max-width: 50%;
+                display: flex;
+            }
+            &__icon{
+                display: inline-block;
+                min-width: 50px;
+            }
+            &__title{
+                display: inline-block;
+                padding-left: 20px;
+            }
+
+        }
+    }
+    
+}

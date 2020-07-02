@@ -1,3 +1,11 @@
 $mainWhite: #ffffff;
 $mainGreen: #58B740;
+$mainRed: #ff0000;
+$mainBeige: #F5F4F2;
 $darkGray: #333;
+$grid-breakpoints: (
+  sm: 640px,
+  md: 990px,
+  lg: 1380px,
+  xl: 1960px
+);
