@@ -4,32 +4,68 @@
     background-color: $mainGreen;
     border-radius: 0 0px 30px 30px;
     &__top{
-        height: 3.875rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 63px;
         font-size: 1rem;
         padding: 0 1.25rem;
         margin: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         border-bottom: 1px solid rgba($mainWhite, 0.7);
+        @include media-breakpoint-up(xs,(xs:420px)) {
+            justify-content: flex-end;
+
+        }
         &__brand{
             height: 40px;
-            margin-top: 10px;
+            width: 120px;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            @include media-breakpoint-up(xs,(xs:420px)) {
+                margin-left: 20px;
+                top: 50%;
+                transform: translate(0, -50%);
+                left: 0;
+            }
+
+        }
+        &__list{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            @include media-breakpoint-up(xs,(xs:420px)) {
+                justify-content: flex-end;
+            }
         }
         &__link{
-            margin-left: 14px;
+            &:last-child{
+                margin-left: 20px;
+                @include media-breakpoint-up(xs,(xs:420px)) {
+                    display: inline-block;
+                }
+            }
             &:hover{
                 color: rgba($darkGray, .7);
             }
-            span{
-
+            &__title{
                 vertical-align: middle;
+                display: none;
+                @include media-breakpoint-up(xs,(xs:420px)) {
+                    display: inline-block;
+                }
             }
+            
         }
         
         [class^="icon-"]{
             font-weight: 700;
             font-size: 1.5rem;
+            margin-right: 2px;
+            &:before{
+                vertical-align: sub;
+            }
         }
         li{
             list-style: none;
@@ -52,7 +88,6 @@
             background-color: $mainWhite;
             @include hover-focus-active{
                 color: $mainRed;
-                cursor: pointer;
             }
 
             [class^="icon-"]{

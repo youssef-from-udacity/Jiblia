@@ -1,12 +1,12 @@
 .main{
     max-width: 1150px;
     margin: auto;
-    padding: 20px 10px 60px 10px;
+    padding: 20px 10px;
     @include media-breakpoint-up(sm,(sm:774px)) {
         padding-left: 20px;
         padding-right: 20px;
     }
-    &:only-child{
+    > div{
         text-align: center;
         margin-bottom: 20px;
     }
@@ -69,7 +69,9 @@
         &__item{
             flex: 0 0 100%;
             max-width: 100%;
-            @include media-breakpoint-up(sm,(sm:774px)) {
+            margin-bottom: 20px;
+            @include media-breakpoint-up(sm,(sm:710px)) {
+                margin-bottom: 0;
                 flex: 0 0 31.888888%;
                 max-width: 31.888888%;
             }
@@ -118,14 +120,17 @@
             width: 100%;
             height: 100%;
             &__item{
-                flex: 0 0 50%;
-                max-width: 50%;
-                height: 100%;
+                flex: 0 0 47.027%;
+                max-width: 47.027%;
                 padding: 0;
                 margin-bottom: 15px;
-                @include media-breakpoint-up(xs,(xs:309px)) {
+                cursor: pointer;
+                @include media-breakpoint-up(xs,(xs:391px)) {
                     flex: 0 0 30.26%;
                     max-width: 30.26%;
+                    span{
+                        font-size: 1rem;
+                    }
                 }
                 @include media-breakpoint-up(sm,(sm:800px)) {
                     flex: 0 0 15.217%;
@@ -142,12 +147,13 @@
                     border-radius: 10px;
                     overflow: hidden;
                     border: 1px solid rgba($mainGreen, .5);
-                    padding: 0 5px;
+                    margin: 5px 0;
     
                 }
                 span{
                     display: inline-block;
                     margin-bottom: 5px;
+                    font-size: 14px;
                 }
             }
         }
@@ -187,6 +193,8 @@
             padding: 20px;
             border-radius: 10px;
             height: 100%;
+            text-align: left;
+            opacity: .7;
             &__table{
                 width: 100%;
                 height: 100%;
@@ -208,19 +216,24 @@
             }
             &__price{
                 font-weight: bold;
+                white-space: nowrap;
+                display: block;
             }
             &__footer{
                 font-size: 12px;
                 margin: 30px 0 0 0;
-                @include media-breakpoint-up(sm,(sm:900px)) {
                 p{
-                    margin-bottom: 0;
                     color: rgba($darkGray, .5);
                 }
                 a{
                     color: $mainGreen;
                     text-decoration: underline;
+                    display: inline-block;
                 }
+                @include media-breakpoint-up(sm,(sm:900px)) {
+                    p{
+                        margin-bottom: 0;
+                    }
                 }
             }
             &>div{
@@ -229,7 +242,7 @@
                 justify-content: center;
                 flex-direction: column;
                 align-items: center;
-                background-color: $mainWhite;
+                background-color: rgba($mainWhite, 0.9);
                 border-radius: 10px;
                 overflow: hidden;
             }
@@ -238,6 +251,7 @@
             padding: 20px;
             border-radius: 10px;
             background-color: $mainWhite;
+            text-align: left;
             display: flex;
             flex-wrap: wrap;
             height: 100%;
@@ -249,9 +263,16 @@
                 padding: 20px 0;
             }
             &__item{
-                flex: 0 0 50%;
-                max-width: 50%;
                 display: flex;
+                align-items: center;
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+                @include media-breakpoint-up(sm,(sm:521px)) {
+                    flex: 0 0 50%;
+                    max-width: 50%;
+                    
+                }
             }
             &__icon{
                 display: inline-block;

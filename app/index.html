@@ -16,79 +16,84 @@
     <!--endbuild-->
   </head>
 
-  <body style="height: 5000px;">
+  <body>
     <header>
       <nav class="navbar">
         <ul class="navbar__top">
           <li>
             <a class="navbar__top__brand" href="#">
-              <img class="navbar__top__brand"  src="/assets/img/jibliya-logo.svg" alt="brand">
+              <img src="/assets/img/jibliya-logo.svg" alt="brand">
             </a>
           </li>
-          <li>
-            <a class="navbar__top__link" href="#"><span class="icon-profile"></span><span> Mon compte</span></a>
-            <a class="navbar__top__link" href="#"><span class="icon-cart"></span><span> Mon panier</span></a>
+          <li class="navbar__top__list">
+            <a class="navbar__top__link" href="#">
+              <span class="icon-profile"></span>
+              <span class="navbar__top__link__title"> Mon compte</span>
+            </a>
+            <a class="navbar__top__link" href="#">
+              <span class="icon-cart"></span>
+              <span class="navbar__top__link__title"> Mon panier</span>
+            </a>
           </li>
         </ul>
-
         <div class="navbar__bottom">
-          <div class="navbar__bottom__icon">
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <span>-</span>
             <span>Nouveautés</span>
             <span>-</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-baby"></i>
             <span>Bébé</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-hygiene"></i>
             <span>Hygiène et beauté</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-maintenance"></i>
             <span>Entretien</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-animals"></i>
             <span>Animaux</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-drinks"></i>
             <span>Boissons</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-dietetic"></i>
             <span>Diététique et sans gluten</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-grocery-2"></i>
             <span>Epicerie</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-breakfast"></i>
             <span>Petit Déjeuner</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-dairy"></i>
             <span>Produits laitiers</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-delicatessen"></i>
             <span>Charcuterie</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-bakery"></i>
             <span>Boulangerie</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-market"></i>
             <span>Le marché</span>
-          </div>
-          <div class="navbar__bottom__icon">
+          </button>
+          <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
             <i class="icon-meat"></i>
             <span>Viandes</span>
-          </div>
+          </button>
         </div>
       </nav>
     </header>
@@ -338,8 +343,54 @@
           </div>
         </div>
       </div>
-
     </div>
+
+    <footer class="footer">
+      <div class="footer__contact">
+        <div class="footer__contact__container">
+          <div class="footer__email">
+            <span class="footer__email__label">Inscrivez-vous à notre newsletter *</span>
+            <form class="w-100" action="#" method="post" novalidate="novalidate">
+              <div class="footer__email__container">
+                <label for="inputSearch" class="sr-only">Votre email</label>
+                <input type="text" class="footer__email__input" placeholder="Votre email">
+                <button class="button footer__email__button" type="button">OK</button>
+              </div>
+            </form>
+          </div>
+          <div class="footer__social">
+            <span>Suivez-nous</span>
+            <a href="#"><i class="icon-facebook"></i></a>
+            <a href="#"><i class="icon-instagram"></i></a>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__help">
+        <div class="footer__help__img">
+          <img src="/assets/img/svg/faq.svg" alt="frequent questions">
+        </div>
+        <div class="footer__help__container">
+          <h6 class="footer__help__title">Aide et Service Client</h6>
+          <span class="footer__help__question">Vous rencontrez des difficultés sur notre site ?</span>
+          <span class="footer__help__link"><span class="footer__help__caret"></span><a href="#">Accéder à l'aide</a></span>
+        </div>
+
+      </div>
+      <div class="footer__legal">
+        <button type="button" class="button footer__legal__search">
+          <i class="icon-search"></i>
+        </button>
+        <a class="footer__legal__link" href="#"><span class="footer__legal__link__top">Conditions générales d'utilisation   </span></a>
+        <a class="footer__legal__link" href="#"><span class="footer__legal__link__bottom">Mentions légales</span></a>
+        <div class="footer__legal__help">
+          <button type="button" class="button">?</button>
+          <span>Aide</span>
+        </div>
+      </div>
+    </footer>
+    <div class="modal__backdrop"></div>
+    <div class="modal__navbar"></div>
     
 
     <!--build:js assets/scripts/App.js-->
