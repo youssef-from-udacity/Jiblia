@@ -1,0 +1,48 @@
+{
+    "products": {
+        "babyProducts": [
+            {
+                "id": "bebealimentation",
+                "title": "Alimentation",
+                "imgURL": "/assets/img/products/baby/bebealimentation.png"
+            },
+            {
+                "id": "bebesoins",
+                "title": "Soins",
+                "imgURL": "/assets/img/products/baby/bebesoins.png"
+            },
+            {
+                "id": "couches",
+                "title": "Couches",
+                "imgURL": "/assets/img/products/baby/couches.png"
+            }
+        ],
+        "hygieneProducts": [
+            {
+                "id": "apres-shamppoing",
+                "title": "après-shamppoing",
+                "imgURL": "/assets/img/products/hygen/apres-shamppoing.png"
+            },
+            {
+                "id": "papier-hygenique",
+                "title": "papier WC Mouchoirs et coutons",
+                "imgURL": "/assets/img/products/hygen/papier-hygenique.png"
+            },
+            {
+                "id": "coton-tige-et-coton",
+                "title": "Coton et coton pads",
+                "imgURL": "/assets/img/products/hygen/coton-tige-et-coton.png"
+            },
+            {
+                "id": "serviettes-hygenique",
+                "title": "Hygiène féminine",
+                "imgURL": "/assets/img/products/hygen/serviettes-hygenique.png"
+            },
+            {
+                "id": "soins-capilaires",
+                "title": "Soins capilaires",
+                "imgURL": "/assets/img/products/hygen/soins-capilaires.png"
+            }
+        ]
+    }
+}
