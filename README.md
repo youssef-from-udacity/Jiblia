@@ -1,4 +1,4 @@
-website recommended by my mentor Mahdi to practice front-end developer skills
+website recommended by my mentor Mehdi to practice front-end developer skills
 
 
 to a Create Jiblia App project:
