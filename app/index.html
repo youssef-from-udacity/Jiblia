@@ -32,7 +32,7 @@
             <span class="icon-profile"></span>
             <span class="navbar__top__link__title"> Mon compte</span>
           </a>
-          <a class="navbar__top__link" href="#">
+          <a class="navbar__top__link modal-btn" href="#" role="button" data-modal="modal__basket">
             <span class="icon-cart"></span>
             <span class="navbar__top__link__title"> Mon panier</span>
           </a>
@@ -551,6 +551,77 @@
 
     </section>
   </div>
+  <div class="modal__basket">
+    <div class="modal__basket__top">
+      <div class="modal__basket__top__container">
+        <div class="modal__basket__empty" style="display: none;">
+          <img src="/assets/img/svg/empty-cart.svg" alt="empty cart" />
+          <span>Panier vide !</span>
+        </div>
+        <div class="modal__basket__list">
+          <div class="modal__basket__list__container">
+            <div class="modal__basket__list__top">
+              <div class="modal__basket__list__img">
+                <img src="/assets/img/products/baby/bebesoins.png" alt="apres shampooing">
+              </div>
+              <div class="modal__basket__list__description">
+                <div class="modal__basket__list__description__title">
+                  <span>Bjorg</span>
+                  <span>- 4 céréales - DIETITIQUE</span>
+                </div>
+                <div class="modal__basket__list__description__quantity">130 g</div>
+                <div class="modal__basket__list__description__price">Prix unitaire : 29.95 Dh
+                </div>
+  
+              </div>
+              <div class="modal__basket__list__order">
+                <span>
+                  <button type="button" class="button modal__basket__list__order__plus"></button>
+              </span>
+                <span>
+                  <input class="modal__basket__list__order__input" aria-valuemax="100" aria-valuemin="1" height="100%" autocomplete="off" value="1">
+                </span>
+                <span>
+                  <button disabled type="button" class="button modal__basket__list__order__minus"></button>
+              </span>
+              </div>
+  
+            </div>
+  
+              <div class="modal__basket__list__bottom">
+                <button type="button" class="button modal__basket__list__bottom__button">
+                  <span>X</span>
+                  <span> Enlever</span>
+                </button>
+                <div class="modal__basket__list__bottom__total">
+                  <span>0.00</span>
+                  <span>Dh</span>
+                </div>
+              </div>
+          </div>
+          
+
+
+        </div>
+      </div>
+    </div>
+    <div class="modal__basket__bottom">
+      <div class="modal__basket__bottom__clear">
+        <button type="button" class="button modal__basket__bottom__clear__button">
+          <span>X</span>
+          <span> Vider</span>
+        </button>
+        <div class="modal__basket__bottom__clear__total">
+          <span>0.00</span>
+          <span>Dh</span>
+        </div>
+      </div>
+      <div class="modal__basket__bottom__validate">
+        <button type="button" class="button modal__basket__bottom__validate">VALIDER MON PANIER</button>
+      </div>
+    </div>
+  </div>
+
 
   <!--build:js assets/scripts/App.js-->
   <script src="temp/scripts/App.js"></script>
