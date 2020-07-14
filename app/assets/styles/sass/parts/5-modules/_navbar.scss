@@ -1,106 +1,265 @@
+.navbar {
+    width      : 100%;
+    padding-top: 55px;
 
-.navbar{
-    width: 100%;
-    background-color: $mainGreen;
-    border-radius: 0 0px 30px 30px;
-    &__top{
-        position: relative;
-        display: flex;
-        align-items: center;
-        height: 63px;
-        font-size: 1rem;
-        padding: 0 1.25rem;
-        margin: 0;
-        border-bottom: 1px solid rgba($mainWhite, 0.7);
-        @include media-breakpoint-up(xs,(xs:420px)) {
+    @include media-breakpoint-up(xs, (xs:460px)) {
+        padding-top: 63px;
+    }
+
+    &--fixed {
+        .navbar__top {
+            position : fixed;
+            min-width: 340px;
+        }
+
+        .navbar__bottom {
+            display: flex;
+        }
+    }
+
+    &__top {
+        position        : absolute;
+        z-index         : 10;
+        background-color: $mainGreen;
+        top             : 0;
+        left            : 0;
+        right           : 0;
+        display         : flex;
+        align-items     : center;
+        height          : 55px;
+        font-size       : 1rem;
+        padding         : 0 10px;
+        margin          : 0;
+
+        @include media-breakpoint-up(xs, (xs:460px)) {
+            padding        : 0 20px;
+            height         : 63px;
             justify-content: flex-end;
 
         }
-        &__brand{
-            height: 40px;
-            width: 120px;
-            position: absolute;
-            top: 50%;
+
+        &__brand {
+
+            height   : 26px;
+            width    : 90px;
+            position : absolute;
+            top      : 50%;
             transform: translate(-50%, -50%);
-            left: 50%;
-            @include media-breakpoint-up(xs,(xs:420px)) {
+            left     : 50%;
+
+            @include media-breakpoint-up(xs, (xs:460px)) {
+                height     : 40px;
+                width      : 120px;
                 margin-left: 20px;
-                top: 50%;
-                transform: translate(0, -50%);
-                left: 0;
+                top        : 50%;
+                transform  : translate(0, -50%);
+                left       : 0;
             }
 
         }
-        &__list{
-            display: flex;
+
+        &__list {
+            display        : flex;
             justify-content: space-between;
-            width: 100%;
-            @include media-breakpoint-up(xs,(xs:420px)) {
+            width          : 100%;
+
+            @include media-breakpoint-up(xs, (xs:460px)) {
                 justify-content: flex-end;
             }
         }
-        &__link{
-            &:last-child{
+
+        &__link {
+            padding-right: 10px;
+
+            &:last-child {
                 margin-left: 20px;
-                @include media-breakpoint-up(xs,(xs:420px)) {
+
+                @include media-breakpoint-up(xs, (xs:460px)) {
                     display: inline-block;
                 }
             }
-            &:hover{
+
+            &:hover {
                 color: rgba($darkGray, .7);
             }
-            &__title{
+
+            &>span {
+                position: relative;
+            }
+
+            &--products-count {
+                width           : 20px;
+                height          : 20px;
+                background-color: $mainRed;
+                font-size       : 18px;
+                position        : absolute;
+                text-align      : center;
+                left            : -15px;
+                top             : -13px;
+                border-radius   : 50%;
+                z-index         : 1;
+                transition      : transform .3s ease-in-out;
+
+            }
+
+            &--products-total {
+                position   : absolute;
+                top        : -16px;
+                right      : 0;
+                font-size  : 12px;
+                color      : rgba($darkGray, .9);
+                font-weight: bold;
+                transition : transform .3s ease-in-out;
+            }
+
+            &__title {
                 vertical-align: middle;
-                display: none;
-                @include media-breakpoint-up(xs,(xs:420px)) {
+                display       : none;
+                position      : relative;
+
+                @include media-breakpoint-up(xs, (xs:460px)) {
                     display: inline-block;
                 }
             }
-            
+
         }
-        
-        [class^="icon-"]{
-            font-weight: 700;
-            font-size: 1.5rem;
+
+        &__menu {
+            position  : absolute;
+            right     : -100%;
+            bottom    : -102%;
+            transition: right .2s ease-in-out;
+
+            @include media-breakpoint-up(xs, (xs:460px)) {
+                bottom: -89%;
+
+            }
+
+            @include media-breakpoint-up(sm, (sm:720px)) {
+                display: none;
+            }
+
+            &--open {
+                right: 0;
+            }
+
+            &__button {
+                width                    : 55px;
+                height                   : 55px;
+                color                    : $mainWhite;
+                font-size                : 31px;
+                padding                  : 0 0 6px 6px;
+                font-weight              : 700;
+                border-bottom-left-radius: 50%;
+                background-color         : $mainGreen;
+                transition               : all .2s ease-in-out;
+                transform-origin         : 0 100%;
+            }
+        }
+
+        [class^="icon-"] {
+            font-weight : 700;
+            font-size   : 1.5rem;
             margin-right: 2px;
-            &:before{
+
+            &:before {
                 vertical-align: sub;
             }
         }
-        li{
+
+        li {
             list-style: none;
         }
     }
-    &__bottom{
-        padding: 10px 0px;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        &__icon{
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            width: 80px;
-            margin: 5px;
-            padding: 5px 10px;
-            border-radius: 5px;
+
+    &__middle {
+
+        z-index         : 9;
+        position        : fixed;
+        min-width       : 340px;
+        width           : 100%;
+        padding         : 10px 0px;
+        display         : flex;
+        justify-content : center;
+        flex-wrap       : wrap;
+        border-radius   : 0 0px 30px 30px;
+        background-color: $mainGreen;
+        border-top      : 1px solid rgba($mainWhite, 0.7);
+        transition      : all .3s ease-in-out;
+
+        @include media-breakpoint-up(sm, (sm:720px)) {
+            position: relative;
+        }
+
+        &--hide {
+            transform: translateY(-105%);
+        }
+
+        &__icon {
+            display         : flex;
+            justify-content : center;
+            flex-direction  : column;
+            align-items     : center;
+            width           : 80px;
+            margin          : 5px;
+            padding         : 5px 10px;
+            border-radius   : 5px;
             background-color: $mainWhite;
-            @include hover-focus-active{
+
+            @include hover-focus-active {
                 color: $mainRed;
             }
 
-            [class^="icon-"]{
-                font-size: 1.7rem;
+            [class^="icon-"] {
+                font-size    : 1.7rem;
                 margin-bottom: 5px;
             }
 
-            span{
-                display: inline-block;
+            span {
+                display   : inline-block;
                 text-align: center;
-                font-size: 12px;
+                font-size : 12px;
             }
         }
 
+        &::before {
+            content         : '';
+            width           : 100%;
+            height          : 200px;
+            background-color: #58B740;
+            position        : absolute;
+            top             : -201px;
+            z-index         : 8;
+        }
+
+    }
+
+    &__bottom {
+        display         : none;
+        position        : relative;
+        align-items     : center;
+        background-color: $darkGray;
+        height          : 67px;
+        width           : 100%;
+        z-index         : 0;
+        border-radius   : 0 0px 30px 30px;
+
+        &::before {
+            content         : '';
+            width           : 100%;
+            height          : 70vh;
+            position        : absolute;
+            background-color: $darkGray;
+            top             : 1px;
+            transform       : translateY(-100%);
+
+        }
+
+        &__title {
+            font-size : 24px;
+            color     : $mainWhite;
+            text-align: center;
+            margin    : auto;
+        }
     }
 }

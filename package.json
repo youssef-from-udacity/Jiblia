@@ -7,17 +7,19 @@
     "gulp-rename": "^1.4.0",
     "gulp-sourcemaps": "^2.6.5",
     "jquery": "^3.5.1",
+    "knockout": "^3.5.1",
     "lazysizes": "5.2.0-beta1",
     "normalize.css": "8.0.1",
     "picturefill": "3.0.3",
     "popper.js": "^1.16.1",
     "rfs": "^9.0.3",
-    "scss-concat": "^0.3.7"
+    "scss-concat": "^0.3.7",
+    "waypoints": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/register": "^7.10.3",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.10.4",
     "acorn": "^7.3.1",
     "autoprefixer": "9.7.2",
     "babel-eslint": "^10.1.0",

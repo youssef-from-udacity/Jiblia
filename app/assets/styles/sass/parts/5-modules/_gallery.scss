@@ -1,0 +1,287 @@
+.gallery {
+    width          : 100%;
+    display        : flex;
+    flex-wrap      : wrap;
+    justify-content: center;
+    padding        : 20px 5px;
+
+    &__item {
+        position        : relative;
+        display         : flex;
+        flex-direction  : column;
+        width           : 100%;
+        min-height      : 200px;
+        margin          : 5px;
+        padding         : 10px;
+        border-radius   : 10px;
+        background-color: $mainWhite;
+
+        @include media-breakpoint-up(sm, (sm: 490px, )) {
+            width: 230px;
+        }
+
+        &--overlay {
+            &::before {
+                content         : '';
+                position        : absolute;
+                opacity         : 0.4;
+                left            : 0;
+                right           : 0;
+                top             : 0;
+                bottom          : 0;
+                z-index         : 1;
+                background-color: white;
+            }
+        }
+
+        &__top {
+            position      : relative;
+            display       : flex;
+            flex-wrap     : wrap;
+            width         : 100%;
+            margin-bottom : 15px;
+            padding-bottom: 10px;
+            border-bottom : 1px solid rgba($color: $darkGray, $alpha: 0.1);
+
+            @include media-breakpoint-up(sm, (sm: 490px, )) {
+                justify-content: center;
+            }
+        }
+
+        &__bottom {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+            width          : 100%;
+
+            &__quantity {
+                font-weight: 500;
+                color      : rgba($color: $darkGray, $alpha: 0.7);
+            }
+
+            &__button {
+                background-color: $mainGreen;
+                z-index         : 2;
+                border-radius   : 15px;
+                padding         : 10px;
+                color           : $mainWhite;
+                font-size       : 27px;
+                font-weight     : 700;
+                user-select     : none;
+                transition      : background-color 0.2s ease-in;
+
+                @include hover-focus-active {
+                    background-color: darken($color: $mainGreen, $amount: 10%);
+                }
+
+                span {
+                    margin  : 3px;
+                    position: relative;
+                    display : inline-block;
+                    left    : -2px;
+                    top     : 3px;
+                }
+
+                &--active {
+                    background-color: $mainOrange;
+
+                    @include hover-focus-active {
+                        background-color: darken($color: $mainOrange, $amount: 10%);
+                    }
+
+                    span {
+                        left: 0;
+                        top : 0;
+
+                        &::before {
+                            content: "\e907";
+                        }
+                    }
+                }
+            }
+        }
+
+        &__like {
+            position        : absolute;
+            top             : 0;
+            right           : 0;
+            background-color: transparent;
+            color           : $darkGray;
+            z-index         : 2;
+
+
+            @include hover {
+                animation-name           : bounceIn;
+                animation-duration       : 1s;
+                animation-iteration-count: infinite;
+                color                    : $mainRed;
+            }
+
+            span::before {
+                content: "\e90d";
+
+            }
+
+            &--true {
+                animation-name    : bounceIn;
+                animation-duration: .4s;
+
+                span::before {
+                    content: "\e922";
+                    color  : $mainRed;
+
+                }
+
+            }
+        }
+
+        &__profile {
+            width         : 100%;
+            max-width     : 68.56%;
+            margin-bottom : 20px;
+            display       : flex;
+            flex-direction: column;
+
+            @include media-breakpoint-up(sm, (sm: 490px, )) {
+                align-items: center;
+                text-align : center;
+                max-width  : 100%;
+            }
+
+            &>span {
+                display: block;
+            }
+        }
+
+        &__img {
+            flex      : 0 0 100%;
+            max-width : 27.43%;
+            max-height: 115px;
+            margin    : 0 10px 20px 0;
+            transition: transform 0.2s ease-in;
+            cursor    : pointer;
+
+            @include media-breakpoint-up(sm, (sm: 490px, )) {
+                max-width   : 50%;
+                margin-right: 0;
+            }
+
+            @include hover-focus-active {
+                transform: scale(1.2);
+            }
+        }
+
+        &__name {
+            color        : $mainRed;
+            margin-bottom: 10px;
+            font-size    : 18px;
+        }
+
+        &__description {
+            margin-bottom: 10px;
+            font-size    : 16px;
+            font-weight  : 300;
+        }
+
+        &__price {
+            font-weight: 600;
+            color      : $mainGreen;
+
+            span:first-child {
+                font-size: 18px;
+            }
+        }
+
+        &__order {
+            flex       : 0 0 100%;
+            max-width  : 100%;
+            width      : 100%;
+            height     : 39px;
+            display    : flex;
+            align-items: center;
+
+            border-radius   : 25px;
+            border          : 2px solid $mainBeige;
+            background-color: $mainBeige;
+
+            &--plus {
+                border-radius   : 0 50% 50% 0;
+                height          : 35px;
+                width           : 35px;
+                font-size       : 20px;
+                background-color: rgba($color: $darkGray, $alpha: 0.1);
+
+                &::before {
+                    content: "+";
+                }
+
+                @include hover {
+                    background-color: rgba($color: $darkGray, $alpha: 0.3);
+                }
+            }
+
+            &__input {
+                width      : 100%;
+                display    : block;
+                position   : relative;
+                user-select: none;
+
+                &::after {
+                    content : "";
+                    display : block;
+                    position: absolute;
+                    top     : 0;
+                    left    : 0;
+                    width   : 100%;
+                    height  : 100%;
+                }
+
+                input {
+                    width           : 100%;
+                    height          : 35px;
+                    text-align      : center;
+                    border          : none;
+                    background-color: transparent;
+                    color           : $mainRed;
+
+                    @include hover-focus-active {
+                        outline: 0;
+                    }
+                }
+            }
+
+            &--minus {
+                width           : 35px;
+                height          : 35px;
+                font-size       : 20px;
+                border-radius   : 50% 0 0 50%;
+                position        : relative;
+                top             : 1px;
+                background-color: rgba($color: $darkGray, $alpha: 0.1);
+
+                &::before {
+                    content         : "";
+                    width           : 10px;
+                    height          : 2px;
+                    position        : absolute;
+                    left            : calc(50% - 1px);
+                    transform       : translateX(-50%);
+                    background-color: $mainBlack;
+                }
+
+                @include hover {
+                    background-color: rgba($color: $darkGray, $alpha: 0.3);
+                }
+            }
+
+            button:disabled {
+                cursor        : not-allowed;
+                pointer-events: all !important;
+
+                &::before {
+                    background-color: rgba($color: $darkGray, $alpha: 0.3);
+                }
+            }
+        }
+    }
+}

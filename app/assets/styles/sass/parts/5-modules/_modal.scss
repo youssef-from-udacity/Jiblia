@@ -1,164 +1,179 @@
 .modal {
     &__navbar {
-        overflow-x: hidden;
-        overflow-y: auto;
-        position: fixed;
-        padding: 20px;
+        overflow-x   : hidden;
+        overflow-y   : auto;
+        position     : fixed;
+        padding      : 20px;
         border-radius: 50px 50px 0 0;
-        left: 0;
-        bottom: 0;
-        z-index: 1050;
-        width: 100%;
-        max-height: 80vh;
+        left         : 0;
+        bottom       : 0;
+        z-index      : 1050;
+        width        : 100%;
+        max-height   : 80vh;
 
-        outline: 0;
+        outline         : 0;
         background-color: $mainBeige;
-        transform: translateY(100%);
-        transition: all 0.2s ease-in-out;
+        transform       : translateY(100%);
+        transition      : all 0.2s ease-in-out;
+
         &--open {
             transform: translateY(0);
         }
+
         &__title {
-            @extend .navbar__bottom__icon;
+            @extend .navbar__middle__icon;
             flex-direction: row;
-            border-radius: 25px;
-            margin: auto;
-            width: fit-content;
-            border-bottom: 2px solid $darkGray;
+            border-radius : 25px;
+            margin        : auto;
+            width         : fit-content;
+            border-bottom : 2px solid $darkGray;
 
             [class^="icon-"] {
-                font-size: 1.7rem;
+                font-size    : 1.7rem;
                 margin-bottom: 5px;
-                margin-right: 10px;
+                margin-right : 10px;
             }
 
             span {
-                display: inline-block;
-                text-align: center;
-                font-size: 16px;
+                display    : inline-block;
+                text-align : center;
+                font-size  : 16px;
                 font-weight: 400;
             }
         }
+
         &__product {
-            display: flex;
-            flex-wrap: wrap;
+            display        : flex;
+            flex-wrap      : wrap;
             justify-content: center;
-            margin: 10px 0;
+            margin         : 10px 0;
+
             &__container {
-                width: 100px;
-                margin: 5px;
-                padding: 5px;
-                border-radius: 5px;
+                width           : 100px;
+                margin          : 5px;
+                padding         : 5px;
+                border-radius   : 5px;
                 background-color: $mainWhite;
-                display: flex;
-                flex-wrap: wrap;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-between;
-                text-align: center;
-                font-size: 12px;
+                display         : flex;
+                flex-wrap       : wrap;
+                flex-direction  : column;
+                align-items     : center;
+                justify-content : space-between;
+                text-align      : center;
+                font-size       : 12px;
             }
+
             &__img {
-                width: 77px;
+                width        : 77px;
                 margin-bottom: 10px;
             }
+
             &__title {
                 margin-bottom: 10px;
             }
         }
+
         section {
             display: none;
         }
     }
+
     &__backdrop {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1040;
-        width: 100vw;
-        height: 100vh;
+        display         : none;
+        position        : fixed;
+        top             : 0;
+        left            : 0;
+        z-index         : 1040;
+        width           : 100vw;
+        height          : 100vh;
         background-color: #000;
-        transition: opacity 0.2s ease-in-out;
-        opacity: 0;
+        transition      : opacity 0.2s ease-in-out;
+        opacity         : 0;
+
         &--open {
             opacity: 0.5;
             display: block;
         }
     }
+
     &__basket {
-        width: calc(100vw - 50px);
-        height: 100vh;
-        display: flex;
+        width         : calc(100vw - 50px);
+        height        : 100vh;
+        display       : flex;
         flex-direction: column;
-        max-width: 400px;
-        margin-right: 70px;
+        max-width     : 400px;
+        margin-right  : 70px;
 
         overflow-x: hidden;
         overflow-y: auto;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 1050;
-        transform: translateX(-125%);
+        position  : fixed;
+        left      : 0;
+        top       : 0;
+        z-index   : 1050;
+        transform : translateX(-125%);
 
         background-color: $mainRed;
-        transition: all 0.2s ease-in-out;
+        transition      : all 0.2s ease-in-out;
 
         &--open {
             transform: translateY(0);
         }
 
         &__top {
-            width: 100%;
+            width : 100%;
             height: 100%;
+
             &__container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                display         : flex;
+                justify-content : center;
+                align-items     : center;
                 background-color: $mainBeige;
-                width: 100%;
-                height: calc(100vh - 105px);
-                border-radius: 0 0 20px 20px;
-                box-shadow: 4px -3px 100px 10px black;
-                position: absolute;
-                box-shadow: 3px 0px 32px 5px rgba(0, 0, 0, 0.7);
+                overflow        : auto;
+                width           : 100%;
+                height          : calc(100vh - 105px);
+                border-radius   : 0 0 20px 20px;
+                box-shadow      : 4px -3px 100px 10px black;
+                position        : absolute;
+                box-shadow      : 3px 0px 32px 5px rgba(0, 0, 0, 0.7);
             }
         }
 
         &__bottom {
-            width: 100%;
+            width           : 100%;
             background-color: $mainRed;
-            color: $mainWhite;
-            padding: 0 20px;
+            color           : $mainWhite;
+            padding         : 0 20px;
+
             &__clear {
-                display: flex;
+                display        : flex;
                 justify-content: space-between;
-                align-items: center;
-                padding: 5px;
-                width: 100%;
-                height: 44px;
-                font-size: 14px;
-                font-weight: 100;
-                border-bottom: 1px solid rgba($mainWhite, 0.4);
+                align-items    : center;
+                padding        : 5px;
+                width          : 100%;
+                height         : 44px;
+                font-size      : 14px;
+                font-weight    : 100;
+                border-bottom  : 1px solid rgba($mainWhite, 0.4);
 
                 &__button {
-                    color: $mainWhite;
-                    font-weight: 100;
-                    display: flex;
+                    color           : $mainWhite;
+                    font-weight     : 100;
+                    display         : flex;
                     background-color: transparent;
 
                     span:first-child {
-                        transform: scaleX(1.3);
+                        transform   : scaleX(1.3);
                         margin-right: 5px;
-                        font-weight: 100;
+                        font-weight : 100;
                     }
+
                     span:last-child {
                         font-weight: 400;
                     }
                 }
+
                 &__total {
-                    span:first-child{
+                    span:first-child {
                         font-size: 22px;
                     }
                 }
@@ -166,12 +181,12 @@
 
             &__validate {
                 button {
-                    width: 100%;
-                    padding: 10px;
+                    width        : 100%;
+                    padding      : 10px;
                     border-radius: 50px;
-                    border: none;
-                    margin: 10px 0;
-                    font-weight: 500;
+                    border       : none;
+                    margin       : 10px 0;
+                    font-weight  : 500;
 
                     @include hover-focus-active {
                         color: $mainGreen;
@@ -182,152 +197,211 @@
 
         &__empty {
             opacity: 0.7;
+
             img {
-                @keyframes float {
-                    0% {
-                        transform: translatey(0px);
-                    }
-                    50% {
-                        transform: translatey(-20px);
-                    }
-                    100% {
-                        transform: translatey(0px);
-                    }
-                }
                 transform: translatey(0px);
                 animation: float 6s ease-in-out infinite;
-                margin: 20px auto;
-                width: 300px;
-                display: block;
+                margin   : 20px auto;
+                width    : 300px;
+                display  : block;
             }
+
             span {
-                font-size: 24px;
-                display: block;
+                font-size  : 24px;
+                display    : block;
                 font-weight: bold;
-                text-align: center;
-                color: rgba($darkSlateGray, 0.7);
+                text-align : center;
+                color      : rgba($darkSlateGray, 0.7);
             }
         }
-        
-        &__list {
-            width: 100%;
-            height: 100%;
+
+        &__item {
+            width  : 100%;
+            height : 100%;
             padding: 10px;
-            &__container{
-                width: 100%;
-                height: 166px;
+
+            &__container {
+                width           : 100%;
                 background-color: $mainWhite;
-                border-radius: 5px;
-                padding: 5px;
+                border-radius   : 5px;
+                padding         : 5px;
+                margin-bottom   : 10px;
+
             }
+
             &__top {
-                width: 100%;
-                height: 122px;
-                padding: 5px;
-                display: flex;
-                font-size: 14px;
-                font-weight: 400;
+                flex-wrap      : wrap;
+                width          : 100%;
+                padding        : 5px;
+                display        : flex;
+                font-size      : 14px;
+                font-weight    : 400;
                 justify-content: space-between;
-                border-bottom: 1px solid rgba($color: $darkGray, $alpha: .1);
+                border-bottom  : 1px solid rgba($color: $darkGray, $alpha: 0.1);
+
             }
 
             &__img {
-                max-width: 90px;
+                flex      : 0 0 100%;
+                max-width : 25%;
                 max-height: 110px;
             }
-            &__description {
-                max-width: 220px;
-                max-height: 110px;
-                padding: 5px;
-                &__title {
-                    margin-bottom: 20px;
-                    span:first-child {
-                        color: $mainRed;
-                    }
-                }
-                &__quantity {
-                    margin-bottom: 10px;
-                    font-weight: bold;
-                    display: block;
-                }
-                &__price {
-                    color: rgba($color: $darkGray, $alpha: 0.5);
-                }
-            }
-            &__order {
-                border-radius: 25px;
-                width: 43px;
-                border: 4px solid $mainBeige;
-                height: 106px;
-                background-color: $mainBeige;
-                &__plus {
-                    font-size: 20px;
-                    background-color: rgba($color: $darkGray, $alpha: 0.1);
-                    border-radius: 50% 50% 0 0;
-                    width: 35px;
-                    height: 30px;
-                    &::before {
-                        content: "+";
-                    }
-                    @include hover {
-                        background-color: rgba($color: $darkGray, $alpha: 0.3);
-                    }
-                }
-                &__input {
-                    width: 35px;
-                    height: 38px;
-                    text-align: center;
-                    border: none;
-                    background-color: transparent;
-                    color: $mainRed;
-                    @include hover-focus-active{
-                        outline: 0;
 
-                    }
-                }
-                &__minus {
-                    position: relative;
-                    background-color: rgba($color: $darkGray, $alpha: 0.1);
-                    border-radius: 0 0 50% 50%;
-                    width: 35px;
-                    height: 30px;
-                    &::before {
-                        content: "";
-                        width: 10px;
-                        height: 2px;
-                        position: absolute;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background-color: $mainBlack;
-                    }
-                }
-                button:disabled {
-                    cursor: not-allowed;
-                    pointer-events: all !important;
-                    &::before {
-                        background-color: rgba($color: $darkGray, $alpha: 0.3);
-                    }
+            &__description {
+                flex     : 0 0 100%;
+                max-width: 70.5%;
+                padding  : 5px;
+
+                @include media-breakpoint-up(xs, (xs: 440px)) {
+                    max-width: 59.459459459459459%;
                 }
             }
-            &__bottom{
+
+            &__title {
+                margin-bottom: 20px;
+
+                span:first-child {
+                    color: $mainRed;
+                }
+            }
+
+            &__quantity {
+                margin-bottom: 10px;
+                font-weight  : bold;
+                display      : block;
+            }
+
+            &__price {
+                color: rgba($color: $darkGray, $alpha: 0.5);
+            }
+
+            &__bottom {
                 @extend .modal__basket__bottom__clear;
                 height: 35px;
-                &__button{
+
+                &__button {
                     @extend .modal__basket__bottom__clear__button;
-                    span{
-                        color: rgba($color: $darkGray, $alpha: .5);
+
+                    span {
+                        color: rgba($color: $darkGray, $alpha: 0.5);
                     }
                 }
-                &__total{
-                    color: $mainGreen;
+
+                &__total {
+                    color      : $mainGreen;
                     font-weight: bold;
 
-                    span:first-child{
+                    span:first-child {
                         font-size: 18px;
                     }
+                }
+            }
+        }
 
+        &__order {
+            width           : 100%;
+            display         : flex;
+            height          : 39px;
+            flex            : 0 0 100%;
+            max-width       : 100%;
+            border-radius   : 25px;
+            border          : 2px solid $mainBeige;
+            background-color: $mainBeige;
+
+            @include media-breakpoint-up(xs, (xs: 440px)) {
+                max-width: 10.666%;
+                width    : 39px;
+                height   : 112px;
+                display  : block;
+            }
+
+            &--plus {
+                border-radius   : 50% 0 0 50%;
+                font-size       : 20px;
+                background-color: rgba($color: $darkGray, $alpha: 0.1);
+                width           : 35px;
+                height          : 35px;
+
+                @include media-breakpoint-up(xs, (xs: 440px)) {
+                    border-radius: 50% 50% 0 0;
                 }
 
+                &::before {
+                    content: "+";
+                }
+
+                @include hover {
+                    background-color: rgba($color: $darkGray, $alpha: 0.3);
+                }
+            }
+
+            &--minus {
+                border-radius   : 0 50% 50% 0;
+                position        : relative;
+                background-color: rgba($color: $darkGray, $alpha: 0.1);
+                width           : 35px;
+                height          : 35px;
+
+                @include media-breakpoint-up(xs, (xs: 440px)) {
+                    border-radius: 0 0 50% 50%;
+                }
+
+                &::before {
+                    content         : "";
+                    width           : 10px;
+                    height          : 2px;
+                    position        : absolute;
+                    left            : 50%;
+                    transform       : translateX(-50%);
+                    background-color: $mainBlack;
+                }
+
+                @include hover {
+                    background-color: rgba($color: $darkGray, $alpha: 0.3);
+                }
+            }
+
+            &__input {
+                width      : 100%;
+                display    : block;
+                position   : relative;
+                user-select: none;
+
+                &::after {
+                    content : "";
+                    display : block;
+                    position: absolute;
+                    top     : 0;
+                    left    : 0;
+                    width   : 100%;
+                    height  : 100%;
+                }
+
+                input {
+                    width           : 100%;
+                    height          : 38px;
+                    text-align      : center;
+                    border          : none;
+                    background-color: transparent;
+                    color           : $mainRed;
+
+                    @include media-breakpoint-up(xs, (xs: 440px)) {
+                        width: 35px;
+                    }
+
+                    @include hover-focus-active {
+                        outline: 0;
+                    }
+                }
+            }
+
+            button:disabled {
+                cursor        : not-allowed;
+                pointer-events: all !important;
+
+                &::before {
+                    background-color: rgba($color: $darkGray, $alpha: 0.3);
+                }
             }
         }
     }

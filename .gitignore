@@ -13,6 +13,7 @@
 node_modules/
 app/temp
 docs
+.history/
 
 # OS or Editor folders
 .DS_Store

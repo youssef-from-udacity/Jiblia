@@ -1,13 +1,12 @@
-$mainWhite: #ffffff;
-$mainGreen: #58B740;
-$mainRed: #E0003C;
-$mainBeige: #F5F4F2;
-$mainBlack: black;
-$darkGray: #333;
+$mainWhite    : #ffffff;
+$mainGreen    : #58B740;
+$mainRed      : #E0003C;
+$mainOrange   : #F24B11;
+$mainBeige    : #F5F4F2;
+$mainBlack    : black;
+$darkGray     : #333;
 $darkSlateGray: darkslategray;
-$grid-breakpoints: (
-  sm: 640px,
+$grid-breakpoints: (sm: 640px,
   md: 990px,
   lg: 1380px,
-  xl: 1960px
-);
+  xl: 1960px);

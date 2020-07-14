@@ -1,7 +1,5 @@
-import $ from 'jquery';
 import Util from './util';
-import * as ProductsAPI from './utils/ProductsAPI'
-
+import * as ProductsAPI from './utils/ProductsAPI';
 
 class Modal {
   constructor() {
@@ -9,7 +7,6 @@ class Modal {
     this.body = document.querySelector('body');
     this.backdrop = document.querySelector('.modal__backdrop');
     this.maxHeight = 100;
-
     this.products = {
       babyProducts: [
         {

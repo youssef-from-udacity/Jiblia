@@ -9,6 +9,11 @@ const webpackConfig = {
     path: path.resolve(__dirname, "./app/temp/scripts"),
     filename: "[name].js"
   },
+  resolve: {
+    alias: {
+        jquery: "jquery/src/jquery"
+    }
+},
   devtool : 'cheap-module-source-map & cheap-module-inline-source-map',
   module: {
     rules: [
@@ -21,5 +26,4 @@ const webpackConfig = {
   },
   mode: 'development'
 };
-
 export default webpackConfig;

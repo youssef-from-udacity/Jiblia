@@ -20,385 +20,467 @@
 
 <body>
   <header>
-    <nav class="navbar">
+    <nav class="navbar navbar--fixed">
       <ul class="navbar__top">
         <li>
-          <a class="navbar__top__brand" href="#">
+          <a class="navbar__top__brand" href="javascript:void(0);">
             <img src="/assets/img/jibliya-logo.svg" alt="brand" />
           </a>
         </li>
         <li class="navbar__top__list">
-          <a class="navbar__top__link" href="#">
+          <a class="navbar__top__link" href="javascript:void(0);">
             <span class="icon-profile"></span>
             <span class="navbar__top__link__title"> Mon compte</span>
           </a>
-          <a class="navbar__top__link modal-btn" href="#" role="button" data-modal="modal__basket">
+          <a class="navbar__top__link modal-btn" href="javascript:void(0);" role="button" data-modal="modal__basket">
             <span class="icon-cart"></span>
-            <span class="navbar__top__link__title"> Mon panier</span>
+            <span class="navbar__top__link__title"> Mon panier
+              <span>
+                <span class="navbar__top__link--products-count"
+                  data-bind="text: productsCount,visible: productsCount,animateUpdate: toggleAnimation()">2</span>
+
+                <span class="navbar__top__link--products-total"
+                  data-bind="visible: total,animateUpdate: toggleAnimation()">
+                  <span data-bind="text: total">24.95</span>
+                  <span> dh</span>
+                </span>
+              </span>
+            </span>
           </a>
+          <div class="navbar__top__menu">
+            <button type="button" class="button navbar__top__menu__button">
+              <i class="icon-menu"></i>
+            </button>
+          </div>
         </li>
       </ul>
-      <div class="navbar__bottom">
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar">
+      <div class="navbar__middle">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar">
           <span>-</span>
           <span>Nouveautés</span>
           <span>-</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="babyProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="babyProducts">
           <i class="icon-baby"></i>
           <span>Bébé</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="hygieneProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="hygieneProducts">
           <i class="icon-hygiene"></i>
           <span>Hygiène et beauté</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="maintenanceProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="maintenanceProducts">
           <i class="icon-maintenance"></i>
           <span>Entretien</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="animalsProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="animalsProducts">
           <i class="icon-animals"></i>
           <span>Animaux</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="drinksProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="drinksProducts">
           <i class="icon-drinks"></i>
           <span>Boissons</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="dieteticProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="dieteticProducts">
           <i class="icon-dietetic"></i>
           <span>Diététique et sans gluten</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="groceryProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="groceryProducts">
           <i class="icon-grocery-2"></i>
           <span>Epicerie</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="breakfastProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="breakfastProducts">
           <i class="icon-breakfast"></i>
           <span>Petit Déjeuner</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="dairyProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="dairyProducts">
           <i class="icon-dairy"></i>
           <span>Produits laitiers</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="delicatessenProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="delicatessenProducts">
           <i class="icon-delicatessen"></i>
           <span>Charcuterie</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="bakeryProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="bakeryProducts">
           <i class="icon-bakery"></i>
           <span>Boulangerie</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="marketProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="marketProducts">
           <i class="icon-market"></i>
           <span>Le marché</span>
         </button>
-        <button type="button" class="button navbar__bottom__icon modal-btn" data-modal="modal__navbar" data-section="meatProducts">
+        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
+          data-section="meatProducts">
           <i class="icon-meat"></i>
           <span>Viandes</span>
         </button>
       </div>
+
+      <div class="navbar__bottom">
+        <h4 class="navbar__bottom__title">baby</h4>
+      </div>
     </nav>
   </header>
-  <div class="main">
-    <div class="main__features">
-      <div class="main__features__item">
-        <span>Bientôt !</span>
-        <span class="icon-promotion"></span>
-        <span>Promotions</span>
+  <div class="main main--show-products">
+    <div class="home">
+      <div class="home__features">
+        <div class="home__features__item">
+          <span>Bientôt !</span>
+          <span class="icon-promotion"></span>
+          <span>Promotions</span>
+        </div>
+        <div class="home__features__item">
+          <span>Bientôt !</span>
+          <span class="icon-loyelty"></span>
+          <span>Jibliya Express</span>
+        </div>
+        <div class="home__features__item">
+          <span>Nouveau !</span>
+          <span class="icon-offer"></span>
+          <span>Nouveaux Produits</span>
+        </div>
       </div>
-      <div class="main__features__item">
-        <span>Bientôt !</span>
-        <span class="icon-loyelty"></span>
-        <span>Jibliya Express</span>
+      <div class="home__steps">
+        <h3 class="home__steps__title">Comment ça marche ?</h3>
+        <div class="home__steps__item">
+          <div class="home__steps__item__container">
+            <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
+              <g>
+                <circle fill="#E9EAEB" cx="54.643" cy="68.5" r="41.837"></circle>
+                <path fill="#7ec56c"
+                  d="M57.64,86.537c-1.224-3.493-4.523-5.834-8.228-5.834H37.21V68.5l3.486,3.486c0,0,7.552,0,12.202,0 c7.974,0,6.973-8.716,6.973-8.716H47.669L35.467,51.068h-6.973c-3.85,0-6.972,3.122-6.972,6.973v26.147 c0,5.775,4.683,10.459,10.459,10.459h15.688l10.459,20.919h9.67L57.64,86.537z">
+                </path>
+                <path fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M33.724,45.674 c-4.867,0-8.716-3.982-8.716-8.894v-2.966c0-4.913,3.849-8.894,8.716-8.894c4.868,0,8.716,3.981,8.716,8.894v2.966 C42.439,41.692,38.591,45.674,33.724,45.674z">
+                </path>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="37.21" y1="71.986"
+                  x2="98.222" y2="71.986"></line>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="63.357,65.014 73.817,65.014  73.817,71.986 	"></polyline>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="80.79,71.986 80.79,65.014 87.763,65.014  91.249,65.014 91.249,44.095 82.533,44.095 	">
+                </polyline>
+                <path fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M80.79,58.041h-5.229V21.434h5.229 c1.925,0,3.486,1.561,3.486,3.486v29.634C84.276,56.48,82.715,58.041,80.79,58.041z">
+                </path>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="30.237" y1="105.106"
+                  x2="30.237" y2="115.566"></line>
+                <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M58.128,115.566L47.669,94.647H31.98 c-5.776,0-10.459-4.684-10.459-10.459V58.041c0-3.851,3.122-6.973,6.972-6.973h6.973l12.202,12.202h12.202 c0,0,1.001,8.716-6.973,8.716c-4.649,0-12.202,0-12.202,0L30.237,61.527">
+                </path>
+                <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M37.21,68.5v12.203h12.202 c3.705,0,7.004,2.341,8.228,5.834l10.159,29.029"></path>
+                <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M14.548,54.555v33.121 c0,7.7,6.245,13.944,13.945,13.944h15.689"></path>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="14.548,80.703 28.494,80.703  33.724,87.676 	"></polyline>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="101.709" y1="71.986"
+                  x2="105.195" y2="71.986"></line>
+              </g>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="11.345" y1="114.822"
+                x2="103" y2="114.822"></line>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="104.452" y1="114.822"
+                x2="111.785" y2="114.822"></line>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="114.334" y1="114.822"
+                x2="118" y2="114.822"></line>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="4.834" y1="114.822"
+                x2="8.5" y2="114.822"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="102.283" y1="26.849"
+                x2="102.283" y2="34.972"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="106.344" y1="30.91"
+                x2="98.222" y2="30.91"></line>
+              <circle fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" cx="110.405" cy="11.958"
+                r="4.062"></circle>
+              <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
+                d="M58.936,11.652H46.287 C45.349,9.819,43.142,7.93,40.57,7.93c-0.816,0-1.594,0.193-2.308,0.48c-1.434-3.822-5.11-6.689-9.432-6.689 c-5.561,0-10.069,6.266-10.08,9.932H3.945">
+              </path>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="13.109" y1="26.316"
+                x2="0.278" y2="26.316"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="16.775" y1="26.316"
+                x2="20.443" y2="26.316"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="62.604" y1="11.652"
+                x2="66.268" y2="11.652"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="69.936" y1="11.652"
+                x2="73.602" y2="11.652"></line>
+            </svg>
+            <h6>Inscrivez-vous sur Jibliya.ma</h6>
+            <span>Depuis votre téléphone ou ordinateur</span>
+          </div>
+        </div>
+        <div class="home__steps__item">
+          <div class="home__steps__item__container">
+            <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="11.345" y1="114.822"
+                x2="103" y2="114.822"></line>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="104.452" y1="114.822"
+                x2="111.785" y2="114.822"></line>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="114.334" y1="114.822"
+                x2="118" y2="114.822"></line>
+              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="4.834" y1="114.822"
+                x2="8.5" y2="114.822"></line>
+              <g>
+                <path fill="#E9EAEB"
+                  d="M39.714,93.854c-3.17,0-5.741-2.57-5.741-5.74V37.516c-11.917,6.035-20.091,18.389-20.091,32.66 c0,20.21,16.384,36.595,36.595,36.595c11.178,0,21.179-5.017,27.891-12.916H39.714z">
+                </path>
+                <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M66.98,93.854H39.714 c-3.17,0-5.741-2.57-5.741-5.74V24.97c0-3.17,2.57-5.741,5.741-5.741h47.358c3.17,0,5.74,2.57,5.74,5.741v37.312">
+                </path>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="61.24,82.374 39.714,82.374 39.714,30.71  87.072,30.71 87.072,62.282 	"></polyline>
+                <path fill="#FFFFFF"
+                  d="M94.248,69.458h-2.87c0-1.614-1.525-2.87-2.87-2.87h-2.87c-0.55-0.862-1.967-1.436-2.871-1.436h-2.87 V55.107c0-1.585-1.285-2.87-2.87-2.87s-2.87,1.285-2.87,2.87v21.527l-1.917,1.84l-3.75-5.813c-2.299-3.163-5.813-1.388-5.813,0 c0,0,4.354,13.893,4.978,14.868c1.002,1.57,5.068,5.099,5.068,6.326c0,1.229,0,5.741,0,5.741h21.526c0,0,0-2.373,0-4.306 c0-1.935,2.87-4.271,2.87-7.176V72.328C97.118,70.714,95.594,69.458,94.248,69.458z">
+                </path>
+                <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M72.722,99.596c0,0,0-4.513,0-5.741 c0-1.228-4.066-4.756-5.068-6.326c-0.623-0.976-4.978-14.868-4.978-14.868c0-1.388,3.515-3.163,5.813,0l3.75,5.813l1.917-1.84 V55.107c0-1.585,1.285-2.87,2.87-2.87l0,0c1.585,0,2.87,1.285,2.87,2.87v18.657v-1.436v-7.176h2.87 c0.904,0,2.321,0.573,2.871,1.436h2.87c1.345,0,2.87,1.256,2.87,2.87h2.87c1.346,0,2.87,1.256,2.87,2.87v15.786 c0,2.904-2.87,5.241-2.87,7.176c0,1.933,0,4.306,0,4.306">
+                </path>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="85.638" y1="66.588"
+                  x2="85.638" y2="73.764"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="91.378" y1="69.458"
+                  x2="91.378" y2="75.198"></line>
+                <rect x="69.852" y="98.16" fill="#7ec56c" width="27.267" height="16.176"></rect>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="97.118,114.336 97.118,98.16  69.852,98.16 69.852,114.336 	"></polyline>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="58.37" y1="24.97"
+                  x2="69.852" y2="24.97"></line>
+                <polygon fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="62.705,50.802 45.484,50.802  45.454,36.451 62.676,36.451 	"></polygon>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="66.98" y1="39.321"
+                  x2="82.767" y2="39.321"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="66.98" y1="45.061"
+                  x2="78.462" y2="45.061"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="44.019" y1="56.542"
+                  x2="64.11" y2="56.542"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="44.019" y1="62.282"
+                  x2="64.11" y2="62.282"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="44.019" y1="68.022"
+                  x2="55.5" y2="68.022"></line>
+              </g>
+              <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
+                d="M63.666,12.833h-12.65 C50.079,11,47.872,9.111,45.299,9.111c-0.816,0-1.594,0.193-2.308,0.48c-1.434-3.822-5.11-6.689-9.432-6.689 c-5.561,0-10.069,6.266-10.08,9.932H8.675">
+              </path>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="17.839" y1="27.498"
+                x2="5.008" y2="27.498"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="21.505" y1="27.498"
+                x2="25.173" y2="27.498"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="67.333" y1="12.833"
+                x2="70.998" y2="12.833"></line>
+              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="74.665" y1="12.833"
+                x2="78.331" y2="12.833"></line>
+            </svg>
+            <h6>Commandez vos courses en ligne</h6>
+            <span>D’où vous êtes 24h/24 et 7j/7</span>
+          </div>
+        </div>
+        <div class="home__steps__item">
+          <div class="home__steps__item__container">
+            <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
+              <g>
+                <rect x="34.292" y="41.084" fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  width="49.386" height="74.08"></rect>
+                <rect x="39.99" y="31.587" fill="#E9EAEB" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  width="37.988" height="9.498"></rect>
+                <rect x="55.186" y="99.969" fill="#E9EAEB" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  width="11.396" height="15.195"></rect>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="43.789,67.678 43.789,58.18 53.287,58.18  53.287,67.678 	"></polyline>
+                <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  points="43.789,82.873 43.789,73.375  53.287,73.375 53.287,82.873 	"></polyline>
+                <rect x="15.297" y="67.678" fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  width="18.995" height="47.486"></rect>
+                <rect x="20.995" y="58.18" fill="#E9EAEB" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  width="13.297" height="9.498"></rect>
+                <path fill="#58b740" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
+                  d="M83.818,54.381 c-11.463,0-20.758,9.293-20.758,20.756c0,17.912,17.701,20.334,19.188,38.547c0.065,0.828,0.735,1.48,1.567,1.48 s1.5-0.652,1.564-1.48c1.489-18.213,19.189-20.635,19.189-38.547C104.573,63.674,95.277,54.381,83.818,54.381z">
+                </path>
+                <circle fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10" cx="83.678" cy="75.276"
+                  r="7.598"></circle>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="9.598" y1="115.164"
+                  x2="104.573" y2="115.164"></line>
+                <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
+                  d="M60.381,12.291H47.271 c-0.971-1.899-3.258-3.857-5.924-3.857c-0.845,0-1.65,0.2-2.391,0.497C37.471,4.971,33.662,2,29.184,2 c-5.763,0-10.435,6.493-10.445,10.292H3.396">
+                </path>
+                <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="22.895" y1="33.487"
+                  x2="9.598" y2="33.487"></line>
+                <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
+                  d="M115.566,21.789h-5.649 c-1.313-3.799-4.04-4.746-7.308-4.35c-1.424-2.455-4.049-3.966-7.094-3.966c-4.52,0-8.182,2.618-8.223,8.316h-7.818">
+                </path>
+                <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="26.693" y1="33.487"
+                  x2="30.493" y2="33.487"></line>
+                <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="64.182" y1="12.291"
+                  x2="67.979" y2="12.291"></line>
+                <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="71.777" y1="12.291"
+                  x2="75.577" y2="12.291"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="5.799" y1="115.164"
+                  x2="2" y2="115.164"></line>
+                <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="108.37" y1="115.164"
+                  x2="115.969" y2="115.164"></line>
+                <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
+                  d="M65.566,26.789h-4.71 c-1.096-3.167-3.369-3.957-6.093-3.626c-1.188-2.047-3.376-3.307-5.915-3.307c-3.768,0-6.821,2.183-6.855,6.934h-6.519">
+                </path>
+              </g>
+            </svg>
+            <h6>Recevez vos courses à votre domicile</h6>
+            <span>Le jour et à l’heure qui vous conviennent</span>
+          </div>
+        </div>
       </div>
-      <div class="main__features__item">
-        <span>Nouveau !</span>
-        <span class="icon-offer"></span>
-        <span>Nouveaux Produits</span>
+      <div class="home__popular">
+        <h4 class="home__popular__title">Nos rayons les plus visités</h4>
+        <div class="home__popular__products">
+          <div class="home__popular__products__item">
+            <div class="home__popular__products__item__container">
+              <img src="./assets/img/featured/fruits.jpg" alt="fruits" />
+              <span>Fruits</span>
+            </div>
+          </div>
+          <div class="home__popular__products__item">
+            <div class="home__popular__products__item__container">
+              <img src="./assets/img/featured/bio.jpg" alt="fruits" />
+              <span>Bio & diététique</span>
+            </div>
+          </div>
+          <div class="home__popular__products__item">
+            <div class="home__popular__products__item__container">
+              <img src="./assets/img/featured/veggies.jpg" alt="fruits" />
+              <span>Légumes</span>
+            </div>
+          </div>
+          <div class="home__popular__products__item">
+            <div class="home__popular__products__item__container">
+              <img src="./assets/img/featured/meat.jpg" alt="fruits" />
+              <span>Boucherie de ville</span>
+            </div>
+          </div>
+          <div class="home__popular__products__item">
+            <div class="home__popular__products__item__container">
+              <img src="./assets/img/featured/water.jpg" alt="fruits" />
+              <span>Eau</span>
+            </div>
+          </div>
+          <div class="home__popular__products__item">
+            <div class="home__popular__products__item__container">
+              <img src="./assets/img/featured/dogs.jpg" alt="fruits" />
+              <span>Alimentation pour chiens</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="home__delivery">
+        <h4 class="home__delivery__title">Les frais de la livraison</h4>
+        <div class="home__delivery__container">
+          <div class="home__delivery__cost">
+            <div>
+              <div class="home__delivery__cost__table">
+                <h6 class="home__delivery__cost__title">Frais de livraison</h6>
+                <div class="home__delivery__cost__row">
+                  <div>Montant minimum de commande</div>
+                  <div class="home__delivery__cost__price">200 Dh</div>
+                </div>
+                <div class="home__delivery__cost__row">
+                  <div>Zone 1 (*)</div>
+                  <div class="home__delivery__cost__price">25 Dh</div>
+                </div>
+                <div class="home__delivery__cost__row">
+                  <div>Zone 2 (*)</div>
+                  <div class="home__delivery__cost__price">35 Dh</div>
+                </div>
+                <div class="home__delivery__cost__row">
+                  <div>Zone 3 (*)</div>
+                  <div class="home__delivery__cost__price">45 Dh</div>
+                </div>
+                <div class="home__delivery__cost__footer">
+                  <p>* Les frais peuvent varier en fonction de votre zone de livraison. <a href="javascript:void(0);">En
+                      savoir plus</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home__delivery__info">
+            <div class="home__delivery__info__container">
+              <div class="home__delivery__info__item">
+                <span class="home__delivery__info__icon">
+                  <img src="/assets/img/svg/client-service.svg" alt="client Service" />
+                </span>
+                <span class="home__delivery__info__title">Service client toujours disponible</span>
+              </div>
+              <div class="home__delivery__info__item">
+                <span class="home__delivery__info__icon">
+                  <img src="/assets/img/svg/payment.svg" alt="payment" />
+                </span>
+                <span class="home__delivery__info__title">Paiement à la livraison</span>
+              </div>
+              <div class="home__delivery__info__item">
+                <span class="home__delivery__info__icon">
+                  <img src="/assets/img/svg/delivery.svg" alt="delivery" />
+                </span>
+                <span class="home__delivery__info__title">Service livraison plus étendu</span>
+              </div>
+              <div class="home__delivery__info__item">
+                <span class="home__delivery__info__icon">
+                  <img src="/assets/img/svg/fresh.svg" alt="delivery" />
+                </span>
+                <span class="home__delivery__info__title">Fraicheur et qualité supérieure</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="main__steps">
-      <h3 class="main__steps__title">Comment ça marche ?</h3>
-      <div class="main__steps__item">
-        <div class="main__steps__item__container">
-          <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
-            <g>
-              <circle fill="#E9EAEB" cx="54.643" cy="68.5" r="41.837"></circle>
-              <path fill="#7ec56c"
-                d="M57.64,86.537c-1.224-3.493-4.523-5.834-8.228-5.834H37.21V68.5l3.486,3.486c0,0,7.552,0,12.202,0 c7.974,0,6.973-8.716,6.973-8.716H47.669L35.467,51.068h-6.973c-3.85,0-6.972,3.122-6.972,6.973v26.147 c0,5.775,4.683,10.459,10.459,10.459h15.688l10.459,20.919h9.67L57.64,86.537z">
-              </path>
-              <path fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M33.724,45.674 c-4.867,0-8.716-3.982-8.716-8.894v-2.966c0-4.913,3.849-8.894,8.716-8.894c4.868,0,8.716,3.981,8.716,8.894v2.966 C42.439,41.692,38.591,45.674,33.724,45.674z">
-              </path>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="37.21" y1="71.986"
-                x2="98.222" y2="71.986"></line>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="63.357,65.014 73.817,65.014  73.817,71.986 	"></polyline>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="80.79,71.986 80.79,65.014 87.763,65.014  91.249,65.014 91.249,44.095 82.533,44.095 	">
-              </polyline>
-              <path fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M80.79,58.041h-5.229V21.434h5.229 c1.925,0,3.486,1.561,3.486,3.486v29.634C84.276,56.48,82.715,58.041,80.79,58.041z">
-              </path>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="30.237" y1="105.106"
-                x2="30.237" y2="115.566"></line>
-              <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M58.128,115.566L47.669,94.647H31.98 c-5.776,0-10.459-4.684-10.459-10.459V58.041c0-3.851,3.122-6.973,6.972-6.973h6.973l12.202,12.202h12.202 c0,0,1.001,8.716-6.973,8.716c-4.649,0-12.202,0-12.202,0L30.237,61.527">
-              </path>
-              <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M37.21,68.5v12.203h12.202 c3.705,0,7.004,2.341,8.228,5.834l10.159,29.029"></path>
-              <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M14.548,54.555v33.121 c0,7.7,6.245,13.944,13.945,13.944h15.689"></path>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="14.548,80.703 28.494,80.703  33.724,87.676 	"></polyline>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="101.709" y1="71.986"
-                x2="105.195" y2="71.986"></line>
-            </g>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="11.345" y1="114.822" x2="103"
-              y2="114.822"></line>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="104.452" y1="114.822"
-              x2="111.785" y2="114.822"></line>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="114.334" y1="114.822"
-              x2="118" y2="114.822"></line>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="4.834" y1="114.822" x2="8.5"
-              y2="114.822"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="102.283" y1="26.849"
-              x2="102.283" y2="34.972"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="106.344" y1="30.91"
-              x2="98.222" y2="30.91"></line>
-            <circle fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" cx="110.405" cy="11.958"
-              r="4.062"></circle>
-            <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
-              d="M58.936,11.652H46.287 C45.349,9.819,43.142,7.93,40.57,7.93c-0.816,0-1.594,0.193-2.308,0.48c-1.434-3.822-5.11-6.689-9.432-6.689 c-5.561,0-10.069,6.266-10.08,9.932H3.945">
-            </path>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="13.109" y1="26.316"
-              x2="0.278" y2="26.316"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="16.775" y1="26.316"
-              x2="20.443" y2="26.316"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="62.604" y1="11.652"
-              x2="66.268" y2="11.652"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="69.936" y1="11.652"
-              x2="73.602" y2="11.652"></line>
-          </svg>
-          <h6>Inscrivez-vous sur Jibliya.ma</h6>
-          <span>Depuis votre téléphone ou ordinateur</span>
+  </div>
+
+  <div class="gallery" data-bind="foreach: listProducts, visible: listProducts().length > 0">
+    <div class="gallery__item" data-bind="css: { 'gallery__item--overlay': buy() }">
+      <div class="gallery__item__top">
+        <button class="button gallery__item__like" type="button"
+          data-bind="css: { 'gallery__item__like--true': like() },click: $root.toggleOnOff.bind($data, like)">
+          <span class="icon-heart"></span>
+        </button>
+        <div class="gallery__item__img">
+          <img data-bind="attr: { src: imgURL }" alt="fruits" />
+        </div>
+        <div class="gallery__item__profile">
+          <span class="gallery__item__name" data-bind="text: title">Bjorg</span>
+          <span class="gallery__item__description" data-bind="text: subtitle">4 céréales - DIETITIQUE</span>
+          <span data-bind="text: basket()"></span>
+          <div class="gallery__item__price">
+            <span data-bind="text: price()">0.00</span>
+            <span>Dh</span>
+          </div>
+        </div>
+        <div class="gallery__item__order order-input">
+          <span>
+            <button type="button" class="button gallery__item__order--minus minus-btn"
+              data-bind="click: decrement,disable: order() < 2"></button>
+          </span>
+          <span class="gallery__item__order__input">
+            <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" autocomplete="off" value="1"
+              data-bind="value: order" readonly />
+            <div class="ctrl__counter-num" style="display: none;">0</div>
+          </span>
+
+          <span>
+            <button type="button" class="button gallery__item__order--plus plus-btn"
+              data-bind="click: increment"></button>
+          </span>
         </div>
       </div>
-      <div class="main__steps__item">
-        <div class="main__steps__item__container">
-          <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="11.345" y1="114.822" x2="103"
-              y2="114.822"></line>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="104.452" y1="114.822"
-              x2="111.785" y2="114.822"></line>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="114.334" y1="114.822"
-              x2="118" y2="114.822"></line>
-            <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="4.834" y1="114.822" x2="8.5"
-              y2="114.822"></line>
-            <g>
-              <path fill="#E9EAEB"
-                d="M39.714,93.854c-3.17,0-5.741-2.57-5.741-5.74V37.516c-11.917,6.035-20.091,18.389-20.091,32.66 c0,20.21,16.384,36.595,36.595,36.595c11.178,0,21.179-5.017,27.891-12.916H39.714z">
-              </path>
-              <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M66.98,93.854H39.714 c-3.17,0-5.741-2.57-5.741-5.74V24.97c0-3.17,2.57-5.741,5.741-5.741h47.358c3.17,0,5.74,2.57,5.74,5.741v37.312">
-              </path>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="61.24,82.374 39.714,82.374 39.714,30.71  87.072,30.71 87.072,62.282 	"></polyline>
-              <path fill="#FFFFFF"
-                d="M94.248,69.458h-2.87c0-1.614-1.525-2.87-2.87-2.87h-2.87c-0.55-0.862-1.967-1.436-2.871-1.436h-2.87 V55.107c0-1.585-1.285-2.87-2.87-2.87s-2.87,1.285-2.87,2.87v21.527l-1.917,1.84l-3.75-5.813c-2.299-3.163-5.813-1.388-5.813,0 c0,0,4.354,13.893,4.978,14.868c1.002,1.57,5.068,5.099,5.068,6.326c0,1.229,0,5.741,0,5.741h21.526c0,0,0-2.373,0-4.306 c0-1.935,2.87-4.271,2.87-7.176V72.328C97.118,70.714,95.594,69.458,94.248,69.458z">
-              </path>
-              <path fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M72.722,99.596c0,0,0-4.513,0-5.741 c0-1.228-4.066-4.756-5.068-6.326c-0.623-0.976-4.978-14.868-4.978-14.868c0-1.388,3.515-3.163,5.813,0l3.75,5.813l1.917-1.84 V55.107c0-1.585,1.285-2.87,2.87-2.87l0,0c1.585,0,2.87,1.285,2.87,2.87v18.657v-1.436v-7.176h2.87 c0.904,0,2.321,0.573,2.871,1.436h2.87c1.345,0,2.87,1.256,2.87,2.87h2.87c1.346,0,2.87,1.256,2.87,2.87v15.786 c0,2.904-2.87,5.241-2.87,7.176c0,1.933,0,4.306,0,4.306">
-              </path>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="85.638" y1="66.588"
-                x2="85.638" y2="73.764"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="91.378" y1="69.458"
-                x2="91.378" y2="75.198"></line>
-              <rect x="69.852" y="98.16" fill="#7ec56c" width="27.267" height="16.176"></rect>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="97.118,114.336 97.118,98.16  69.852,98.16 69.852,114.336 	"></polyline>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="58.37" y1="24.97"
-                x2="69.852" y2="24.97"></line>
-              <polygon fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="62.705,50.802 45.484,50.802  45.454,36.451 62.676,36.451 	"></polygon>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="66.98" y1="39.321"
-                x2="82.767" y2="39.321"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="66.98" y1="45.061"
-                x2="78.462" y2="45.061"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="44.019" y1="56.542"
-                x2="64.11" y2="56.542"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="44.019" y1="62.282"
-                x2="64.11" y2="62.282"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="44.019" y1="68.022"
-                x2="55.5" y2="68.022"></line>
-            </g>
-            <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
-              d="M63.666,12.833h-12.65 C50.079,11,47.872,9.111,45.299,9.111c-0.816,0-1.594,0.193-2.308,0.48c-1.434-3.822-5.11-6.689-9.432-6.689 c-5.561,0-10.069,6.266-10.08,9.932H8.675">
-            </path>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="17.839" y1="27.498"
-              x2="5.008" y2="27.498"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="21.505" y1="27.498"
-              x2="25.173" y2="27.498"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="67.333" y1="12.833"
-              x2="70.998" y2="12.833"></line>
-            <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="74.665" y1="12.833"
-              x2="78.331" y2="12.833"></line>
-          </svg>
-          <h6>Commandez vos courses en ligne</h6>
-          <span>D’où vous êtes 24h/24 et 7j/7</span>
-        </div>
-      </div>
-      <div class="main__steps__item">
-        <div class="main__steps__item__container">
-          <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
-            <g>
-              <rect x="34.292" y="41.084" fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                width="49.386" height="74.08"></rect>
-              <rect x="39.99" y="31.587" fill="#E9EAEB" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                width="37.988" height="9.498"></rect>
-              <rect x="55.186" y="99.969" fill="#E9EAEB" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                width="11.396" height="15.195"></rect>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="43.789,67.678 43.789,58.18 53.287,58.18  53.287,67.678 	"></polyline>
-              <polyline fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                points="43.789,82.873 43.789,73.375  53.287,73.375 53.287,82.873 	"></polyline>
-              <rect x="15.297" y="67.678" fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                width="18.995" height="47.486"></rect>
-              <rect x="20.995" y="58.18" fill="#E9EAEB" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                width="13.297" height="9.498"></rect>
-              <path fill="#58b740" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
-                d="M83.818,54.381 c-11.463,0-20.758,9.293-20.758,20.756c0,17.912,17.701,20.334,19.188,38.547c0.065,0.828,0.735,1.48,1.567,1.48 s1.5-0.652,1.564-1.48c1.489-18.213,19.189-20.635,19.189-38.547C104.573,63.674,95.277,54.381,83.818,54.381z">
-              </path>
-              <circle fill="#FFFFFF" stroke="#555555" stroke-width="2" stroke-miterlimit="10" cx="83.678" cy="75.276"
-                r="7.598"></circle>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="9.598" y1="115.164"
-                x2="104.573" y2="115.164"></line>
-              <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
-                d="M60.381,12.291H47.271 c-0.971-1.899-3.258-3.857-5.924-3.857c-0.845,0-1.65,0.2-2.391,0.497C37.471,4.971,33.662,2,29.184,2 c-5.763,0-10.435,6.493-10.445,10.292H3.396">
-              </path>
-              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="22.895" y1="33.487"
-                x2="9.598" y2="33.487"></line>
-              <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
-                d="M115.566,21.789h-5.649 c-1.313-3.799-4.04-4.746-7.308-4.35c-1.424-2.455-4.049-3.966-7.094-3.966c-4.52,0-8.182,2.618-8.223,8.316h-7.818">
-              </path>
-              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="26.693" y1="33.487"
-                x2="30.493" y2="33.487"></line>
-              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="64.182" y1="12.291"
-                x2="67.979" y2="12.291"></line>
-              <line fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10" x1="71.777" y1="12.291"
-                x2="75.577" y2="12.291"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="5.799" y1="115.164" x2="2"
-                y2="115.164"></line>
-              <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="108.37" y1="115.164"
-                x2="115.969" y2="115.164"></line>
-              <path fill="none" stroke="#BCC0C4" stroke-width="2" stroke-miterlimit="10"
-                d="M65.566,26.789h-4.71 c-1.096-3.167-3.369-3.957-6.093-3.626c-1.188-2.047-3.376-3.307-5.915-3.307c-3.768,0-6.821,2.183-6.855,6.934h-6.519">
-              </path>
-            </g>
-          </svg>
-          <h6>Recevez vos courses à votre domicile</h6>
-          <span>Le jour et à l’heure qui vous conviennent</span>
-        </div>
-      </div>
-    </div>
-    <div class="main__popular">
-      <h4 class="main__popular__title">Nos rayons les plus visités</h4>
-      <div class="main__popular__products">
-        <div class="main__popular__products__item">
-          <div class="main__popular__products__item__container">
-            <img src="./assets/img/featured/fruits.jpg" alt="fruits" />
-            <span>Fruits</span>
-          </div>
-        </div>
-        <div class="main__popular__products__item">
-          <div class="main__popular__products__item__container">
-            <img src="./assets/img/featured/bio.jpg" alt="fruits" />
-            <span>Bio & diététique</span>
-          </div>
-        </div>
-        <div class="main__popular__products__item">
-          <div class="main__popular__products__item__container">
-            <img src="./assets/img/featured/veggies.jpg" alt="fruits" />
-            <span>Légumes</span>
-          </div>
-        </div>
-        <div class="main__popular__products__item">
-          <div class="main__popular__products__item__container">
-            <img src="./assets/img/featured/meat.jpg" alt="fruits" />
-            <span>Boucherie de ville</span>
-          </div>
-        </div>
-        <div class="main__popular__products__item">
-          <div class="main__popular__products__item__container">
-            <img src="./assets/img/featured/water.jpg" alt="fruits" />
-            <span>Eau</span>
-          </div>
-        </div>
-        <div class="main__popular__products__item">
-          <div class="main__popular__products__item__container">
-            <img src="./assets/img/featured/dogs.jpg" alt="fruits" />
-            <span>Alimentation pour chiens</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="main__delivery">
-      <h4 class="main__delivery__title">Les frais de la livraison</h4>
-      <div class="main__delivery__container">
-        <div class="main__delivery__cost">
-          <div>
-            <div class="main__delivery__cost__table">
-              <h6 class="main__delivery__cost__title">Frais de livraison</h6>
-              <div class="main__delivery__cost__row">
-                <div>Montant minimum de commande</div>
-                <div class="main__delivery__cost__price">200 Dh</div>
-              </div>
-              <div class="main__delivery__cost__row">
-                <div>Zone 1 (*)</div>
-                <div class="main__delivery__cost__price">25 Dh</div>
-              </div>
-              <div class="main__delivery__cost__row">
-                <div>Zone 2 (*)</div>
-                <div class="main__delivery__cost__price">35 Dh</div>
-              </div>
-              <div class="main__delivery__cost__row">
-                <div>Zone 3 (*)</div>
-                <div class="main__delivery__cost__price">45 Dh</div>
-              </div>
-              <div class="main__delivery__cost__footer">
-                <p>* Les frais peuvent varier en fonction de votre zone de livraison. <a href="#">En savoir plus</a></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="main__delivery__info">
-          <div class="main__delivery__info__container">
-            <div class="main__delivery__info__item">
-              <span class="main__delivery__info__icon">
-                <img src="/assets/img/svg/client-service.svg" alt="client Service" />
-              </span>
-              <span class="main__delivery__info__title">Service client toujours disponible</span>
-            </div>
-            <div class="main__delivery__info__item">
-              <span class="main__delivery__info__icon">
-                <img src="/assets/img/svg/payment.svg" alt="payment" />
-              </span>
-              <span class="main__delivery__info__title">Paiement à la livraison</span>
-            </div>
-            <div class="main__delivery__info__item">
-              <span class="main__delivery__info__icon">
-                <img src="/assets/img/svg/delivery.svg" alt="delivery" />
-              </span>
-              <span class="main__delivery__info__title">Service livraison plus étendu</span>
-            </div>
-            <div class="main__delivery__info__item">
-              <span class="main__delivery__info__icon">
-                <img src="/assets/img/svg/fresh.svg" alt="delivery" />
-              </span>
-              <span class="main__delivery__info__title">Fraicheur et qualité supérieure</span>
-            </div>
-          </div>
-        </div>
+      <div class="gallery__item__bottom">
+        <span class="gallery__item__bottom__quantity">150 ML</span>
+        <button class="button gallery__item__bottom__button" type="button"
+          data-bind="css: { 'gallery__item__bottom__button--active': buy() }, click: $root.toggleOnOff.bind($data,buy)">
+          <span class="icon-cart"></span>
+        </button>
       </div>
     </div>
   </div>
@@ -418,8 +500,8 @@
         </div>
         <div class="footer__social">
           <span>Suivez-nous</span>
-          <a href="#"><i class="icon-facebook"></i></a>
-          <a href="#"><i class="icon-instagram"></i></a>
+          <a href="javascript:void(0);"><i class="icon-facebook"></i></a>
+          <a href="javascript:void(0);"><i class="icon-instagram"></i></a>
           <span></span>
         </div>
       </div>
@@ -431,17 +513,18 @@
       <div class="footer__help__container">
         <h6 class="footer__help__title">Aide et Service Client</h6>
         <span class="footer__help__question">Vous rencontrez des difficultés sur notre site ?</span>
-        <span class="footer__help__link"><span class="footer__help__caret"></span><a href="#">Accéder à
-            l'aide</a></span>
+        <span class="footer__help__link"><span class="footer__help__caret"></span><a href="javascript:void(0);">Accéder
+            à l'aide</a></span>
       </div>
     </div>
     <div class="footer__legal">
       <button type="button" class="button footer__legal__search">
         <i class="icon-search"></i>
       </button>
-      <a class="footer__legal__link" href="#"><span class="footer__legal__link__top">Conditions générales d'utilisation
-        </span></a>
-      <a class="footer__legal__link" href="#"><span class="footer__legal__link__bottom">Mentions légales</span></a>
+      <a class="footer__legal__link" href="javascript:void(0);"><span class="footer__legal__link__top">Conditions
+          générales d'utilisation </span></a>
+      <a class="footer__legal__link" href="javascript:void(0);"><span class="footer__legal__link__bottom">Mentions
+          légales</span></a>
       <div class="footer__legal__help">
         <button type="button" class="button">?</button>
         <span>Aide</span>
@@ -455,15 +538,14 @@
         <i class="icon-baby"></i>
         <span>Bébé</span>
       </h4>
-      <div class="modal__navbar__product">
-      </div>
+      <div class="modal__navbar__product"> </div>
     </section>
     <section id="hygieneProducts">
       <h4 class="modal__navbar__title">
         <i class="icon-hygiene"></i>
         <span>Hygiène et beauté</span>
       </h4>
-        <div class="modal__navbar__product"></div>
+      <div class="modal__navbar__product"></div>
     </section>
     <section id="maintenanceProducts">
       <h4 class="modal__navbar__title">
@@ -471,7 +553,6 @@
         <span>Entretien</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="animalsProducts">
       <h4 class="modal__navbar__title">
@@ -490,26 +571,23 @@
     <section id="dieteticProducts">
       <h4 class="modal__navbar__title">
         <i class="icon-dietetic"></i>
-          <span>Diététique et sans gluten</span>
+        <span>Diététique et sans gluten</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="groceryProducts">
       <h4 class="modal__navbar__title">
         <i class="icon-grocery-2"></i>
-          <span>Epicerie</span>
+        <span>Epicerie</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="breakfastProducts">
       <h4 class="modal__navbar__title">
         <i class="icon-breakfast"></i>
-          <span>Petit Déjeuner</span>
+        <span>Petit Déjeuner</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="dairyProducts">
       <h4 class="modal__navbar__title">
@@ -521,10 +599,9 @@
     <section id="delicatessenProducts">
       <h4 class="modal__navbar__title">
         <i class="icon-delicatessen"></i>
-          <span>Charcuterie</span>
+        <span>Charcuterie</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="bakeryProducts">
       <h4 class="modal__navbar__title">
@@ -532,7 +609,6 @@
         <span>Boulangerie</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="marketProducts">
       <h4 class="modal__navbar__title">
@@ -540,7 +616,6 @@
         <span>Le marché</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
     <section id="meatProducts">
       <h4 class="modal__navbar__title">
@@ -548,60 +623,58 @@
         <span>Viandes</span>
       </h4>
       <div class="modal__navbar__product"></div>
-
     </section>
   </div>
   <div class="modal__basket">
     <div class="modal__basket__top">
       <div class="modal__basket__top__container">
-        <div class="modal__basket__empty" style="display: none;">
+        <div class="modal__basket__empty" data-bind="hidden: productsPurchased().length">
           <img src="/assets/img/svg/empty-cart.svg" alt="empty cart" />
           <span>Panier vide !</span>
         </div>
-        <div class="modal__basket__list">
-          <div class="modal__basket__list__container">
-            <div class="modal__basket__list__top">
-              <div class="modal__basket__list__img">
-                <img src="/assets/img/products/baby/bebesoins.png" alt="apres shampooing">
+        <div class="modal__basket__item" data-bind="foreach: productsPurchased,visible: productsPurchased().length">
+          <div class="modal__basket__item__container">
+            <div class="modal__basket__item__top">
+              <div class="modal__basket__item__img">
+                <img data-bind="attr: { src: imgURL }" alt="apres shampooing" />
               </div>
-              <div class="modal__basket__list__description">
-                <div class="modal__basket__list__description__title">
-                  <span>Bjorg</span>
-                  <span>- 4 céréales - DIETITIQUE</span>
+              <div class="modal__basket__item__description">
+                <div class="modal__basket__item__title">
+                  <span data-bind="text: title">Bjorg</span>
+                  <span>- </span><span data-bind="text: subtitle"> 4 céréales - DIETITIQUE</span>
                 </div>
-                <div class="modal__basket__list__description__quantity">130 g</div>
-                <div class="modal__basket__list__description__price">Prix unitaire : 29.95 Dh
+                <div class="modal__basket__item__quantity" data-bind="text: quantity">130 g</div>
+                <div class="modal__basket__item__price">Prix unitaire : <span data-bind="text: price">29.95 Dh</span>
                 </div>
-  
               </div>
-              <div class="modal__basket__list__order">
+              <div class="modal__basket__order order-input">
                 <span>
-                  <button type="button" class="button modal__basket__list__order__plus"></button>
-              </span>
-                <span>
-                  <input class="modal__basket__list__order__input" aria-valuemax="100" aria-valuemin="1" height="100%" autocomplete="off" value="1">
+                  <button type="button" class="button modal__basket__order--plus plus-btn"
+                    data-bind="click: increment"></button>
+                </span>
+                <span class="modal__basket__order__input">
+                  <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" height="100%" autocomplete="off"
+                    value="1" data-bind="value: order" readonly />
                 </span>
                 <span>
-                  <button disabled type="button" class="button modal__basket__list__order__minus"></button>
-              </span>
+                  <button type="button" class="button modal__basket__order--minus minus-btn"
+                    data-bind="click: decrement,disable: order() < 2"></button>
+                </span>
               </div>
-  
             </div>
-  
-              <div class="modal__basket__list__bottom">
-                <button type="button" class="button modal__basket__list__bottom__button">
-                  <span>X</span>
-                  <span> Enlever</span>
-                </button>
-                <div class="modal__basket__list__bottom__total">
-                  <span>0.00</span>
-                  <span>Dh</span>
-                </div>
+
+            <div class="modal__basket__item__bottom">
+              <button type="button" class="button modal__basket__item__bottom__button"
+                data-bind="click: $root.toggleOnOff.bind($data,buy)">
+                <span>X</span>
+                <span> Enlever</span>
+              </button>
+              <div class="modal__basket__item__bottom__total">
+                <span data-bind="text: basket">0.00</span>
+                <span>Dh</span>
               </div>
+            </div>
           </div>
-          
-
-
         </div>
       </div>
     </div>
@@ -621,7 +694,6 @@
       </div>
     </div>
   </div>
-
 
   <!--build:js assets/scripts/App.js-->
   <script src="temp/scripts/App.js"></script>
