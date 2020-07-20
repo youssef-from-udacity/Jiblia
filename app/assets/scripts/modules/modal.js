@@ -1,160 +1,122 @@
-import Util from './util';
+import ko, { observable, observableArray, computed } from 'knockout';
 import * as ProductsAPI from './utils/ProductsAPI';
+import OrderList from './shopingCart';
+
+
 
 class Modal {
-  constructor() {
-    this.modalButton = document.querySelectorAll('.modal-btn');
-    this.body = document.querySelector('body');
-    this.backdrop = document.querySelector('.modal__backdrop');
-    this.maxHeight = 100;
-    this.products = {
-      babyProducts: [
-        {
-            id: 'bebealimentation',
-            title: 'Alimentation',
-            imgURL: '/assets/img/products/baby/bebealimentation.png',
-          },
-          {
-            id: 'bebesoins',
-            title: 'Soins',
-            imgURL: '/assets/img/products/baby/bebesoins.png',
-          },
-          {
-            id: 'couches',
-            title: 'Couches',
-            imgURL: '/assets/img/products/baby/couches.png',
-          },
-      ],
-      hygieneProducts: [
-        {
-            id: 'apres-shamppoing',
-            title: 'après-shamppoing',
-            imgURL: '/assets/img/products/hygen/apres-shamppoing.png',
-          },
-          {
-            id: 'papier-hygenique',
-            title: 'papier WC Mouchoirs et coutons',
-            imgURL: '/assets/img/products/hygen/papier-hygenique.png',
-          },
-          {
-            id: 'coton-tige-et-coton',
-            title: 'Coton et coton pads',
-            imgURL: '/assets/img/products/hygen/coton-tige-et-coton.png',
-          },
-          {
-            id: 'serviettes-hygenique',
-            title: 'Hygiène féminine',
-            imgURL: '/assets/img/products/hygen/serviettes-hygenique.png',
-          },
-          {
-            id: 'soins-capilaires',
-            title: 'Soins capilaires',
-            imgURL: '/assets/img/products/hygen/soins-capilaires.png',
-          },
-      ],
-    };
-    this.getProductsAPI();
-    this.events();
-  }
+    constructor() {
+        var self = this
+        this.lock = null
+        this.products = null
+        this.navbarList = navbarList
+        this.backdrop = observable(0)
+        this.modalNavbar = observable()
+        this.modalNavbarHeader = observable()
+        this.modalNavbarSection = observableArray()
+        this.modalNavbarSectionTitle = observable()
+        this.modalBasket = observable()
+        this.modalClose = computed(function () {
 
-  getProductsAPI() {
-    ProductsAPI.getAll().then((products) => {
-        this.products  = products
-    })
-  }
-  
-  resizeImage(imageURL, maxHeight) {
-    return new Promise((resolve) => {
-      const image = new Image();
+            if (!this.backdrop() && this.lock) {
+                this.modalNavbar(false)
+                this.modalBasket(false)
+                this.lock = false
 
-      image.onload = () => {
+            }
+            if (this.modalBasket() || this.modalNavbar()) {
+                this.backdrop(true)
+                this.lock = true
+            }
 
-        if (image.height > maxHeight) {
-          image.width *= maxHeight / image.height;
-          image.height = maxHeight;
-        }
-
-        resolve('image loaded')
-      };
-
-      image.src = imageURL;
-    });
-  }
-
-  loadSection(element) {
-    const sectionSelector = element.getAttribute('data-section');
-    const parentDiv = document.querySelector(`#${sectionSelector}>.modal__navbar__product`);
-    
-    const arrayOfProducts = this.products[sectionSelector];
-
-    if(!arrayOfProducts){
-        return
+        }, this);
+    }
+    openNavbarModal(data) {
+        var arr = ProductsAPI.productsCash().filter((obj) => obj().id === data.path)
+        arr = arr.length ? arr[0]().productsList : null;
+        const modalNavbar = this.modalNavbar
+        this.modalNavbarHeader(data)
+        this.modalNavbarSection(arr)
+        this.backdrop(true)
+        modalNavbar(true)
     }
 
-    arrayOfProducts.forEach(function (obj){
-      const id = obj.id;
-      const url = obj.imgURL;
-      const title = obj.title;
-
-      const product = document.querySelector(`#${id}`);
-
-      if (!product) {
-        this.resizeImage(url, this.maxHeight).then((inlineURL) => {
-          const productHTML = `<div class="modal__navbar__product__container" id="${id}">
-          <img class="modal__navbar__product__img" src="${url}" alt="apres shampooing">
-              <span class="modal__navbar__product__title">${title}</span>
-            </div>`;
-          parentDiv.insertAdjacentHTML('beforeend', productHTML);
-        });
-      }
-    },this);
-  }
-
-  events() {
-    this.modalButton.forEach((item) => {
-      item.addEventListener('click', this.openModal.bind(this, item));
-    });
-  }
-
-  closeModal(element) {
-    const selector = element.getAttribute('data-modal');
-    const sectionSelector = element.getAttribute('data-section');
-    const section = document.querySelector(`#${sectionSelector}`);
-    const modal = document.querySelector(`.${selector}`);
+    getProductsAPI(obj) {
+        this.modalNavbarSectionTitle(obj.title)
+        ProductsAPI.getAll(`/products/${obj.path}`).then((products) => {
+            OrderList.arrOfProducts = products.productsList
+            OrderList.updateProductGalley();
+        })
+    }
 
 
-    this.backdrop.classList.remove('modal__backdrop--open');
-    section ? (section.style.display = 'none') : null;
-    modal.classList.remove(`${selector}--open`);
-    this.body.classList.remove('overflow-hidden');
 
-    this.backdrop.removeEventListener('click', this.moveModal);
-  }
-
-  openModal(element) {
-    const selector = element.getAttribute('data-modal');
-    const sectionSelector = element.getAttribute('data-section');
-    const section = document.querySelector(`#${sectionSelector}`);
-    const modal = document.querySelector(`.${selector}`);
-    const transitionDuration = Util.getTransitionDurationFromElement(element);
-    const waitForModalBackdrop = new Promise((resolve) => {
-      setTimeout(function () {
-        resolve('transition finished!');
-      }, transitionDuration);
-    });
-    
-    sectionSelector? this.loadSection.call(this,element):null;
-    
-
-    this.backdrop.classList.add('modal__backdrop--open');
-    this.body.classList.add('overflow-hidden');
-    section ? (section.style.display = 'block') : null;
-
-    waitForModalBackdrop.then(() => {
-      modal.classList.add(`${selector}--open`);
-      this.backdrop.addEventListener('click', this.closeModal.bind(this, element));
-    });
-  }
 }
 
-new Modal();
+const navbarList = [{
+    title: 'Bébé',
+    icon: 'icon-baby',
+    path: 'baby'
+},
+{
+    title: 'Hygiène et beauté',
+    icon: 'icon-hygiene',
+    path: 'hygiene'
+},
+{
+    title: 'Entretien',
+    icon: 'icon-maintenance',
+    path: 'maintenance'
+},
+{
+    title: 'Animaux',
+    icon: 'icon-animals',
+    path: 'animals'
+},
+{
+    title: 'Boissons',
+    icon: 'icon-drinks',
+    path: 'drinks'
+},
+{
+    title: 'Diététique et sans gluten',
+    icon: 'icon-dietetic',
+    path: 'dietetic'
+},
+{
+    title: 'Epicerie',
+    icon: 'icon-grocery-2',
+    path: 'grocery'
+},
+{
+    title: 'Petit Déjeuner',
+    icon: 'icon-breakfast',
+    path: 'breakfast'
+},
+{
+    title: 'Produits laitiers',
+    icon: 'icon-dairy',
+    path: 'dairy'
+},
+{
+    title: 'Charcuterie',
+    icon: 'icon-delicatessen',
+    path: 'delicatessen'
+},
+{
+    title: 'Boulangerie',
+    icon: 'icon-bakery',
+    path: 'bakery'
+},
+{
+    title: 'Le marché',
+    icon: 'icon-market',
+    path: 'market'
+},
+{
+    title: 'Viandes',
+    icon: 'icon-meat',
+    path: 'meat'
+}];
+
+export default Modal;

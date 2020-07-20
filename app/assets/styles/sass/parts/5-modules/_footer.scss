@@ -116,6 +116,7 @@
         flex-direction  : row-reverse;
         font-size       : 14px;
         text-align      : center;
+        z-index         : 2;
 
         @include media-breakpoint-up(sm, (sm:680px)) {
             text-align: left;
@@ -235,6 +236,7 @@
             background-color       : $mainGreen;
             transition             : all .2s ease-in-out;
             transform-origin       : 0 100%;
+            z-index                : 2;
 
             @include hover-focus-active {
                 transform       : scale(1.2);

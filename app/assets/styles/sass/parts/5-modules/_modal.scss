@@ -61,6 +61,7 @@
                 justify-content : space-between;
                 text-align      : center;
                 font-size       : 12px;
+                cursor          : pointer;
             }
 
             &__img {
@@ -71,10 +72,6 @@
             &__title {
                 margin-bottom: 10px;
             }
-        }
-
-        section {
-            display: none;
         }
     }
 
@@ -104,16 +101,19 @@
         max-width     : 400px;
         margin-right  : 70px;
 
-        overflow-x: hidden;
-        overflow-y: auto;
-        position  : fixed;
-        left      : 0;
-        top       : 0;
-        z-index   : 1050;
-        transform : translateX(-125%);
-
+        overflow-x      : hidden;
+        overflow-y      : auto;
+        position        : fixed;
+        left            : 0;
+        top             : 0;
+        z-index         : 1050;
+        transform       : translateX(-125%);
         background-color: $mainRed;
         transition      : all 0.2s ease-in-out;
+
+        &--green {
+            background-color: $mainGreen;
+        }
 
         &--open {
             transform: translateY(0);
@@ -139,10 +139,9 @@
         }
 
         &__bottom {
-            width           : 100%;
-            background-color: $mainRed;
-            color           : $mainWhite;
-            padding         : 0 20px;
+            width  : 100%;
+            color  : $mainWhite;
+            padding: 0 20px;
 
             &__clear {
                 display        : flex;
@@ -226,6 +225,11 @@
                 border-radius   : 5px;
                 padding         : 5px;
                 margin-bottom   : 10px;
+                transition      : transform .3s ease-in-out;
+
+                &--hide {
+                    transform: translate(-150%);
+                }
 
             }
 

@@ -88,28 +88,42 @@
             }
 
             &--products-count {
-                width           : 20px;
-                height          : 20px;
+                min-width       : 20px;
+                padding         : 2px;
                 background-color: $mainRed;
-                font-size       : 18px;
+                font-size       : 14px;
                 position        : absolute;
                 text-align      : center;
-                left            : -15px;
-                top             : -13px;
+                left            : 20px;
+                top             : 0;
                 border-radius   : 50%;
                 z-index         : 1;
                 transition      : transform .3s ease-in-out;
+                font-family     : 'Ubuntu', sans-serif;
+
+                &-green {
+                    background-color: $mainLightGreen;
+                    color           : $mainBlack;
+                }
 
             }
 
             &--products-total {
+                font-family: 'Ubuntu', sans-serif;
                 position   : absolute;
-                top        : -16px;
+                top        : 30px;
                 right      : 0;
                 font-size  : 12px;
                 color      : rgba($darkGray, .9);
                 font-weight: bold;
                 transition : transform .3s ease-in-out;
+                white-space: nowrap;
+
+                @include media-breakpoint-up(xs, (xs:460px)) {
+                    top  : -4px;
+                    right: -90px;
+
+                }
             }
 
             &__title {
@@ -129,6 +143,7 @@
             right     : -100%;
             bottom    : -102%;
             transition: right .2s ease-in-out;
+            z-index   : 3;
 
             @include media-breakpoint-up(xs, (xs:460px)) {
                 bottom: -89%;

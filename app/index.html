@@ -18,7 +18,7 @@
   <!--endbuild-->
 </head>
 
-<body>
+<body data-bind="style: { overflow: modal.backdrop()? 'hidden' : 'auto' }">
   <header>
     <nav class="navbar navbar--fixed">
       <ul class="navbar__top">
@@ -32,21 +32,25 @@
             <span class="icon-profile"></span>
             <span class="navbar__top__link__title"> Mon compte</span>
           </a>
-          <a class="navbar__top__link modal-btn" href="javascript:void(0);" role="button" data-modal="modal__basket">
-            <span class="icon-cart"></span>
-            <span class="navbar__top__link__title"> Mon panier
-              <span>
-                <span class="navbar__top__link--products-count"
-                  data-bind="text: productsCount,visible: productsCount,animateUpdate: toggleAnimation()">2</span>
-
-                <span class="navbar__top__link--products-total"
-                  data-bind="visible: total,animateUpdate: toggleAnimation()">
-                  <span data-bind="text: total">24.95</span>
-                  <span> dh</span>
-                </span>
+          <!-- ko with: modal -->
+          <a class="navbar__top__link modal-btn" href="javascript:void(0);" role="button"
+            data-bind="toggleClick: modalBasket">
+            <!-- ko with: $root.orderList -->
+            <span class="icon-cart">
+              <span class="navbar__top__link--products-count"
+                data-bind="text: productsCount,visible: productsCount,
+                  scaleUpAnimation: total() === total,css: { 'navbar__top__link--products-count-green': total() > 200 }">2</span>
+              <span class="navbar__top__link--products-total"
+                data-bind="visible: total,scaleUpAnimation: total() === total">
+                <span data-bind="text: total">24.95</span>
+                <span> dh</span>
               </span>
             </span>
+            <span class="navbar__top__link__title"> Mon panier
+            </span>
+            <!-- /ko -->
           </a>
+          <!-- /ko -->
           <div class="navbar__top__menu">
             <button type="button" class="button navbar__top__menu__button">
               <i class="icon-menu"></i>
@@ -54,85 +58,34 @@
           </div>
         </li>
       </ul>
-      <div class="navbar__middle">
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar">
+      <!-- ko with: modal -->
+
+      <div class="navbar__middle" data-bind="foreach: navbarList">
+        <!-- ko if: $index() == 0 -->
+        <button type="button" class="button navbar__middle__icon">
           <span>-</span>
           <span>Nouveautés</span>
           <span>-</span>
         </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="babyProducts">
-          <i class="icon-baby"></i>
-          <span>Bébé</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="hygieneProducts">
-          <i class="icon-hygiene"></i>
-          <span>Hygiène et beauté</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="maintenanceProducts">
-          <i class="icon-maintenance"></i>
-          <span>Entretien</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="animalsProducts">
-          <i class="icon-animals"></i>
-          <span>Animaux</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="drinksProducts">
-          <i class="icon-drinks"></i>
-          <span>Boissons</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="dieteticProducts">
-          <i class="icon-dietetic"></i>
-          <span>Diététique et sans gluten</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="groceryProducts">
-          <i class="icon-grocery-2"></i>
-          <span>Epicerie</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="breakfastProducts">
-          <i class="icon-breakfast"></i>
-          <span>Petit Déjeuner</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="dairyProducts">
-          <i class="icon-dairy"></i>
-          <span>Produits laitiers</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="delicatessenProducts">
-          <i class="icon-delicatessen"></i>
-          <span>Charcuterie</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="bakeryProducts">
-          <i class="icon-bakery"></i>
-          <span>Boulangerie</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="marketProducts">
-          <i class="icon-market"></i>
-          <span>Le marché</span>
-        </button>
-        <button type="button" class="button navbar__middle__icon modal-btn" data-modal="modal__navbar"
-          data-section="meatProducts">
-          <i class="icon-meat"></i>
-          <span>Viandes</span>
+        <!-- /ko -->
+
+        <button type="button" class="button navbar__middle__icon"
+          data-bind="click: $parent.openNavbarModal.bind($parent, $data)">
+
+          <i class="icon-baby" data-bind="attr: { class: icon }"></i>
+          <span data-bind="text: title">Bébé</span>
         </button>
       </div>
+      <!-- /ko -->
 
-      <div class="navbar__bottom">
-        <h4 class="navbar__bottom__title">baby</h4>
+
+      <div class="navbar__bottom" data-bind="style: { display: !orderList.listProducts().length ? 'none' : 'block' }">
+        <h4 class="navbar__bottom__title" data-bind="text: modal.modalNavbarSectionTitle">baby</h4>
       </div>
     </nav>
   </header>
-  <div class="main main--show-products">
+
+  <div class="main" data-bind="css: { 'main--show-products': orderList.listProducts().length }">
     <div class="home">
       <div class="home__features">
         <div class="home__features__item">
@@ -438,12 +391,12 @@
       </div>
     </div>
   </div>
-
+  <!-- ko with: orderList -->
   <div class="gallery" data-bind="foreach: listProducts, visible: listProducts().length > 0">
     <div class="gallery__item" data-bind="css: { 'gallery__item--overlay': buy() }">
       <div class="gallery__item__top">
         <button class="button gallery__item__like" type="button"
-          data-bind="css: { 'gallery__item__like--true': like() },click: $root.toggleOnOff.bind($data, like)">
+          data-bind="css: { 'gallery__item__like--true': like() },toggleClick: like">
           <span class="icon-heart"></span>
         </button>
         <div class="gallery__item__img">
@@ -452,7 +405,6 @@
         <div class="gallery__item__profile">
           <span class="gallery__item__name" data-bind="text: title">Bjorg</span>
           <span class="gallery__item__description" data-bind="text: subtitle">4 céréales - DIETITIQUE</span>
-          <span data-bind="text: basket()"></span>
           <div class="gallery__item__price">
             <span data-bind="text: price()">0.00</span>
             <span>Dh</span>
@@ -478,12 +430,14 @@
       <div class="gallery__item__bottom">
         <span class="gallery__item__bottom__quantity">150 ML</span>
         <button class="button gallery__item__bottom__button" type="button"
-          data-bind="css: { 'gallery__item__bottom__button--active': buy() }, click: $root.toggleOnOff.bind($data,buy)">
+          data-bind="css: { 'gallery__item__bottom__button--active': buy() }, toggleClick: buy">
           <span class="icon-cart"></span>
         </button>
       </div>
     </div>
   </div>
+  <!-- /ko -->
+
 
   <footer class="footer">
     <div class="footer__contact">
@@ -531,109 +485,43 @@
       </div>
     </div>
   </footer>
-  <div class="modal__backdrop"></div>
-  <div class="modal__navbar">
-    <section id="babyProducts">
+  <!-- ko with: modal -->
+  <div class="modal__backdrop" data-bind="css: { 'modal__backdrop--open': backdrop() },toggleClick: backdrop">
+  </div>
+
+  <div class="modal__navbar" data-bind="css: { 'modal__navbar--open': modalNavbar() && backdrop() }">
+    <section>
+      <!-- ko foreach: modalNavbarHeader -->
       <h4 class="modal__navbar__title">
-        <i class="icon-baby"></i>
-        <span>Bébé</span>
+        <i class="icon-baby" data-bind="attr: { class: icon }"></i>
+        <span data-bind="text: title">Bébé</span>
       </h4>
-      <div class="modal__navbar__product"> </div>
-    </section>
-    <section id="hygieneProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-hygiene"></i>
-        <span>Hygiène et beauté</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="maintenanceProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-maintenance"></i>
-        <span>Entretien</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="animalsProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-animals"></i>
-        <span>Animaux</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="drinksProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-drinks"></i>
-        <span>Boissons</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="dieteticProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-dietetic"></i>
-        <span>Diététique et sans gluten</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="groceryProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-grocery-2"></i>
-        <span>Epicerie</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="breakfastProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-breakfast"></i>
-        <span>Petit Déjeuner</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="dairyProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-dairy"></i>
-        <span>Produits laitiers</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="delicatessenProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-delicatessen"></i>
-        <span>Charcuterie</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="bakeryProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-bakery"></i>
-        <span>Boulangerie</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="marketProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-market"></i>
-        <span>Le marché</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
-    </section>
-    <section id="meatProducts">
-      <h4 class="modal__navbar__title">
-        <i class="icon-meat"></i>
-        <span>Viandes</span>
-      </h4>
-      <div class="modal__navbar__product"></div>
+      <!-- /ko -->
+      <div class="modal__navbar__product" data-bind="toggleClick: backdrop">
+        <!-- ko foreach: modalNavbarSection -->
+        <div class="modal__navbar__product__container" data-bind="click: $parent.getProductsAPI.bind($parent,$data)">
+          <img class="modal__navbar__product__img" alt="apres shampooing" data-bind="attr: { src: imgURL, alt: title }">
+          <span class="modal__navbar__product__title" data-bind="text: title"></span>
+        </div>
+        <!-- /ko -->
+      </div>
     </section>
   </div>
-  <div class="modal__basket">
+  <!-- /ko -->
+  <!-- ko with: modal -->
+
+  <div class="modal__basket"
+    data-bind="css: { 'modal__basket--open': modalBasket() && backdrop(),'modal__basket--green': $root.orderList.total() > 200}">
+    <!-- ko with: $root.orderList -->
     <div class="modal__basket__top">
       <div class="modal__basket__top__container">
-        <div class="modal__basket__empty" data-bind="hidden: productsPurchased().length">
+        <div class="modal__basket__empty" data-bind="hidden: purchasedProducts().length">
           <img src="/assets/img/svg/empty-cart.svg" alt="empty cart" />
           <span>Panier vide !</span>
         </div>
-        <div class="modal__basket__item" data-bind="foreach: productsPurchased,visible: productsPurchased().length">
-          <div class="modal__basket__item__container">
+        <div class="modal__basket__item" data-bind="foreach: purchasedProducts,visible: purchasedProducts().length">
+          <div class="modal__basket__item__container"
+            data-bind="css: { 'modal__basket__item__container--hide': !buy() }">
             <div class="modal__basket__item__top">
               <div class="modal__basket__item__img">
                 <img data-bind="attr: { src: imgURL }" alt="apres shampooing" />
@@ -664,8 +552,7 @@
             </div>
 
             <div class="modal__basket__item__bottom">
-              <button type="button" class="button modal__basket__item__bottom__button"
-                data-bind="click: $root.toggleOnOff.bind($data,buy)">
+              <button type="button" class="button modal__basket__item__bottom__button" data-bind="toggleClick: buy">
                 <span>X</span>
                 <span> Enlever</span>
               </button>
@@ -685,7 +572,7 @@
           <span> Vider</span>
         </button>
         <div class="modal__basket__bottom__clear__total">
-          <span>0.00</span>
+          <span data-bind="text: total">0.00</span>
           <span>Dh</span>
         </div>
       </div>
@@ -693,7 +580,10 @@
         <button type="button" class="button modal__basket__bottom__validate">VALIDER MON PANIER</button>
       </div>
     </div>
+    <!-- /ko -->
   </div>
+  <!-- /ko -->
+
 
   <!--build:js assets/scripts/App.js-->
   <script src="temp/scripts/App.js"></script>
