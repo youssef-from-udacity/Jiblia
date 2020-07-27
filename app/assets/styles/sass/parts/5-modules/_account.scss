@@ -1,0 +1,642 @@
+.account {
+    position        : relative;
+    top             : -50px;
+    display         : flex;
+    flex-wrap       : wrap;
+    justify-content : center;
+    background-color: $mainBeige;
+
+
+    &::before {
+        content         : '';
+        display         : block;
+        width           : 100%;
+        height          : 250px;
+        background-color: $darkGray;
+    }
+
+    &__login {
+        max-width       : 620px;
+        margin          : auto;
+        background-color: $mainWhite;
+        margin          : 15px;
+        padding         : 5px;
+        width           : calc(100% - 30px);
+        position        : relative;
+        top             : -150px;
+        border-radius   : 30px;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            padding: 40px;
+        }
+
+        &__header {
+            text-align: center;
+            font-size : 24px;
+            margin    : 15px;
+
+            @include media-breakpoint-up(xs, (xs: 540px)) {
+                font-size: 30px;
+            }
+        }
+
+        &__form {
+            padding: 15px 15px 20px 15px;
+
+            &__top {
+                border-bottom: 1px solid #c5c5c5c9;
+            }
+
+            &__bottom {
+                text-align: center;
+                margin    : 60px auto 20px auto;
+
+                &--register {
+                    margin   : 10px 0;
+                    font-size: 14px;
+                    margin   : 20px auto;
+
+                    a {
+                        color  : $mainOrange;
+                        margin : 10px;
+                        display: inline-block;
+
+                        @include hover-focus {
+                            text-decoration: underline;
+
+                        }
+                    }
+                }
+
+            }
+
+            &__group {
+                font-weight  : 300;
+                margin-bottom: 20px;
+
+                button {
+                    display         : inline-block;
+                    padding         : 12px 50px;
+                    border-radius   : 50px;
+                    border          : none;
+                    margin          : 20px auto;
+                    font-weight     : 500;
+                    font-size       : 15px;
+                    color           : $mainWhite;
+                    background-color: $mainGreen;
+                    transition      : background-color .2s ease-in-out;
+
+                }
+
+                button:disabled {
+                    background-color: rgba($color: $darkGray, $alpha: .4);
+                    cursor          : not-allowed;
+                    pointer-events  : all !important;
+
+                }
+            }
+
+            &__label {
+                margin-bottom: 15px;
+                display      : inline-block;
+
+                span:nth-child(2) {
+                    color: $mainRed;
+                }
+
+                &--error {
+                    display    : inline-block;
+                    margin     : 10px 0;
+                    color      : $mainRed;
+                    font-size  : 13px;
+                    font-weight: 300;
+
+                    ul {
+                        list-style-type: none;
+                        padding        : 0;
+                    }
+                }
+            }
+
+            &__control {
+                width              : 100%;
+                padding            : 12px;
+                border-radius      : 5px;
+                border             : none;
+                border             : 1px solid #c5c5c552;
+                /* background-color: #E8F0FE; */
+                font-weight        : 300;
+                outline            : transparent;
+            }
+        }
+
+    }
+
+    &__registration {
+        max-width       : 890px;
+        margin          : auto;
+        background-color: $mainWhite;
+        margin          : 15px;
+        padding         : 5px;
+        width           : calc(100% - 30px);
+        position        : relative;
+        top             : -150px;
+        border-radius   : 30px;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            padding: 40px;
+        }
+
+        &__header {
+            @extend .account__login__header;
+        }
+
+        &__body {
+            border-bottom: 1px solid rgba($color: $darkGray, $alpha: .2);
+            display      : flex;
+            flex-wrap    : wrap;
+
+            .account__registration__form__group:first-child,
+            :not(.account__registration__form__group)+.account__registration__form__group {
+                flex     : 0 0 100%;
+                max-width: calc(100% - 20px);
+            }
+        }
+
+        &__form {
+            @extend .account__login__form;
+
+            &__group {
+                @extend .account__login__form__group;
+                margin   : 0 10px 20px 10px;
+                flex     : 0 0 100%;
+                max-width: calc(100% - 20px);
+
+                @include media-breakpoint-up(sm, (sm:600px)) {
+
+                    flex     : 0 0 50%;
+                    max-width: calc(50% - 20px);
+                }
+            }
+
+            &__label {
+                @extend .account__login__form__label;
+
+                &--error {
+                    @extend .account__login__form__label--error;
+
+                }
+
+
+            }
+
+            &__control {
+                @extend .account__login__form__control;
+
+                &.contain-8-characters~.account__registration__password__req {
+                    .account__registration__password__req--characters {
+                        color: $mainGreen;
+                    }
+                }
+
+                &.contain-numbers~.account__registration__password__req {
+                    .account__registration__password__req--numbers {
+                        color: $mainGreen
+                    }
+                }
+            }
+
+        }
+
+        &__password {
+            clear        : both;
+            margin-bottom: 15px;
+            display      : block;
+
+            span:nth-child(2) {
+                color: $mainRed;
+            }
+
+            span:last-child {
+                float    : right;
+                font-size: 22px;
+                color    : $mainGreen;
+            }
+
+            &__notification {
+                font-size: 13px;
+                margin   : 5px 0;
+                display  : block;
+                color    : rgba($color: $darkGray, $alpha: .7);
+            }
+
+            &__req {
+                font-size: 14px;
+                margin   : 15px 0 30px 0;
+                display  : flex;
+
+                &>div {
+                    flex     : 0 0 50%;
+                    max-width: 50%;
+
+                    span:first-child {
+                        margin: 0 10px;
+                    }
+                }
+
+                &--characters {
+                    color: $mainRed;
+                }
+
+                &--numbers {
+                    color: $mainRed;
+                }
+            }
+        }
+
+        &__gender {
+            margin      : 12px 30px 12px 0;
+            cursor      : pointer;
+            display     : inline-block;
+            position    : relative;
+            padding-left: 35px;
+            user-select : none;
+
+            &:hover input~.account__registration__gender__checkmark {
+                border-color: $mainGreen;
+            }
+
+            input:checked~.account__registration__gender__checkmark:after {
+                width : 10px;
+                height: 10px;
+            }
+
+            input:checked~span {
+                color: $mainGreen;
+            }
+
+            input {
+                position: absolute;
+                opacity : 0;
+                cursor  : pointer;
+            }
+
+            label {
+                cursor: pointer;
+            }
+
+            &__checkmark {
+                position     : absolute;
+                top          : 0;
+                left         : 0;
+                height       : 20px;
+                width        : 20px;
+                border       : 1px solid rgba($color: $darkGray, $alpha: .2);
+                border-radius: 50%;
+
+                &::before {
+                    content : '';
+                    width   : 40px;
+                    height  : 40px;
+                    position: absolute;
+                    opacity : 0;
+                }
+
+                &::after {
+                    content         : "";
+                    position        : absolute;
+                    top             : 50%;
+                    left            : 50%;
+                    transform       : translate(-50%, -50%);
+                    width           : 0;
+                    height          : 0;
+                    position        : absolute;
+                    border-radius   : 50%;
+                    background-color: $mainGreen;
+                    transition      : all .2s ease-in-out;
+                }
+
+
+            }
+        }
+
+        &__approval {
+            @extend .account__registration__gender;
+            font-weight: 300;
+            line-height: 2rem;
+            cursor     : auto;
+            width      : 100%;
+            margin     : 20px 0;
+
+
+
+            &:hover input~.account__registration__conditions__checkmark {
+                border-color: $mainRed;
+            }
+
+            &__checkmark {
+                @extend .account__registration__gender__checkmark;
+                border-radius: 3px;
+
+                &::after {
+                    border-radius   : unset;
+                    background-color: $mainRed;
+                }
+            }
+
+            &__title {
+                color        : rgba($color: $darkGray, $alpha: .8);
+                margin-bottom: 10px;
+                display      : inline-block;
+                font-weight  : 400;
+
+                a {
+                    color      : $mainGreen;
+                    font-weight: 500;
+
+                    @include hover-focus {
+                        color          : $mainGreen;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            &__subtitle {
+                color      : $mainRed;
+                font-size  : 12px;
+                font-weight: 300;
+            }
+
+            button {
+                margin          : 20px auto;
+                display         : block;
+                padding         : 12px 30px;
+                border-radius   : 50px;
+                border          : none;
+                margin          : 20px auto;
+                font-weight     : 500;
+                font-size       : 15px;
+                color           : #ffffff;
+                background-color: rgba(51, 51, 51, 0.4);
+                cursor          : pointer;
+            }
+
+            &__footer {
+                display    : block;
+                color      : rgba($color: $darkGray, $alpha: .8);
+                font-size  : 14px;
+                font-weight: 100;
+                text-align : center;
+                width      : 100%;
+
+                a {
+                    color: $mainOrange;
+
+                    @include hover-focus {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    &__retrieval {
+        @extend .account__registration;
+        max-width: 620px;
+
+        &__header {
+            @extend .account__registration__header;
+        }
+
+        &__form {
+            @extend .account__registration__form;
+
+            &__group {
+                @extend .account__registration__form__group;
+            }
+
+            &__control {
+                @extend .account__registration__form__control;
+            }
+
+            &__label {
+                @extend .account__registration__form__label;
+
+                &--error {
+                    @extend .account__registration__form__label--error;
+
+                }
+            }
+        }
+
+        &__body {
+            @extend .account__registration__body;
+            border: none;
+        }
+
+        &__footer {
+            @extend .account__registration__approval__footer;
+        }
+
+        button {
+            display         : inline-block;
+            padding         : 12px 50px;
+            border-radius   : 50px;
+            border          : none;
+            margin          : 20px auto;
+            font-weight     : 500;
+            font-size       : 15px;
+            color           : $mainWhite;
+            background-color: rgba($color: $darkGray, $alpha: .4);
+
+        }
+    }
+
+    &__profile {
+        @extend .account__registration;
+        max-width    : 800px;
+        min-width    : 100%;
+        padding      : 10px;
+        margin-bottom: 25px;
+        margin       : 25px 0;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            padding  : 30px;
+            margin   : 25px 10px;
+            min-width: 540px;
+
+
+        }
+
+        &__header {
+            @extend .account__registration__header;
+        }
+
+        &__body {
+            @extend .account__registration__body;
+            border       : 1px solid rgba($color: $darkGray, $alpha: .1);
+            border-radius: 10px;
+            padding      : 20px;
+            margin-bottom: 30px;
+
+            &__title {
+                padding      : 20px 0;
+                margin-bottom: 30px;
+                border-bottom: 1px solid rgba($color: $darkGray, $alpha: .1);
+                flex         : 0 0 100%;
+                max-width    : 100%;
+
+                @include media-breakpoint-up(xs, (xs: 540px)) {
+                    font-size: 20px;
+                }
+            }
+
+            button {
+                display         : inline-block;
+                padding         : 12px 50px;
+                border-radius   : 50px;
+                border          : none;
+                margin          : 20px auto;
+                font-weight     : 500;
+                font-size       : 15px;
+                color           : $mainWhite;
+                background-color: $mainGreen;
+
+                @include hover-focus-active {
+                    background-color: darken($color: $mainGreen, $amount: 10%);
+                }
+
+            }
+
+
+        }
+
+        &__form {
+            @extend .account__registration__form;
+
+            &__group {
+                @extend .account__registration__form__group;
+            }
+
+            &__label {
+                @extend .account__registration__form__label;
+
+                &--error {
+                    @extend .account__registration__form__label--error;
+                }
+            }
+
+            &__control {
+                @extend .account__registration__form__control;
+
+                &.contain-8-characters~.account__profile__password__req {
+                    .account__profile__password__req--characters {
+                        color: $mainGreen;
+                    }
+                }
+
+                &.contain-numbers~.account__profile__password__req {
+                    .account__profile__password__req--numbers {
+                        color: $mainGreen
+                    }
+                }
+            }
+        }
+
+        &__password {
+            @extend .account__registration__password;
+
+            &__notification {
+                @extend .account__registration__password__notification;
+            }
+
+            &__req {
+                @extend .account__registration__password__req;
+
+                &--characters {
+                    color: $mainRed;
+                }
+
+                &--numbers {
+                    color: $mainRed;
+                }
+
+            }
+
+            &__match {
+                display: none;
+                @extend .account__registration__form__group;
+
+                @include media-breakpoint-up(sm, (sm:600px)) {
+
+                    flex     : 0 0 100%;
+                    max-width: calc(100% - 20px);
+                }
+
+                &--true {
+                    display: block;
+                }
+
+                ul {
+                    background-color: $mainRed;
+                    color           : $mainWhite;
+                    padding         : 20px;
+                    border-radius   : 5px;
+                    font-weight     : 400;
+                }
+
+                li {
+                    list-style: inside;
+                }
+            }
+        }
+
+        &__gender {
+            @extend .account__registration__gender;
+
+            &__checkmark {
+                @extend .account__registration__gender__checkmark;
+
+            }
+
+            &~label {
+                display: block;
+            }
+        }
+
+        &__reset {
+            @extend .account__profile__body;
+            flex-wrap     : wrap;
+            align-items   : center;
+            flex-direction: column;
+
+            &__title {
+                @extend .account__profile__body__title;
+                align-self: flex-start;
+                width     : 100%;
+
+            }
+
+            p {
+                font-size  : 14px;
+                font-weight: 300;
+                font-style : italic;
+                display    : block;
+            }
+
+            button {
+                color           : black;
+                background-color: $mainYellow;
+                padding         : 12px 12px;
+
+
+                @include hover-focus-active {
+                    background-color: darken($color: $mainYellow, $amount: 10%);
+
+                }
+            }
+        }
+    }
+}

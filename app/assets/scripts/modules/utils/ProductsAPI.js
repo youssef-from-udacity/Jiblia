@@ -18,3 +18,13 @@ export const getAll = (url) =>
   fetch(`${api + url}`, { headers })
     .then(res => res.json())
     .then(data => data)
+
+export const login = (body) =>
+  fetch(`${api}/login`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(res => res.json())

@@ -1,0 +1,29 @@
+.registration {
+    position: relative;
+    top     : -50px;
+    height  : 500px;
+
+    &::before {
+        content         : '';
+        display         : block;
+        width           : 100%;
+        height          : 250px;
+        background-color: $darkGray;
+    }
+
+    &__container {
+        max-width       : 620px;
+        margin          : auto;
+        background-color: $mainWhite;
+        margin          : 15px;
+        padding         : 5px;
+        width           : calc(100% - 30px);
+        position        : relative;
+        top             : -150px;
+        border-radius   : 30px;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            padding: 40px;
+        }
+    }
+}

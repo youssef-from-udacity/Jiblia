@@ -1,5 +1,6 @@
 import ko, { observable, observableArray, computed } from 'knockout';
 import OrderList from './shopingCart';
+import UserAccount from './userAccount';
 import Modal from './modal';
 import * as ProductsAPI from './utils/ProductsAPI';
 
@@ -8,6 +9,7 @@ class AppViewModel {
     constructor() {
         this.modal = new Modal();
         this.orderList = OrderList;
+        this.userAccount = UserAccount;
         this.getProductsAPI();
         this.addBinding();
     }

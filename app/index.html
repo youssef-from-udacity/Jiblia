@@ -28,10 +28,13 @@
           </a>
         </li>
         <li class="navbar__top__list">
-          <a class="navbar__top__link" href="javascript:void(0);">
+          <!-- ko with: userAccount -->
+          <a class="navbar__top__link" href="javascript:void(0);" data-bind="click: accountLogin.bind($data,true)">
             <span class="icon-profile"></span>
-            <span class="navbar__top__link__title"> Mon compte</span>
+            <span class="navbar__top__link__title">
+              Mon compte</span>
           </a>
+          <!-- /ko-->
           <!-- ko with: modal -->
           <a class="navbar__top__link modal-btn" href="javascript:void(0);" role="button"
             data-bind="toggleClick: modalBasket">
@@ -43,10 +46,12 @@
               <span class="navbar__top__link--products-total"
                 data-bind="visible: total,scaleUpAnimation: total() === total">
                 <span data-bind="text: total">24.95</span>
-                <span> dh</span>
+                <span>
+                  dh</span>
               </span>
             </span>
-            <span class="navbar__top__link__title"> Mon panier
+            <span class="navbar__top__link__title">
+              Mon panier
             </span>
             <!-- /ko -->
           </a>
@@ -78,14 +83,13 @@
       </div>
       <!-- /ko -->
 
-
       <div class="navbar__bottom" data-bind="style: { display: !orderList.listProducts().length ? 'none' : 'block' }">
         <h4 class="navbar__bottom__title" data-bind="text: modal.modalNavbarSectionTitle">baby</h4>
       </div>
     </nav>
   </header>
 
-  <div class="main" data-bind="css: { 'main--show-products': orderList.listProducts().length }">
+  <div class="main" data-bind="css: { 'main--show-products': orderList.listProducts().length }" style="display: none;">
     <div class="home">
       <div class="home__features">
         <div class="home__features__item">
@@ -108,7 +112,7 @@
         <h3 class="home__steps__title">Comment ça marche ?</h3>
         <div class="home__steps__item">
           <div class="home__steps__item__container">
-            <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
+            <svg x="0px" y="0px" width="120px" height="120px" viewbox="0 0 120 120" enable-background="new 0 0 120 120">
               <g>
                 <circle fill="#E9EAEB" cx="54.643" cy="68.5" r="41.837"></circle>
                 <path fill="#7ec56c"
@@ -173,7 +177,7 @@
         </div>
         <div class="home__steps__item">
           <div class="home__steps__item__container">
-            <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
+            <svg x="0px" y="0px" width="120px" height="120px" viewbox="0 0 120 120" enable-background="new 0 0 120 120">
               <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="11.345" y1="114.822"
                 x2="103" y2="114.822"></line>
               <line fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10" x1="104.452" y1="114.822"
@@ -237,7 +241,7 @@
         </div>
         <div class="home__steps__item">
           <div class="home__steps__item__container">
-            <svg x="0px" y="0px" width="120px" height="120px" viewBox="0 0 120 120" enable-background="new 0 0 120 120">
+            <svg x="0px" y="0px" width="120px" height="120px" viewbox="0 0 120 120" enable-background="new 0 0 120 120">
               <g>
                 <rect x="34.292" y="41.084" fill="none" stroke="#555555" stroke-width="2" stroke-miterlimit="10"
                   width="49.386" height="74.08"></rect>
@@ -353,8 +357,9 @@
                   <div class="home__delivery__cost__price">45 Dh</div>
                 </div>
                 <div class="home__delivery__cost__footer">
-                  <p>* Les frais peuvent varier en fonction de votre zone de livraison. <a href="javascript:void(0);">En
-                      savoir plus</a></p>
+                  <p>* Les frais peuvent varier en fonction de votre zone de livraison.
+                    <a href="javascript:void(0);">En savoir plus</a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -417,7 +422,7 @@
           </span>
           <span class="gallery__item__order__input">
             <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" autocomplete="off" value="1"
-              data-bind="value: order" readonly />
+              data-bind="value: order" readonly="readonly" />
             <div class="ctrl__counter-num" style="display: none;">0</div>
           </span>
 
@@ -438,6 +443,430 @@
   </div>
   <!-- /ko -->
 
+  <!-- ko with: userAccount -->
+  <div class="account" data-bind="visible: accountLogin()">
+    <div class="account__login" data-bind="visible: !isLogin()&&accountLogin()">
+      <h4 class="account__login__header">Me Connecter à mon compte</h4>
+      <form class="account__login__form" id="login" data-bind="submit: postData">
+        <div class="account__login__form__top">
+          <div class="account__login__form__group">
+            <label class="account__login__form__label" for="useremail">
+              <span>Email</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="useremail" name="email" type="email" class="account__login__form__control"
+                data-parsley-errors-container="#useremail-1" required="required"
+                data-bind="event: {keyup: isValid.bind($data,'#login')}">
+              <label class="account__login__form__label--error" id="useremail-1"></label>
+            </div>
+          </div>
+          <div class="account__login__form__group">
+            <label class="account__login__form__label" for="passwordinput">
+              <span>Mot de passe</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="password" id="passwordinput" name="password" class="account__login__form__control"
+                autocomplete="autocomplete" data-parsley-errors-container="#passwordinput-1" required="required"
+                data-bind="event: {keyup: isValid.bind($data,'#login')}">
+              <label class="account__login__form__label--error" id="passwordinput-1"></label>
+            </div>
+          </div>
+        </div>
+        <div class="account__login__form__bottom">
+          <div class="account__login__form__group">
+            <button class="button" type="submit" data-bind="disable: !formValid()">ME
+              CONNECTER</button>
+            <div class="account__login__form__bottom--register">
+              <div>
+                <span>Pas encore de compte ?</span>
+                <a href="#">
+                  Créer mon compte</a>
+              </div>
+              <a href="#">Mot de passe oublié ?</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="account__registration">
+      <h4 class="account__registration__header">Créer mon compte</h4>
+      <form class="account__registration__form form" action="/registration" method="post" data-parsley-trigger="keyup"
+        data-parsley-validate="data-parsley-validate">
+        <div class="account__registration__body">
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label">
+              <span>Civilité</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <div class="account__registration__gender">
+                <label for="madame">
+                  <input data-parsley-errors-container="#gender-1" type="radio" name="gender" id="madame" value="madame"
+                    required="required">
+                  <span class="account__registration__gender__checkmark"></span>
+                  <span>Madame</span>
+                </label>
+              </div>
+              <div class="account__registration__gender">
+                <label for="monsieur">
+                  <input type="radio" name="gender" id="monsieur" value="monsieur">
+                  <span class="account__registration__gender__checkmark"></span>
+                  <span>Monsieur</span>
+                </label>
+              </div>
+            </div>
+            <label class="account__registration__form__label--error" id="gender-1"></label>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label" for="firstname">
+              <span>Prénom</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="firstname" name="firstname" type="text" class="account__registration__form__control"
+                data-parsley-errors-container="#firstname-1" required="required">
+              <label class="account__registration__form__label--error" id="firstname-1"></label>
+            </div>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label" for="lastname">
+              <span>Nom</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="lastname" name="lastname" type="text" class="account__registration__form__control"
+                data-parsley-errors-container="#lastname-1" required="required">
+              <label class="account__registration__form__label--error" id="lastname-1"></label>
+            </div>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label" for="useremail2">
+              <span>Email</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="text" id="useremail2" name="email" class="account__registration__form__control"
+                data-parsley-errors-container="#useremail-2" required="required">
+              <label class="account__registration__form__label--error" id="useremail-2"></label>
+            </div>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label" for="phone">
+              <span>Téléphone</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="tel" name="phone" id="phone" class="account__registration__form__control"
+                placeholder="exemple: 0661234567" minlength="10" maxlength="10" data-parsley-trigger="change"
+                data-parsley-type="digits" pattern="[0][1|2|3|4|5|6|7|8|9]+[0-9]{8}"
+                data-parsley-errors-container="#phone-1" required="required"
+                data-parsley-pattern-message="le numéro de téléphone doit commencer par un zéro et contenir 10 chiffres.">
+              <label class="account__registration__form__label--error" id="phone-1"></label>
+            </div>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label" for="zone">
+              <span>Zone de livraison</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="zone" name="zone" type="text" class="account__registration__form__control"
+                data-parsley-errors-container="#zone-1" required="required">
+              <label class="account__registration__form__label--error" id="zone-1"></label>
+            </div>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__form__label" for="address">
+              <span>Adresse de la livraison</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="address" name="address" type="text" class="account__registration__form__control"
+                data-parsley-errors-container="#address-1" required="required">
+              <label class="account__registration__form__label--error" id="address-1"></label>
+            </div>
+          </div>
+          <div class="account__registration__form__group">
+            <label class="account__registration__password" for="passwordinput2">
+              <span>Mot de passe</span>
+              <span>
+                *</span>
+              <span class="icon-eye"></span>
+            </label>
+            <div>
+              <input type="text" id="passwordinput2" name="password" class="account__registration__form__control"
+                data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled" data-parsley-number="1"
+                data-parsley-minlength="8" autocomplete="autocomplete" required="required">
+              <label class="account__registration__password__notification">Pour votre sécurité votre mot de passe doit
+                remplir les critères suivants :</label>
+              <div class="account__registration__password__req">
+                <div class="account__registration__password__req--characters">
+                  <span class="icon-check-circle "></span>
+                  <span>8 caractères</span>
+                </div>
+                <div class="account__registration__password__req--numbers">
+                  <span class="icon-check-circle "></span>
+                  <span>1 chiffre</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="account__registration__approval">
+          <label>
+            <input type="checkbox" name="approval">
+            <span class="account__registration__approval__checkmark"></span>
+            <span class="account__registration__approval__title">J'ai lu et j'accepte
+              <a href="#">les conditions générales</a>
+              du site Jibliya.ma</span>
+          </label>
+          <div class="account__registration__approval__subtitle">Pour créer un compte sur jibliya.ma, Il faut accepter
+            les conditions générales d'utilisation du site.
+          </div>
+          <button type="button" class="button">CRÉER MON COMPTE</button>
+          <span class="account__registration__approval__footer">Vous avez déjà un compte ?
+            <a href="#">Connectez-vous</a>
+          </span>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="account__retrieval">
+      <h4 class="account__retrieval__header">Demande de réinitialiser le mot de passe</h4>
+      <form class="account__retrieval__form" action="/retrieval" method="post">
+        <div class="account__retrieval__body">
+          <div class="account__retrieval__form__group">
+            <label class="account__retrieval__form__label" for="useremail3">
+              <span>Email</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="text" id="useremail3" name="email" class="account__retrieval__form__control"
+                data-parsley-errors-container="#useremail-3" required="required">
+              <label class="account__retrieval__form__label--error" id="useremail-3"></label>
+            </div>
+          </div>
+
+          <button type="button" class="button">RÉINITIALISER</button>
+          <span class="account__registration__approval__footer">J'ai déja un compte.
+            <a href="#">Me connecter à mon compte</a>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <div class="account__profile">
+      <h4 class="account__profile__header">Mes informations</h4>
+      <form class="account__profile__form" action="/profile" method="post">
+        <div class="account__profile__body">
+          <div class="account__profile__body__title">Mes informations personnelles</div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label">
+              <span>Civilité</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <div class="account__profile__gender">
+                <label for="madame2">
+                  <input data-parsley-errors-container="#madame-2" type="radio" name="gender" id="madame2"
+                    value="madame" required="required">
+                  <span class="account__profile__gender__checkmark"></span>
+                  <span>Madame</span>
+                </label>
+              </div>
+              <div class="account__profile__gender">
+                <label for="monsieur2">
+                  <input class="" type="radio" name="gender" id="monsieur2" value="monsieur" required="required">
+                  <span class="account__profile__gender__checkmark"></span>
+                  <span>Monsieur</span>
+                </label>
+              </div>
+              <label class="account__retrieval__form__label--error" id="madame-2"></label>
+            </div>
+
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="firstname2">
+              <span>Prénom</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="firstname2" name="firstname" type="text" class="account__profile__form__control"
+                data-parsley-errors-container="#firstname-2" required="required">
+              <label class="account__profile__form__label--error" id="firstname-2"></label>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="lastname2">
+              <span>Nom</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="lastname2" name="lastname" type="text" class="account__profile__form__control"
+                data-parsley-errors-container="#lastname-2" required="">
+              <label class="account__profile__form__label--error" id="lastname-2"></label>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="useremail4">
+              <span>Email</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="text" id="useremail4" name="email" class="account__profile__form__control"
+                data-parsley-errors-container="#useremail-4" required="required">
+              <label class="account__profile__form__label--error" id="useremail-4"></label>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="phone2">
+              <span>Téléphone</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="tel" name="phone" id="phone2" class="account__registration__form__control"
+                placeholder="exemple: 0661234567" minlength="10" maxlength="10" data-parsley-trigger="change"
+                data-parsley-type="digits" pattern="[0][1|2|3|4|5|6|7|8|9]+[0-9]{8}"
+                data-parsley-errors-container="#phone-2" required="required"
+                data-parsley-pattern-message="le numéro de téléphone doit commencer par un zéro et contenir 10 chiffres.">
+              <label class="account__registration__form__label--error" id="phone-2"></label>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="zone2">
+              <span>Zone de livraison</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="zone2" name="zone" type="text" class="account__profile__form__control"
+                data-parsley-errors-container="#zone-2" required="required">
+              <label class="account__profile__form__label--error" id="zone-2"></label>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="address2">
+              <span>Adresse de la livraison</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input id="address2" name="address" type="text" class="account__profile__form__control"
+                data-parsley-errors-container="#address-2" required="required">
+              <label class="account__profile__form__label--error" id="address-2"></label>
+            </div>
+          </div>
+          <button type="button" class="button">METTRE Á JOUR</button>
+
+        </div>
+        <div class="account__profile__body">
+          <div class="account__profile__body__title">Mes identifiants sécurité</div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__form__label" for="passwordinput3">
+              <span>Ancien mot de passe</span>
+              <span>
+                *</span>
+            </label>
+            <div>
+              <input type="password" id="passwordinput3" name="password" class="account__profile__form__control"
+                autocomplete="" data-parsley-errors-container="#passwordinput-3" required="required">
+              <label class="account__profile__form__label--error" id="passwordinput-3"></label>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__password" for="passwordinput4">
+              <span>Nouveau mot de passe</span>
+              <span>
+                *</span>
+              <span class="icon-eye"></span>
+            </label>
+            <div>
+
+              <input type="text" id="passwordinput4" name="password" class="account__profile__form__control"
+                data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled" data-parsley-number="1"
+                data-parsley-minlength="8" autocomplete="autocomplete" required="required" data-parsley-trigger="blur">
+
+              <label class="account__profile__password__notification">Pour votre sécurité votre mot de passe doit
+                remplir les critères suivants :</label>
+              <div class="account__profile__password__req">
+                <div class="account__profile__password__req--characters">
+                  <span class="icon-check-circle "></span>
+                  <span>8 caractères</span>
+                </div>
+                <div class="account__profile__password__req--numbers">
+                  <span class="icon-check-circle "></span>
+                  <span>1 chiffre</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="account__profile__form__group">
+            <label class="account__profile__password" for="passwordinput5">
+              <span>Confirmation du mot de passe</span>
+              <span>
+                *</span>
+              <span class="icon-eye"></span>
+            </label>
+            <div>
+              <input type="text" id="passwordinput5" name="password" class="account__profile__form__control exclude"
+                data-parsley-number="1" data-parsley-minlength="8"
+                data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled"
+                data-parsley-errors-container="#passwordinput-5" autocomplete="autocomplete" required="required"
+                data-parsley-trigger="blur" data-parsley-equalto="#passwordinput4">
+              <label class="account__profile__password__notification">Pour votre sécurité votre mot de passe doit
+                remplir les critères suivants :</label>
+              <div class="account__profile__password__req">
+                <div class="account__profile__password__req--characters">
+                  <span class="icon-check-circle "></span>
+                  <span>8 caractères</span>
+                </div>
+                <div class="account__profile__password__req--numbers">
+                  <span class="icon-check-circle "></span>
+                  <span>1 chiffre</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="account__profile__password__match" id="passwordinput-5">
+            <ul>
+              <li>Les deux mots de passe ne sont pas identiques</li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="account__profile__reset">
+          <div class="account__profile__reset__title">Mes identifiants sécurité</div>
+          <p>
+            Vous pouvez à tout moment réinitialiser votre mot de passe.
+          </p>
+          <button type="button" class="button">RÉINITIALISER MON MOT DE PASS</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- /ko -->
 
   <footer class="footer">
     <div class="footer__contact">
@@ -447,15 +876,19 @@
           <form class="w-100" action="#" method="post" novalidate="novalidate">
             <div class="footer__email__container">
               <label for="inputSearch" class="sr-only">Votre email</label>
-              <input type="text" class="footer__email__input" placeholder="Votre email" />
+              <input type="email" class="footer__email__input" name="email" placeholder="Votre email" />
               <button class="button footer__email__button" type="button">OK</button>
             </div>
           </form>
         </div>
         <div class="footer__social">
           <span>Suivez-nous</span>
-          <a href="javascript:void(0);"><i class="icon-facebook"></i></a>
-          <a href="javascript:void(0);"><i class="icon-instagram"></i></a>
+          <a href="javascript:void(0);">
+            <i class="icon-facebook"></i>
+          </a>
+          <a href="javascript:void(0);">
+            <i class="icon-instagram"></i>
+          </a>
           <span></span>
         </div>
       </div>
@@ -467,18 +900,22 @@
       <div class="footer__help__container">
         <h6 class="footer__help__title">Aide et Service Client</h6>
         <span class="footer__help__question">Vous rencontrez des difficultés sur notre site ?</span>
-        <span class="footer__help__link"><span class="footer__help__caret"></span><a href="javascript:void(0);">Accéder
-            à l'aide</a></span>
+        <span class="footer__help__link">
+          <span class="footer__help__caret"></span>
+          <a href="javascript:void(0);">Accéder à l'aide</a>
+        </span>
       </div>
     </div>
     <div class="footer__legal">
       <button type="button" class="button footer__legal__search">
         <i class="icon-search"></i>
       </button>
-      <a class="footer__legal__link" href="javascript:void(0);"><span class="footer__legal__link__top">Conditions
-          générales d'utilisation </span></a>
-      <a class="footer__legal__link" href="javascript:void(0);"><span class="footer__legal__link__bottom">Mentions
-          légales</span></a>
+      <a class="footer__legal__link" href="javascript:void(0);">
+        <span class="footer__legal__link__top">Conditions générales d'utilisation
+        </span>
+      </a>
+      <a class="footer__legal__link" href="javascript:void(0);">
+        <span class="footer__legal__link__bottom">Mentions légales</span></a>
       <div class="footer__legal__help">
         <button type="button" class="button">?</button>
         <span>Aide</span>
@@ -486,8 +923,7 @@
     </div>
   </footer>
   <!-- ko with: modal -->
-  <div class="modal__backdrop" data-bind="css: { 'modal__backdrop--open': backdrop() },toggleClick: backdrop">
-  </div>
+  <div class="modal__backdrop" data-bind="css: { 'modal__backdrop--open': backdrop() },toggleClick: backdrop"></div>
 
   <div class="modal__navbar" data-bind="css: { 'modal__navbar--open': modalNavbar() && backdrop() }">
     <section>
@@ -529,10 +965,14 @@
               <div class="modal__basket__item__description">
                 <div class="modal__basket__item__title">
                   <span data-bind="text: title">Bjorg</span>
-                  <span>- </span><span data-bind="text: subtitle"> 4 céréales - DIETITIQUE</span>
+                  <span>-
+                  </span>
+                  <span data-bind="text: subtitle">
+                    4 céréales - DIETITIQUE</span>
                 </div>
                 <div class="modal__basket__item__quantity" data-bind="text: quantity">130 g</div>
-                <div class="modal__basket__item__price">Prix unitaire : <span data-bind="text: price">29.95 Dh</span>
+                <div class="modal__basket__item__price">Prix unitaire :
+                  <span data-bind="text: price">29.95 Dh</span>
                 </div>
               </div>
               <div class="modal__basket__order order-input">
@@ -542,7 +982,7 @@
                 </span>
                 <span class="modal__basket__order__input">
                   <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" height="100%" autocomplete="off"
-                    value="1" data-bind="value: order" readonly />
+                    value="1" data-bind="value: order" readonly="readonly" />
                 </span>
                 <span>
                   <button type="button" class="button modal__basket__order--minus minus-btn"
@@ -554,7 +994,8 @@
             <div class="modal__basket__item__bottom">
               <button type="button" class="button modal__basket__item__bottom__button" data-bind="toggleClick: buy">
                 <span>X</span>
-                <span> Enlever</span>
+                <span>
+                  Enlever</span>
               </button>
               <div class="modal__basket__item__bottom__total">
                 <span data-bind="text: basket">0.00</span>
@@ -569,7 +1010,8 @@
       <div class="modal__basket__bottom__clear">
         <button type="button" class="button modal__basket__bottom__clear__button">
           <span>X</span>
-          <span> Vider</span>
+          <span>
+            Vider</span>
         </button>
         <div class="modal__basket__bottom__clear__total">
           <span data-bind="text: total">0.00</span>
@@ -583,7 +1025,6 @@
     <!-- /ko -->
   </div>
   <!-- /ko -->
-
 
   <!--build:js assets/scripts/App.js-->
   <script src="temp/scripts/App.js"></script>
