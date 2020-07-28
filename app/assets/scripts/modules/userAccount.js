@@ -4,7 +4,8 @@ import * as ProductsAPI from './utils/ProductsAPI';
 
 
 class UserAccount {
-    constructor() {
+    constructor(folder) {
+        this.folder = folder
         this.isLogin = observable();
         this.accountLogin = observable();
         this.userEmail = observable();
@@ -15,16 +16,22 @@ class UserAccount {
         const isValid = $(formId).parsley().isValid()
         this.formValid(isValid)
     }
-    postData(form) {
+    postData(form, b, c, d) {
+        var self = this;
         var data = $(form).serializeArray().reduce(function (obj, item) {
             obj[item.name] = item.value;
             return obj;
         }, {});
-        ProductsAPI.login(data)
+        ProductsAPI.login(data).then((res) => {
+            if (res.ok) {
+                localStorage.setItem('token', res.json().access_token)
+                self.folder('')
+            } else {
+
+            }
+        })
     }
 
 }
-
-window.userAccount = new UserAccount()
-export default userAccount;
+export default UserAccount;
 

@@ -29,7 +29,8 @@
         </li>
         <li class="navbar__top__list">
           <!-- ko with: userAccount -->
-          <a class="navbar__top__link" href="javascript:void(0);" data-bind="click: accountLogin.bind($data,true)">
+          <a class="navbar__top__link" href="javascript:void(0);"
+            data-bind="click: function(){accountLogin(true),$root.folder('Account')}">
             <span class="icon-profile"></span>
             <span class="navbar__top__link__title">
               Mon compte</span>
@@ -89,7 +90,7 @@
     </nav>
   </header>
 
-  <div class="main" data-bind="css: { 'main--show-products': orderList.listProducts().length }" style="display: none;">
+  <div class="main" data-bind="visible: folder()===''">
     <div class="home">
       <div class="home__features">
         <div class="home__features__item">
@@ -397,7 +398,8 @@
     </div>
   </div>
   <!-- ko with: orderList -->
-  <div class="gallery" data-bind="foreach: listProducts, visible: listProducts().length > 0">
+  <div class="gallery"
+    data-bind="foreach: listProducts, visible: listProducts().length > 0 && $root.folder()==='Gallery'">
     <div class="gallery__item" data-bind="css: { 'gallery__item--overlay': buy() }">
       <div class="gallery__item__top">
         <button class="button gallery__item__like" type="button"
@@ -444,10 +446,10 @@
   <!-- /ko -->
 
   <!-- ko with: userAccount -->
-  <div class="account" data-bind="visible: accountLogin()">
+  <div class="account" data-bind="visible: accountLogin() && $root.folder()==='Account'">
     <div class="account__login" data-bind="visible: !isLogin()&&accountLogin()">
       <h4 class="account__login__header">Me Connecter à mon compte</h4>
-      <form class="account__login__form" id="login" data-bind="submit: postData">
+      <form class="account__login__form" id="login" data-bind="submit: postData" method="post">
         <div class="account__login__form__top">
           <div class="account__login__form__group">
             <label class="account__login__form__label" for="useremail">
@@ -457,7 +459,7 @@
             </label>
             <div>
               <input id="useremail" name="email" type="email" class="account__login__form__control"
-                data-parsley-errors-container="#useremail-1" required="required"
+                data-parsley-errors-container="#useremail-1" autocomplete="autocomplete" required="required"
                 data-bind="event: {keyup: isValid.bind($data,'#login')}">
               <label class="account__login__form__label--error" id="useremail-1"></label>
             </div>
@@ -935,7 +937,8 @@
       <!-- /ko -->
       <div class="modal__navbar__product" data-bind="toggleClick: backdrop">
         <!-- ko foreach: modalNavbarSection -->
-        <div class="modal__navbar__product__container" data-bind="click: $parent.getProductsAPI.bind($parent,$data)">
+        <div class="modal__navbar__product__container"
+          data-bind="click: function(){$parent.getProductsAPI($data);$root.folder('Gallery')}">
           <img class="modal__navbar__product__img" alt="apres shampooing" data-bind="attr: { src: imgURL, alt: title }">
           <span class="modal__navbar__product__title" data-bind="text: title"></span>
         </div>

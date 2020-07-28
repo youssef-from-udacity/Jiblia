@@ -271,7 +271,7 @@
         }
 
         &__title {
-            font-size : 24px;
+            font-size : 20px;
             color     : $mainWhite;
             text-align: center;
             margin    : auto;
@@ -279,6 +279,11 @@
             top       : 50%;
             left      : 50%;
             transform : translate(-50%, -50%);
+
+            @include media-breakpoint-up(xs, (xs:460px)) {
+                font-size: 24px;
+
+            }
         }
     }
 }

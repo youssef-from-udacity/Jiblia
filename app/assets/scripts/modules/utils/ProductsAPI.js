@@ -1,30 +1,31 @@
 import ko, { observable, observableArray, computed } from 'knockout';
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3000'
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8000'
+const api2 = 'http://localhost:8000'
 
 let token = localStorage.token
 
-if (!token)
-  token = localStorage.token = Math.random().toString(36).substr(-8)
 
 const headers = {
   'Accept': 'application/json',
-  'Authorization': token
+  'Authorization': `Bearer ${token}`
 }
 
 export var productsCash = observableArray()
 
-export const getAll = (url) =>
-  fetch(`${api + url}`, { headers })
+export const getAll = () =>
+  fetch(`${api}/products`, { headers })
     .then(res => res.json())
     .then(data => data)
 
 export const login = (body) =>
-  fetch(`${api}/login`, {
+  fetch(`${api2}/auth/login`, {
     method: 'POST',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
-  }).then(res => res.json())
+
+  })
+

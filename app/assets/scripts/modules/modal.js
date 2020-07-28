@@ -42,9 +42,10 @@ class Modal {
     }
 
     getProductsAPI(obj) {
+        var obj = obj
         this.modalNavbarSectionTitle(obj.title)
-        ProductsAPI.getAll(`/products/${obj.path}`).then((products) => {
-            OrderList.arrOfProducts = products.productsList
+        ProductsAPI.getAll().then((products) => {
+            OrderList.arrOfProducts = products.filter((item) => item.id === obj.path)[0].productsList
             OrderList.updateProductGalley();
         })
     }

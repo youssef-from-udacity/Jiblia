@@ -3,15 +3,22 @@ import OrderList from './shopingCart';
 import UserAccount from './userAccount';
 import Modal from './modal';
 import * as ProductsAPI from './utils/ProductsAPI';
+import Sammy from 'sammy';
 
 
 class AppViewModel {
     constructor() {
+        this.folder = observable('');
+        this.location = computed(function () {
+            location.hash = this.folder();
+        }, this)
         this.modal = new Modal();
         this.orderList = OrderList;
-        this.userAccount = UserAccount;
+        this.userAccount = new UserAccount(this.folder);
         this.getProductsAPI();
         this.addBinding();
+        this.sammyRoute();
+        window.folder = this.folder;
     }
     addBinding() {
         ko.bindingHandlers.scaleUpAnimation = {
@@ -48,14 +55,23 @@ class AppViewModel {
 
     }
     getProductsAPI() {
-        ProductsAPI.getAll('/products').then((products) => {
+        ProductsAPI.getAll().then((products) => {
             var productsCash
             products.forEach((item) => {
                 productsCash = ProductsAPI.productsCash().filter((obj) => obj().id === item.id)
                 !productsCash.length ? ProductsAPI.productsCash.push(observable(item)) : null;
-
             });
         })
+    }
+    sammyRoute() {
+        const self = this;
+        Sammy(function () {
+            this.get('#:folder', function () {
+                self.folder(this.params.folder);
+            });
+            this.notFound = function () { };
+        }).run();
+
     }
 }
 // Activates knockout.js
