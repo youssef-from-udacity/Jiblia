@@ -5,8 +5,9 @@ import OrderList from './shopingCart';
 
 
 class Modal {
-    constructor() {
-        var self = this
+    constructor(folder, loader) {
+        this.folder = folder
+        this.loader = loader
         this.lock = null
         this.products = null
         this.navbarList = navbarList
@@ -16,20 +17,30 @@ class Modal {
         this.modalNavbarSection = observableArray()
         this.modalNavbarSectionTitle = observable()
         this.modalBasket = observable()
+        this.modalAccount = observable()
+        this.modalRequestError = observable()
+        this.modalRequestSuccess = observable()
         this.modalClose = computed(function () {
 
             if (!this.backdrop() && this.lock) {
+                this.loader(false)
                 this.modalNavbar(false)
                 this.modalBasket(false)
+                this.modalAccount(false)
+                this.modalRequestError(false)
+                this.modalRequestSuccess(false)
                 this.lock = false
 
             }
-            if (this.modalBasket() || this.modalNavbar()) {
+            if (this.modalBasket() || this.modalNavbar() || this.modalAccount() || this.modalRequestError() || this.modalRequestSuccess()) {
                 this.backdrop(true)
                 this.lock = true
             }
 
         }, this);
+    }
+    openModalAccount() {
+        this.modalAccount(true)
     }
     openNavbarModal(data) {
         var arr = ProductsAPI.productsCash().filter((obj) => obj().id === data.path)
@@ -45,8 +56,10 @@ class Modal {
         var obj = obj
         this.modalNavbarSectionTitle(obj.title)
         ProductsAPI.getAll().then((products) => {
-            OrderList.arrOfProducts = products.filter((item) => item.id === obj.path)[0].productsList
-            OrderList.updateProductGalley();
+            const category = products.filter((item) => item.id === obj.target)[0]
+            this.folder('categorie-produit/' + obj.path)
+            OrderList.arrOfProducts = category.productsList
+            OrderList.updateProductGallery();
         })
     }
 

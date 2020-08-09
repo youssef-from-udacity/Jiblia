@@ -2,6 +2,7 @@ import ko, { observable, observableArray, computed } from 'knockout';
 import OrderList from './shopingCart';
 import UserAccount from './userAccount';
 import Modal from './modal';
+import FormValidation from './formValidation';
 import * as ProductsAPI from './utils/ProductsAPI';
 import Sammy from 'sammy';
 
@@ -9,16 +10,17 @@ import Sammy from 'sammy';
 class AppViewModel {
     constructor() {
         this.folder = observable('');
+        this.loader = observable();
         this.location = computed(function () {
             location.hash = this.folder();
         }, this)
-        this.modal = new Modal();
+        this.modal = new Modal(this.folder, this.loader);
+        this.userAccount = new UserAccount(this.folder, this.loader, this.modal);
         this.orderList = OrderList;
-        this.userAccount = new UserAccount(this.folder);
+        this.formValidation = new FormValidation();
         this.getProductsAPI();
         this.addBinding();
         this.sammyRoute();
-        window.folder = this.folder;
     }
     addBinding() {
         ko.bindingHandlers.scaleUpAnimation = {
@@ -66,6 +68,9 @@ class AppViewModel {
     sammyRoute() {
         const self = this;
         Sammy(function () {
+            this.get('#:folder/:subfolder', function () {
+                self.folder(`${this.params.folder}/${this.params.subfolder}`);
+            });
             this.get('#:folder', function () {
                 self.folder(this.params.folder);
             });
@@ -74,6 +79,8 @@ class AppViewModel {
 
     }
 }
+
+window.appViewModel = new AppViewModel()
 // Activates knockout.js
-ko.applyBindings(new AppViewModel());
+ko.applyBindings(appViewModel);
 

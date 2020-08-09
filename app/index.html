@@ -30,7 +30,7 @@
         <li class="navbar__top__list">
           <!-- ko with: userAccount -->
           <a class="navbar__top__link" href="javascript:void(0);"
-            data-bind="click: function(){accountLogin(true),$root.folder('Account')}">
+            data-bind="click: isLogin() ? $root.modal.modalAccount.bind($data,true) : folder.bind($data, 'mon-compte/login')">
             <span class="icon-profile"></span>
             <span class="navbar__top__link__title">
               Mon compte</span>
@@ -78,17 +78,18 @@
         <button type="button" class="button navbar__middle__icon"
           data-bind="click: $parent.openNavbarModal.bind($parent, $data)">
 
-          <i class="icon-baby" data-bind="attr: { class: icon }"></i>
+          <i class="icon-baby" data-bind="attr: {class: icon}"></i>
           <span data-bind="text: title">Bébé</span>
         </button>
       </div>
       <!-- /ko -->
 
-      <div class="navbar__bottom" data-bind="style: { display: !orderList.listProducts().length ? 'none' : 'block' }">
+      <div class="navbar__bottom" data-bind="visible: folder().startsWith('categorie-produit')">
         <h4 class="navbar__bottom__title" data-bind="text: modal.modalNavbarSectionTitle">baby</h4>
       </div>
     </nav>
   </header>
+  <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
 
   <div class="main" data-bind="visible: folder()===''">
     <div class="home">
@@ -399,7 +400,7 @@
   </div>
   <!-- ko with: orderList -->
   <div class="gallery"
-    data-bind="foreach: listProducts, visible: listProducts().length > 0 && $root.folder()==='Gallery'">
+    data-bind="foreach: listProducts, visible: listProducts().length > 0 && $root.folder().startsWith('categorie-produit')">
     <div class="gallery__item" data-bind="css: { 'gallery__item--overlay': buy() }">
       <div class="gallery__item__top">
         <button class="button gallery__item__like" type="button"
@@ -446,10 +447,12 @@
   <!-- /ko -->
 
   <!-- ko with: userAccount -->
-  <div class="account" data-bind="visible: accountLogin() && $root.folder()==='Account'">
-    <div class="account__login" data-bind="visible: !isLogin()&&accountLogin()">
+  <div class="account" data-bind="visible: $root.folder().startsWith('mon-compte')">
+    <div class="account__login" data-bind="visible: $root.folder().startsWith('mon-compte/login')">
       <h4 class="account__login__header">Me Connecter à mon compte</h4>
-      <form class="account__login__form" id="login" data-bind="submit: postData" method="post">
+      <form class="account__login__form" id="login"
+        data-bind="submit: signIn,event: {change: $root.formValidation.isValid.bind($root.formValidation,'#login')},
+        style: {visibility: folder().startsWith('mon-compte/login') ? $root.formValidation.isValid.bind($root.formValidation,'#login') : ''}" method="post">
         <div class="account__login__form__top">
           <div class="account__login__form__group">
             <label class="account__login__form__label" for="useremail">
@@ -459,8 +462,7 @@
             </label>
             <div>
               <input id="useremail" name="email" type="email" class="account__login__form__control"
-                data-parsley-errors-container="#useremail-1" autocomplete="autocomplete" required="required"
-                data-bind="event: {keyup: isValid.bind($data,'#login')}">
+                data-parsley-errors-container="#useremail-1" autocomplete="autocomplete" required="required">
               <label class="account__login__form__label--error" id="useremail-1"></label>
             </div>
           </div>
@@ -472,33 +474,36 @@
             </label>
             <div>
               <input type="password" id="passwordinput" name="password" class="account__login__form__control"
-                autocomplete="autocomplete" data-parsley-errors-container="#passwordinput-1" required="required"
-                data-bind="event: {keyup: isValid.bind($data,'#login')}">
+                autocomplete="autocomplete" data-parsley-errors-container="#passwordinput-1" required="required">
               <label class="account__login__form__label--error" id="passwordinput-1"></label>
             </div>
           </div>
         </div>
         <div class="account__login__form__bottom">
           <div class="account__login__form__group">
-            <button class="button" type="submit" data-bind="disable: !formValid()">ME
+            <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
+            <button class="button" type="submit" data-bind="disable: !$root.formValidation.formValid()">ME
               CONNECTER</button>
             <div class="account__login__form__bottom--register">
               <div>
                 <span>Pas encore de compte ?</span>
-                <a href="#">
+                <a href="#" data-bind="click: folder.bind($data, 'mon-compte/register')">
                   Créer mon compte</a>
               </div>
-              <a href="#">Mot de passe oublié ?</a>
+              <a href="#" data-bind="click: folder.bind($data, 'mon-compte/demande-reinitilalisation-mot-de-passe')">Mot
+                de passe oublié ?</a>
             </div>
           </div>
         </div>
       </form>
     </div>
 
-    <div class="account__registration">
+    <div class="account__registration" data-bind="visible: folder().startsWith('mon-compte/register')">
       <h4 class="account__registration__header">Créer mon compte</h4>
-      <form class="account__registration__form form" action="/registration" method="post" data-parsley-trigger="keyup"
-        data-parsley-validate="data-parsley-validate">
+      <form id="register" class="account__registration__form form" method="post"
+        data-parsley-validate="data-parsley-validate"
+        data-bind="submit: register,event: {change: $root.formValidation.isValid.bind($root.formValidation,'#register')},
+        style: {visibility: folder().startsWith('mon-compte/register') ? $root.formValidation.isValid.bind($root.formValidation,'#register') : ''}" method="post">
         <div class="account__registration__body">
           <div class="account__registration__form__group">
             <label class="account__registration__form__label">
@@ -600,17 +605,21 @@
               <label class="account__registration__form__label--error" id="address-1"></label>
             </div>
           </div>
+          <!-- ko with: $root.userAccount.independentObservable() -->
+
           <div class="account__registration__form__group">
             <label class="account__registration__password" for="passwordinput2">
               <span>Mot de passe</span>
               <span>
                 *</span>
-              <span class="icon-eye"></span>
+              <span class="icon-eye"
+                data-bind="toggleClick: observable, css: {'icon-eye': !observable(),'icon-eye-dashed': observable()}"></span>
             </label>
             <div>
-              <input type="text" id="passwordinput2" name="password" class="account__registration__form__control"
+              <input type="password" id="passwordinput2" name="password" class="account__registration__form__control"
                 data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled" data-parsley-number="1"
-                data-parsley-minlength="8" autocomplete="autocomplete" required="required">
+                data-parsley-minlength="8" autocomplete="autocomplete" required="required"
+                data-bind="attr: observable()? {type: 'text'} : {type: 'password'}">
               <label class="account__registration__password__notification">Pour votre sécurité votre mot de passe doit
                 remplir les critères suivants :</label>
               <div class="account__registration__password__req">
@@ -625,28 +634,39 @@
               </div>
             </div>
           </div>
+          <!-- /ko -->
         </div>
+        <!-- ko with: $root.userAccount.independentObservable() -->
+
         <div class="account__registration__approval">
           <label>
-            <input type="checkbox" name="approval">
+            <input id="approval" type="checkbox" name="approval"
+              data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled"
+              data-parsley-errors-container="#approval-checkbox" required data-bind="toggleClick: observable">
             <span class="account__registration__approval__checkmark"></span>
             <span class="account__registration__approval__title">J'ai lu et j'accepte
               <a href="#">les conditions générales</a>
               du site Jibliya.ma</span>
           </label>
-          <div class="account__registration__approval__subtitle">Pour créer un compte sur jibliya.ma, Il faut accepter
+
+          <div class="account__registration__approval__subtitle" data-bind="visible: !observable()">Pour créer un compte
+            sur jibliya.ma, Il faut accepter
             les conditions générales d'utilisation du site.
           </div>
-          <button type="button" class="button">CRÉER MON COMPTE</button>
+          <button type="submit" class="button" data-bind="disable: !$root.formValidation.formValid()">CRÉER MON
+            COMPTE</button>
           <span class="account__registration__approval__footer">Vous avez déjà un compte ?
-            <a href="#">Connectez-vous</a>
+            <a href="#" data-bind="click: $root.folder.bind($data, 'mon-compte/login')">Connectez-vous</a>
           </span>
         </div>
+        <!-- /ko -->
+
 
       </form>
     </div>
 
-    <div class="account__retrieval">
+    <div class="account__retrieval"
+      data-bind="visible: folder().startsWith('mon-compte/demande-reinitilalisation-mot-de-passe')">
       <h4 class="account__retrieval__header">Demande de réinitialiser le mot de passe</h4>
       <form class="account__retrieval__form" action="/retrieval" method="post">
         <div class="account__retrieval__body">
@@ -665,15 +685,18 @@
 
           <button type="button" class="button">RÉINITIALISER</button>
           <span class="account__registration__approval__footer">J'ai déja un compte.
-            <a href="#">Me connecter à mon compte</a>
+            <a href="#" data-bind="click: folder.bind($data, 'mon-compte/login')">Me connecter à mon compte</a>
           </span>
         </div>
       </form>
     </div>
 
-    <div class="account__profile">
+    <div class="account__profile" data-bind="visible: folder().startsWith('mon-compte/mes-informations')">
       <h4 class="account__profile__header">Mes informations</h4>
-      <form class="account__profile__form" action="/profile" method="post">
+      <!-- ko with: $root.userAccount.independentObservable() -->
+      <form class="account__profile__form" id="account-profile" method="POST"
+        data-bind="submit: $root.userAccount.updateUserData.bind($root.userAccount), event: {change: observable.bind($data,$root.formValidation.isValid('#account-profile'))},
+        style: {visibility: $root.folder().startsWith('mon-compte/mes-informations') ? observable.bind($data,$root.formValidation.isValid('#account-profile')) : ''}">
         <div class="account__profile__body">
           <div class="account__profile__body__title">Mes informations personnelles</div>
           <div class="account__profile__form__group">
@@ -686,14 +709,15 @@
               <div class="account__profile__gender">
                 <label for="madame2">
                   <input data-parsley-errors-container="#madame-2" type="radio" name="gender" id="madame2"
-                    value="madame" required="required">
+                    value="madame" required="required" data-bind="checked: $root.userAccount.profile().gender">
                   <span class="account__profile__gender__checkmark"></span>
                   <span>Madame</span>
                 </label>
               </div>
               <div class="account__profile__gender">
                 <label for="monsieur2">
-                  <input class="" type="radio" name="gender" id="monsieur2" value="monsieur" required="required">
+                  <input class="" type="radio" name="gender" id="monsieur2" value="monsieur" required="required"
+                    data-bind="checked: $root.userAccount.profile().gender">
                   <span class="account__profile__gender__checkmark"></span>
                   <span>Monsieur</span>
                 </label>
@@ -710,7 +734,8 @@
             </label>
             <div>
               <input id="firstname2" name="firstname" type="text" class="account__profile__form__control"
-                data-parsley-errors-container="#firstname-2" required="required">
+                data-parsley-errors-container="#firstname-2" data-bind="value: $root.userAccount.profile().firstname"
+                autocomplete="autocomplete" required="required">
               <label class="account__profile__form__label--error" id="firstname-2"></label>
             </div>
           </div>
@@ -722,7 +747,8 @@
             </label>
             <div>
               <input id="lastname2" name="lastname" type="text" class="account__profile__form__control"
-                data-parsley-errors-container="#lastname-2" required="">
+                data-parsley-errors-container="#lastname-2" data-bind="value: $root.userAccount.profile().lastname"
+                required>
               <label class="account__profile__form__label--error" id="lastname-2"></label>
             </div>
           </div>
@@ -734,7 +760,8 @@
             </label>
             <div>
               <input type="text" id="useremail4" name="email" class="account__profile__form__control"
-                data-parsley-errors-container="#useremail-4" required="required">
+                data-parsley-errors-container="#useremail-4" data-bind="value: $root.userAccount.profile().email"
+                required="required">
               <label class="account__profile__form__label--error" id="useremail-4"></label>
             </div>
           </div>
@@ -748,7 +775,8 @@
               <input type="tel" name="phone" id="phone2" class="account__registration__form__control"
                 placeholder="exemple: 0661234567" minlength="10" maxlength="10" data-parsley-trigger="change"
                 data-parsley-type="digits" pattern="[0][1|2|3|4|5|6|7|8|9]+[0-9]{8}"
-                data-parsley-errors-container="#phone-2" required="required"
+                data-parsley-errors-container="#phone-2" data-bind="value: $root.userAccount.profile().phone"
+                required="required"
                 data-parsley-pattern-message="le numéro de téléphone doit commencer par un zéro et contenir 10 chiffres.">
               <label class="account__registration__form__label--error" id="phone-2"></label>
             </div>
@@ -761,7 +789,8 @@
             </label>
             <div>
               <input id="zone2" name="zone" type="text" class="account__profile__form__control"
-                data-parsley-errors-container="#zone-2" required="required">
+                data-parsley-errors-container="#zone-2" data-bind="value: $root.userAccount.profile().zone"
+                required="required">
               <label class="account__profile__form__label--error" id="zone-2"></label>
             </div>
           </div>
@@ -773,99 +802,121 @@
             </label>
             <div>
               <input id="address2" name="address" type="text" class="account__profile__form__control"
-                data-parsley-errors-container="#address-2" required="required">
+                data-parsley-errors-container="#address-2" data-bind="value: $root.userAccount.profile().address"
+                required="required">
               <label class="account__profile__form__label--error" id="address-2"></label>
             </div>
           </div>
-          <button type="button" class="button">METTRE Á JOUR</button>
+          <button type="submit" class="button" data-bind="disable: !observable()">METTRE Á JOUR</button>
 
         </div>
-        <div class="account__profile__body">
-          <div class="account__profile__body__title">Mes identifiants sécurité</div>
-          <div class="account__profile__form__group">
-            <label class="account__profile__form__label" for="passwordinput3">
-              <span>Ancien mot de passe</span>
-              <span>
-                *</span>
-            </label>
-            <div>
-              <input type="password" id="passwordinput3" name="password" class="account__profile__form__control"
-                autocomplete="" data-parsley-errors-container="#passwordinput-3" required="required">
-              <label class="account__profile__form__label--error" id="passwordinput-3"></label>
-            </div>
-          </div>
-          <div class="account__profile__form__group">
-            <label class="account__profile__password" for="passwordinput4">
-              <span>Nouveau mot de passe</span>
-              <span>
-                *</span>
-              <span class="icon-eye"></span>
-            </label>
-            <div>
-
-              <input type="text" id="passwordinput4" name="password" class="account__profile__form__control"
-                data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled" data-parsley-number="1"
-                data-parsley-minlength="8" autocomplete="autocomplete" required="required" data-parsley-trigger="blur">
-
-              <label class="account__profile__password__notification">Pour votre sécurité votre mot de passe doit
-                remplir les critères suivants :</label>
-              <div class="account__profile__password__req">
-                <div class="account__profile__password__req--characters">
-                  <span class="icon-check-circle "></span>
-                  <span>8 caractères</span>
-                </div>
-                <div class="account__profile__password__req--numbers">
-                  <span class="icon-check-circle "></span>
-                  <span>1 chiffre</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="account__profile__form__group">
-            <label class="account__profile__password" for="passwordinput5">
-              <span>Confirmation du mot de passe</span>
-              <span>
-                *</span>
-              <span class="icon-eye"></span>
-            </label>
-            <div>
-              <input type="text" id="passwordinput5" name="password" class="account__profile__form__control exclude"
-                data-parsley-number="1" data-parsley-minlength="8"
-                data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled"
-                data-parsley-errors-container="#passwordinput-5" autocomplete="autocomplete" required="required"
-                data-parsley-trigger="blur" data-parsley-equalto="#passwordinput4">
-              <label class="account__profile__password__notification">Pour votre sécurité votre mot de passe doit
-                remplir les critères suivants :</label>
-              <div class="account__profile__password__req">
-                <div class="account__profile__password__req--characters">
-                  <span class="icon-check-circle "></span>
-                  <span>8 caractères</span>
-                </div>
-                <div class="account__profile__password__req--numbers">
-                  <span class="icon-check-circle "></span>
-                  <span>1 chiffre</span>
+      </form>
+      <!-- /ko -->
+      <div data-bind="with: $root.userAccount.independentObservable()">
+        <div data-bind="visible: observable(),with: $root.userAccount.independentObservable()">
+          <form id="reset-password" method="PATCH"
+            data-bind="submit: $root.userAccount.updateUserPassword.bind($root.userAccount), event: {change: observable.bind($data,$root.formValidation.isValid('#reset-password'))},
+      style: {visibility: $root.folder().startsWith('mon-compte/mes-informations') ? observable.bind($data,$root.formValidation.isValid('#reset-password')) : ''}">
+            <div class="account__profile__body">
+              <div class="account__profile__body__title">Mes identifiants sécurité</div>
+              <div class="account__profile__form__group">
+                <label class="account__profile__form__label" for="passwordinput3">
+                  <span>Ancien mot de passe</span>
+                  <span>
+                    *</span>
+                </label>
+                <div>
+                  <input type="password" id="passwordinput3" name="oldPassword" class="account__profile__form__control"
+                    autocomplete="autocomplete" data-parsley-errors-container="#passwordinput-3" required="required">
+                  <label class="account__profile__form__label--error" id="passwordinput-3"></label>
                 </div>
               </div>
 
+              <!-- ko with: $root.userAccount.independentObservable() -->
+              <div class="account__profile__form__group">
+                <label class="account__profile__password" for="passwordinput4">
+                  <span>Nouveau mot de passe</span>
+                  <span>
+                    *</span>
+                  <span class="icon-eye"
+                    data-bind="toggleClick: observable, css: {'icon-eye': !observable(),'icon-eye-dashed': observable()}"></span>
+                </label>
+                <div>
+                  <input type="password" id="passwordinput4" name="newPassword" class="account__profile__form__control"
+                    data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled"
+                    data-parsley-number="1" data-parsley-minlength="8" autocomplete="autocomplete" required="required"
+                    data-parsley-trigger="blur" data-bind="attr: observable()? {type: 'text'} : {type: 'password'} ">
+
+                  <label class="account__profile__password__notification">Pour votre sécurité votre mot de passe doit
+                    remplir les critères suivants :</label>
+                  <div class="account__profile__password__req">
+                    <div class="account__profile__password__req--characters">
+                      <span class="icon-check-circle "></span>
+                      <span>8 caractères</span>
+                    </div>
+                    <div class="account__profile__password__req--numbers">
+                      <span class="icon-check-circle "></span>
+                      <span>1 chiffre</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko with: $root.userAccount.independentObservable() -->
+
+              <div class="account__profile__form__group">
+                <label class="account__profile__password" for="passwordinput5">
+                  <span>Confirmation du mot de passe</span>
+                  <span>
+                    *</span>
+                  <span class="icon-eye"
+                    data-bind="toggleClick: observable, css: {'icon-eye': !observable(),'icon-eye-dashed': observable()}"></span>
+                </label>
+                <div>
+                  <input type="password" id="passwordinput5" name="passwordConfirm"
+                    class="account__profile__form__control exclude" data-parsley-number="1" data-parsley-minlength="8"
+                    data-parsley-errors-messages-disabled="data-parsley-errors-messages-disabled"
+                    data-parsley-errors-container="#passwordinput-5" autocomplete="autocomplete" required="required"
+                    data-parsley-trigger="blur" data-parsley-equalto="#passwordinput4"
+                    data-bind="attr: observable()? {type: 'text'} : {type: 'password'}">
+                  <label class="account__profile__password__notification">Pour votre sécurité votre mot de passe doit
+                    remplir les critères suivants :</label>
+                  <div class="account__profile__password__req">
+                    <div class="account__profile__password__req--characters">
+                      <span class="icon-check-circle "></span>
+                      <span>8 caractères</span>
+                    </div>
+                    <div class="account__profile__password__req--numbers">
+                      <span class="icon-check-circle "></span>
+                      <span>1 chiffre</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!-- /ko -->
+
+              <div class="account__profile__password__match" id="passwordinput-5">
+                <ul>
+                  <li>Les deux mots de passe ne sont pas identiques</li>
+                </ul>
+              </div>
+              <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
+
+              <button type="submit" class="button" data-bind="disable: !observable()">METTRE Á JOUR</button>
+
             </div>
-          </div>
-
-          <div class="account__profile__password__match" id="passwordinput-5">
-            <ul>
-              <li>Les deux mots de passe ne sont pas identiques</li>
-            </ul>
-          </div>
-
+          </form>
         </div>
-        <div class="account__profile__reset">
+        <div class="account__profile__reset" data-bind="visible: !observable()">
           <div class="account__profile__reset__title">Mes identifiants sécurité</div>
           <p>
             Vous pouvez à tout moment réinitialiser votre mot de passe.
           </p>
-          <button type="button" class="button">RÉINITIALISER MON MOT DE PASS</button>
-
+          <button type="button" class="button" data-bind="toggleClick: observable">RÉINITIALISER MON MOT DE
+            PASS</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <!-- /ko -->
@@ -931,14 +982,13 @@
     <section>
       <!-- ko foreach: modalNavbarHeader -->
       <h4 class="modal__navbar__title">
-        <i class="icon-baby" data-bind="attr: { class: icon }"></i>
+        <i class="icon-baby" data-bind="attr: {class: icon}"></i>
         <span data-bind="text: title">Bébé</span>
       </h4>
       <!-- /ko -->
       <div class="modal__navbar__product" data-bind="toggleClick: backdrop">
         <!-- ko foreach: modalNavbarSection -->
-        <div class="modal__navbar__product__container"
-          data-bind="click: function(){$parent.getProductsAPI($data);$root.folder('Gallery')}">
+        <div class="modal__navbar__product__container" data-bind="click: function(){$parent.getProductsAPI($data);}">
           <img class="modal__navbar__product__img" alt="apres shampooing" data-bind="attr: { src: imgURL, alt: title }">
           <span class="modal__navbar__product__title" data-bind="text: title"></span>
         </div>
@@ -1027,6 +1077,83 @@
     </div>
     <!-- /ko -->
   </div>
+
+  <div class="modal__account"
+    data-bind="css: { 'modal__account--open': modalAccount() },click: folder.bind($data, 'mon-compte/mes-informations'),toggleClick: backdrop">
+    <ul>
+
+      <li>
+        <a href="#" role="button">
+          <span class="icon-info"></span>
+          <span>Mes informations</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" role="button">
+          <span class="icon-orders"></span>
+          <span>Mes achats</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" role="button">
+          <span class="icon-heart"></span>
+          <span>Mes collections</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" role="button">
+          <span>Déconnexion</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="modal__connection"
+    data-bind="css:{ 'modal__connection--open': modalRequestSuccess() || modalRequestError() }">
+
+    <div class="modal__connection--success" data-bind="visible: modalRequestSuccess()">
+      <div>
+        <label class="label">
+          <div class="check-icon">
+          </div>
+        </label>
+      </div>
+      <div data-bind="visible: modalRequestSuccess()=== 'register success'">
+        <h4>Votre compte a été créé</h4>
+        <h6>Merci pour votre inscription !</h6>
+        <p>Votre compte sera approuvé dans un délai de 2 heures par l'équipe jibliya,
+          nous vous enverrons une notification par email afin de pouvoir
+          activer votre compte et de passer des commandes sur la plate-forme.</p>
+      </div>
+      <p data-bind="visible: modalRequestSuccess()=== 'update password success' ">Votre mot de passe a été
+        réinitilaliser avec succès</p>
+      <p data-bind="visible: modalRequestSuccess()=== 'login success' ">Félicitations !<br>Vous êtes maintenant
+        connecté</p>
+      <p data-bind="visible: modalRequestSuccess()=== 'update success' ">Votre profil a été mis à jour.
+      </p>
+    </div>
+
+    <div class="modal__connection--error" data-bind="visible: modalRequestError()">
+      <div style="text-align: center;">
+        <label class="label">
+          <div class="cross-icon">
+          </div>
+        </label>
+      </div>
+      <p data-bind="visible: modalRequestError()=== 'password mismatched'">Cette valeur doit être le mot de passe
+        actuel de l'utilisateur.</p>
+      <p data-bind="visible: modalRequestError()=== 'email or password'">L'email ou le mot de passe n'est pas
+        correct. Veuillez réessayer.</p>
+      <p data-bind="visible: modalRequestError()=== 'email exist'">Un compte est déjà associé à cette
+        adresse mail. Si vous possédez un compte, connectez-vous ou récupérez votre
+        mot de passe en cas d’oubli dans l’espace dédié à la réinitialisation du mot de passe.</p>
+
+      <p data-bind="visible: modalRequestError()=== 'network'">Une erreur est survenue !
+        Veuillez réessayer plus tard.</p>
+    </div>
+
+  </div>
+
   <!-- /ko -->
 
   <!--build:js assets/scripts/App.js-->

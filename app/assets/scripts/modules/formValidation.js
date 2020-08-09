@@ -1,11 +1,18 @@
 import $ from 'jquery';
+import ko, { observable, observableArray, computed } from 'knockout';
 import Parsley from 'parsleyjs';
 
 
-class Plugin {
+class FormValidation {
     constructor() {
+        this.formValid = observable();
         this.formValidate();
 
+    }
+    isValid(formId, data, event) {
+        const isValid = $(formId).parsley().validate()
+        this.formValid(isValid)
+        return isValid;
     }
     formValidate() {
         //has number
@@ -68,5 +75,4 @@ class Plugin {
     }
 }
 
-export default Plugin;
-new Plugin();
+export default FormValidation;

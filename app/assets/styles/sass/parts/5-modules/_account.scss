@@ -3,7 +3,9 @@
     top             : -50px;
     display         : flex;
     flex-wrap       : wrap;
+    flex-direction  : column;
     justify-content : center;
+    align-items     : center;
     background-color: $mainBeige;
 
 
@@ -49,7 +51,7 @@
 
             &__bottom {
                 text-align: center;
-                margin    : 60px auto 20px auto;
+                margin    : 20px auto;
 
                 &--register {
                     margin   : 10px 0;
@@ -218,9 +220,12 @@
             }
 
             span:last-child {
-                float    : right;
-                font-size: 22px;
-                color    : $mainGreen;
+                float       : right;
+                font-size   : 22px;
+                color       : $mainGreen;
+                cursor      : pointer;
+                padding     : 10px;
+                margin-right: -10px;
             }
 
             &__notification {
@@ -328,8 +333,6 @@
             width      : 100%;
             margin     : 20px 0;
 
-
-
             &:hover input~.account__registration__conditions__checkmark {
                 border-color: $mainRed;
             }
@@ -377,8 +380,16 @@
                 font-weight     : 500;
                 font-size       : 15px;
                 color           : #ffffff;
-                background-color: rgba(51, 51, 51, 0.4);
+                background-color: $mainGreen;
                 cursor          : pointer;
+            }
+
+
+            button:disabled {
+                background-color: rgba($color: $darkGray, $alpha: .4);
+                cursor          : not-allowed;
+                pointer-events  : all !important;
+
             }
 
             &__footer {
@@ -508,8 +519,13 @@
                     background-color: darken($color: $mainGreen, $amount: 10%);
                 }
 
-            }
+                &:disabled {
+                    background-color: rgba($color: $darkGray, $alpha: .4);
+                    cursor          : not-allowed;
+                    pointer-events  : all !important;
 
+                }
+            }
 
         }
 
@@ -547,6 +563,13 @@
 
         &__password {
             @extend .account__registration__password;
+
+            @include media-breakpoint-between(sm, sm, (sm: 600px, md: 700px)) {
+                span:first-child {
+                    max-width: 150px;
+                    display  : inline-block;
+                }
+            }
 
             &__notification {
                 @extend .account__registration__password__notification;

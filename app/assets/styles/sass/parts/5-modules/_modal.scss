@@ -81,9 +81,9 @@
         top             : 0;
         left            : 0;
         z-index         : 1040;
-        width           : 100vw;
-        height          : 100vh;
-        background-color: #000;
+        width           : 100%;
+        height          : 100%;
+        background-color: $mainBlack;
         transition      : opacity 0.2s ease-in-out;
         opacity         : 0;
 
@@ -408,5 +408,102 @@
                 }
             }
         }
+    }
+
+    &__account {
+        width           : calc(100vw - 50px);
+        height          : 100%;
+        display         : flex;
+        border-radius   : 0 30px 30px 0;
+        flex-direction  : column;
+        max-width       : 260px;
+        overflow-x      : hidden;
+        overflow-y      : auto;
+        position        : fixed;
+        left            : 0;
+        top             : 0;
+        z-index         : 1052;
+        transform       : translateX(-125%);
+        background-color: $mainGreen;
+        transition      : all 0.2s ease-in-out;
+
+        &--open {
+            transform: translateY(0);
+        }
+
+        ul {
+            padding       : 0;
+            display       : flex;
+            flex-direction: column;
+            height        : 100%;
+
+        }
+
+        li {
+            list-style: none;
+            display   : block;
+            font-size : 18px;
+            padding   : 15px 20px;
+
+            [class^="icon-"] {
+                font-size     : 26px;
+                vertical-align: sub;
+                margin-right  : 10px;
+            }
+
+            &:last-child {
+                justify-self: flex-end;
+                margin-top  : auto;
+            }
+        }
+    }
+
+    &__connection {
+        max-width  : 450px;
+        width      : 100%;
+        padding    : 10px;
+        position   : fixed;
+        left       : 50%;
+        top        : 100%;
+        transform  : translate(-50%, 100%);
+        transition : all 0.2s ease-in-out;
+        font-weight: 300;
+        color      : $mainWhite;
+        line-height: 1.4;
+        z-index    : 1052;
+
+        &--open {
+            top      : 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        &--error {
+            border-radius   : 10px;
+            width           : 100%;
+            height          : 100%;
+            background-color: $mainRed;
+            text-align      : center;
+            padding         : 40px 20px 20px 20px;
+
+            p {
+                display    : block;
+                font-size  : 18px;
+                white-space: break-spaces;
+            }
+
+            /* p {
+                display            : list-item;
+                list-style-type    : disc;
+                list-style-position: inside;
+                line-height        : 1.4;
+            } */
+
+        }
+
+        &--success {
+            @extend .modal__connection--error;
+            background-color: $mainGreen;
+        }
+
     }
 }

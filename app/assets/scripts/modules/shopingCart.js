@@ -50,7 +50,7 @@ class OrderList {
         }, this);
     }
 
-    updateProductGalley() {
+    updateProductGallery() {
         const self = this
         var product = null
         if (this.arrOfProducts) {
