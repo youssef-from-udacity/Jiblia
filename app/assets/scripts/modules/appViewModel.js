@@ -10,7 +10,7 @@ import Sammy from 'sammy';
 
 class AppViewModel {
     constructor() {
-        this.folder = observable();
+        this.folder = observable('');
         this.loader = observable();
         this.location = computed(function () {
             location.hash = this.folder();
