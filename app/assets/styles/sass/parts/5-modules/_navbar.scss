@@ -8,8 +8,7 @@
 
     &--fixed {
         .navbar__top {
-            position : fixed;
-            min-width: 340px;
+            position: fixed;
         }
 
         .navbar__bottom {
@@ -76,6 +75,17 @@
 
                 @include media-breakpoint-up(xs, (xs:460px)) {
                     display: inline-block;
+                }
+            }
+
+            .icon-check-circle {
+                position : absolute;
+                right    : -9px;
+                bottom   : -13px;
+                transform: scale(.7);
+
+                @include media-breakpoint-up(xs, (xs: 460px)) {
+                    right: 3px;
                 }
             }
 
@@ -191,7 +201,6 @@
 
         z-index         : 9;
         position        : fixed;
-        min-width       : 340px;
         width           : 100%;
         padding         : 10px 0px;
         display         : flex;
@@ -285,6 +294,90 @@
                 font-size: 24px;
 
             }
+        }
+    }
+
+    &__checkout {
+        position        : fixed;
+        top             : 0;
+        left            : 0;
+        right           : 0;
+        width           : 100%;
+        z-index         : 1040;
+        background-color: $mainGreen;
+        padding         : 5px;
+        display         : flex;
+        justify-content : space-between;
+        align-items     : center;
+        box-shadow      : -1px 2px 11px -2px rgba(0, 0, 0, 0.49);
+
+        &__brand {
+            display        : block;
+            display        : flex;
+            flex-direction : column;
+            align-items    : center;
+            justify-content: center;
+            font-size      : 14px;
+
+            @include media-breakpoint-up(xs, (xs:460px)) {
+                margin-left: 20px;
+            }
+
+            img {
+                height    : 34px;
+                width     : 110px;
+                align-self: flex-start;
+            }
+
+            [class^="icon-"] {
+                display       : inline-block;
+                transform     : scaleX(-1);
+                vertical-align: bottom;
+            }
+
+            &__subtitle {
+                display    : flex;
+                align-items: center;
+            }
+        }
+
+        &__info {
+            margin: 0;
+
+            @include media-breakpoint-up(xs, (xs:460px)) {
+                margin: 0 20px;
+            }
+
+            li {
+                list-style: none;
+                color     : $mainWhite;
+                font-size : 14px;
+                text-align: right;
+                padding   : 3px;
+            }
+
+            li.navbar__checkout__total {
+                font-size : 18px;
+                border-top: 1px solid rgba($color: $darkGray, $alpha: .3);
+            }
+
+            li.navbar__checkout__delivery {
+                color      : rgba($color: $darkGray, $alpha: .7);
+                white-space: nowrap;
+
+
+            }
+
+        }
+    }
+
+    &__checkout-success {
+        @extend .navbar__checkout;
+        justify-content: center;
+
+        &__brand {
+            @extend .navbar__checkout__brand;
+            padding: 10px;
         }
     }
 }

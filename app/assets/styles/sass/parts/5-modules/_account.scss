@@ -13,7 +13,7 @@
         content         : '';
         display         : block;
         width           : 100%;
-        height          : 250px;
+        height          : 300px;
         background-color: $darkGray;
     }
 
@@ -183,6 +183,7 @@
 
             &__label {
                 @extend .account__login__form__label;
+                position: relative;
 
                 &--error {
                     @extend .account__login__form__label--error;
@@ -190,6 +191,80 @@
                 }
 
 
+
+            }
+
+            &__zone {
+                width      : 100%;
+                display    : block;
+                position   : relative;
+                user-select: none;
+            }
+
+            &__caret {
+                position: absolute;
+                top     : 0;
+                left    : 0;
+                width   : 100%;
+                height  : 100%;
+                cursor  : pointer;
+
+                &::before {
+                    content     : '';
+                    width       : 0;
+                    height      : 0;
+                    border-left : 5px solid transparent;
+                    border-right: 5px solid transparent;
+
+                    border-top: 5px solid $darkGray;
+                    position  : absolute;
+                    right     : 10px;
+                    top       : 50%;
+                    transform : translateY(-50%);
+                }
+            }
+
+            &__modal {
+                display         : block;
+                position        : absolute;
+                width           : 100%;
+                background-color: $mainWhite;
+                box-shadow      : 0px -1px 7px 4px rgba(0, 0, 0, 0.24);
+                border-radius   : 5px;
+                z-index         : 9999;
+                height          : 0;
+                opacity         : 0;
+                top             : 50%;
+                transform       : translateY(-50%);
+                transition      : all .2s ease-in-out;
+                overflow        : scroll;
+                cursor          : pointer;
+
+                &--open {
+                    height : 80vh;
+                    opacity: 1;
+                }
+
+                &__list {
+
+                    list-style: none;
+                    padding   : 15px 20px;
+
+
+                    @include hover-focus-active {
+                        background-color: rgba($color: $darkGray, $alpha: .1);
+                    }
+
+                    &--active {
+                        background-color: rgba($color: $darkGray, $alpha: .1);
+                        color           : rgba($color: $darkGray, $alpha: .6);
+                    }
+                }
+
+                ul {
+                    padding: 0;
+
+                }
             }
 
             &__control {
@@ -276,7 +351,8 @@
                 height: 10px;
             }
 
-            input:checked~span {
+            input:checked~span,
+            input:checked~p {
                 color: $mainGreen;
             }
 
@@ -467,11 +543,10 @@
 
     &__profile {
         @extend .account__registration;
-        max-width    : 800px;
-        min-width    : 100%;
-        padding      : 10px;
-        margin-bottom: 25px;
-        margin       : 25px 0;
+        max-width: 800px;
+        min-width: 100%;
+        padding  : 10px;
+        margin   : 25px 0;
 
         @include media-breakpoint-up(xs, (xs: 540px)) {
             padding  : 30px;
@@ -558,6 +633,35 @@
                         color: $mainGreen
                     }
                 }
+            }
+
+            &__zone {
+
+                @extend .account__registration__form__zone;
+            }
+
+            &__modal {
+                @extend .account__registration__form__modal;
+
+                &--open {
+                    @extend .account__registration__form__modal--open;
+
+                }
+
+                &__list {
+                    @extend .account__registration__form__modal__list;
+
+                    &--active {
+                        @extend .account__registration__form__modal__list--active;
+
+                    }
+
+                }
+            }
+
+            &__caret {
+                @extend .account__registration__form__caret;
+
             }
         }
 
@@ -658,6 +762,201 @@
                 @include hover-focus-active {
                     background-color: darken($color: $mainYellow, $amount: 10%);
 
+                }
+            }
+        }
+    }
+
+    &__purchase {
+        max-width: 800px;
+        width    : 100%;
+        padding  : 10px;
+        margin   : 25px auto;
+        position : relative;
+        top      : -210px;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            padding  : 30px;
+            margin   : 25px 10px;
+            min-width: 540px;
+        }
+
+        &__header {
+            border-radius   : 5px;
+            background-color: $mainWhite;
+            height          : 70px;
+            text-align      : center;
+            display         : flex;
+            align-items     : center;
+            justify-content : center;
+            width           : 100%;
+
+            h2 {
+                font-size: 30px;
+            }
+
+        }
+
+        &__order {
+            border-radius   : 5px;
+            background-color: $mainWhite;
+            margin-top      : 10px;
+            margin-bottom   : 20px;
+            padding         : 10px;
+
+
+            &--in-progress {
+                color: $mainYellow;
+            }
+
+            &--delivered {
+                color: $mainGreen;
+            }
+
+            &--canceled {
+                color: $mainRed;
+            }
+
+            &__row {
+                display        : flex;
+                justify-content: space-between;
+                padding        : 5px 8px;
+                font-size      : 14px;
+                font-weight    : 300;
+
+                strong {
+                    font-weight: 700;
+                }
+
+                &--highlight {
+                    background-color: rgba($color: $darkGray, $alpha: .1);
+                    padding         : 8px;
+                    border-radius   : 5px;
+                    margin-bottom   : 5px;
+
+                    .account__purchase__order__left {
+                        color: $darkGray;
+                    }
+                }
+            }
+
+
+            &__left {
+                color: rgba($color: $darkGray, $alpha: .6);
+            }
+
+            &__list {
+                margin     : 10px;
+                font-weight: 300;
+                color      : $darkGray;
+            }
+
+            &__toggle {
+                font-size    : 14px;
+                margin-bottom: 20px;
+                cursor       : pointer;
+
+                &--hide~.account__purchase__order__container {
+                    height: 0;
+                }
+
+                @include hover-focus-active {
+                    color: $mainRed;
+                }
+            }
+
+            &__container {
+
+                border-bottom: 1px solid rgba($color: $darkGray, $alpha: .2);
+                margin-bottom: 20px;
+                overflow     : hidden;
+
+                .account__purchase__order__item:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            &__item {
+                display      : flex;
+                align-items  : center;
+                padding      : 10px 0;
+                border-bottom: 1px solid rgba($color: $darkGray, $alpha: .2);
+                color        : rgba($color: $darkGray, $alpha: .8);
+                font-weight  : 400;
+            }
+
+            &__img {
+                margin-right: 10px;
+                max-height  : 67px;
+                max-width   : 67px;
+
+                @include media-breakpoint-up(xs, (xs: 460px)) {
+                    margin-right: 20px;
+                }
+            }
+
+            &__description {
+                font-size      : 14px;
+                display        : flex;
+                flex-direction : column;
+                justify-content: space-around;
+
+                &__title {
+                    span:first-child {
+                        color: $mainRed;
+                    }
+                }
+
+                &__quantity {
+                    color: rgba($color: $darkGray, $alpha: .6);
+                }
+
+                &__price {
+                    font-weight: 300;
+                    color      : rgba($color: $darkGray, $alpha: .6);
+                    font-size  : 12px;
+
+                    @include media-breakpoint-up(xs, (xs: 460px)) {
+                        font-size: 14px;
+                    }
+                }
+
+                div {
+                    margin-bottom: 10px;
+                }
+            }
+
+            &__number {
+                margin-left: auto;
+                align-self : center;
+                white-space: nowrap;
+                font-weight: 500;
+                min-width  : 40px;
+                text-align : right;
+            }
+
+            &__button {
+                width        : 100%;
+                display      : inline-block;
+                padding      : 10px 50px;
+                border-radius: 50px;
+                border       : 2px solid $mainGreen;
+                font-weight  : 500;
+                font-size    : 12px;
+                color        : $mainGreen;
+                transition   : all .2s ease-in-out;
+                text-align   : center;
+
+                @include media-breakpoint-up(sm, (sm: 540px)) {
+                    max-width  : 300px;
+                    font-size  : 14px;
+                    margin-left: auto;
+                    display    : block;
+                }
+
+                @include hover-focus-active {
+                    border-color: darken($color: $mainGreen, $amount: 10%);
+                    color       : darken($color: $mainGreen, $amount: 10%);
                 }
             }
         }

@@ -12,10 +12,8 @@ const headers = {
 
 export var productsCash = observableArray()
 
-export const getAll = () =>
-  fetch(`${api}/products`, { headers })
-    .then(res => res.json())
-    .then(data => data)
+export const getAll = (link) =>
+  fetch(`${api}/${link}`, { headers })
 
 export const login = (body) =>
   fetch(`${api}/auth/login`, {
@@ -28,6 +26,16 @@ export const login = (body) =>
 
   })
 
+export const purchase = (body) =>
+  fetch(`${api}/auth/purchase`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+
 export const register = (body) =>
   fetch(`${api}/auth/register`, {
     method: 'POST',
@@ -37,6 +45,7 @@ export const register = (body) =>
     },
     body: JSON.stringify(body)
   })
+
 export const reset = (body) =>
   fetch(`${api}/auth/reset`, {
     method: 'PATCH',

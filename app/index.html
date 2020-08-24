@@ -18,78 +18,380 @@
   <!--endbuild-->
 </head>
 
-<body data-bind="style: { overflow: modal.backdrop()? 'hidden' : 'auto' }">
+<body data-bind="style: { overflow: modal.backdrop() || modal.backdrop2()? 'hidden' : 'auto' }">
   <header>
-    <nav class="navbar navbar--fixed">
-      <ul class="navbar__top">
-        <li>
-          <a class="navbar__top__brand" href="javascript:void(0);">
-            <img src="/assets/img/jibliya-logo.svg" alt="brand" />
-          </a>
-        </li>
-        <li class="navbar__top__list">
-          <!-- ko with: userAccount -->
-          <a class="navbar__top__link" href="javascript:void(0);"
-            data-bind="click: isLogin() ? $root.modal.modalAccount.bind($data,true) : folder.bind($data, 'mon-compte/login')">
-            <span class="icon-profile"></span>
-            <span class="navbar__top__link__title">
-              Mon compte</span>
-          </a>
-          <!-- /ko-->
-          <!-- ko with: modal -->
-          <a class="navbar__top__link modal-btn" href="javascript:void(0);" role="button"
-            data-bind="toggleClick: modalBasket">
-            <!-- ko with: $root.orderList -->
-            <span class="icon-cart">
-              <span class="navbar__top__link--products-count"
-                data-bind="text: productsCount,visible: productsCount,
-                  scaleUpAnimation: total() === total,css: { 'navbar__top__link--products-count-green': total() > 200 }">2</span>
-              <span class="navbar__top__link--products-total"
-                data-bind="visible: total,scaleUpAnimation: total() === total">
-                <span data-bind="text: total">24.95</span>
-                <span>
-                  dh</span>
+    <nav>
+      <div class="navbar navbar--fixed"
+        data-bind="visible: !$root.folder().startsWith('check-out') && !$root.folder().startsWith('checkout/commande-envoyee')"
+        style="display: none;">
+        <ul class="navbar__top">
+          <li>
+            <a class="navbar__top__brand" href="javascript:void(0);">
+              <img src="/assets/img/jibliya-logo.svg" alt="brand" />
+            </a>
+          </li>
+          <li class="navbar__top__list">
+            <!-- ko with: userAccount -->
+            <a class="navbar__top__link" href="javascript:void(0);"
+              data-bind="click: isLogin() ? $root.modal.modalAccount.bind($data,true) : folder.bind($data, 'mon-compte/login')">
+              <span class="icon-profile">
+                <span class="icon-check-circle" data-bind="visible: isLogin()"></span>
               </span>
-            </span>
-            <span class="navbar__top__link__title">
-              Mon panier
-            </span>
+              <span class="navbar__top__link__title">
+                <span data-bind="visible: !isLogin()">Mon compte</span>
+                <span data-bind="visible: isLogin()">
+                  <span data-bind="text: profile().gender === 'monsieur'?  'Mr . ' : 'Mrs . '"></span>
+                  <span data-bind="text: profile().firstname"></span>
+                </span>
+              </span>
+            </a>
+            <!-- /ko-->
+            <!-- ko with: modal -->
+            <a class="navbar__top__link modal-btn" href="javascript:void(0);" role="button"
+              data-bind="toggleClick: modalBasket">
+              <!-- ko with: $root.orderList -->
+              <span class="icon-cart">
+                <span class="navbar__top__link--products-count"
+                  data-bind="text: productsCount,visible: productsCount,
+                    scaleUpAnimation: total() === total,css: { 'navbar__top__link--products-count-green': total() > 200 }">2</span>
+                <span class="navbar__top__link--products-total"
+                  data-bind="visible: total,scaleUpAnimation: total() === total">
+                  <span data-bind="text: total">24.95</span>
+                  <span>
+                    dh</span>
+                </span>
+              </span>
+              <span class="navbar__top__link__title">
+                Mon panier
+              </span>
+              <!-- /ko -->
+            </a>
             <!-- /ko -->
-          </a>
-          <!-- /ko -->
-          <div class="navbar__top__menu">
-            <button type="button" class="button navbar__top__menu__button">
-              <i class="icon-menu"></i>
-            </button>
-          </div>
-        </li>
-      </ul>
-      <!-- ko with: modal -->
+            <div class="navbar__top__menu">
+              <button type="button" class="button navbar__top__menu__button">
+                <i class="icon-menu"></i>
+              </button>
+            </div>
+          </li>
+        </ul>
 
-      <div class="navbar__middle" data-bind="foreach: navbarList">
-        <!-- ko if: $index() == 0 -->
-        <button type="button" class="button navbar__middle__icon">
-          <span>-</span>
-          <span>Nouveautés</span>
-          <span>-</span>
-        </button>
+        <!-- ko with: modal -->
+        <div class="navbar__middle" data-bind="foreach: navbarList">
+          <!-- ko if: $index() == 0 -->
+          <button type="button" class="button navbar__middle__icon">
+            <span>-</span>
+            <span>Nouveautés</span>
+            <span>-</span>
+          </button>
+          <!-- /ko -->
+
+          <button type="button" class="button navbar__middle__icon"
+            data-bind="click: $parent.openNavbarModal.bind($parent, $data)">
+
+            <i class="icon-baby" data-bind="attr: {class: icon}"></i>
+            <span data-bind="text: title">Bébé</span>
+          </button>
+        </div>
         <!-- /ko -->
 
-        <button type="button" class="button navbar__middle__icon"
-          data-bind="click: $parent.openNavbarModal.bind($parent, $data)">
+        <div class="navbar__bottom" data-bind="visible: folder().startsWith('categorie-produit')">
+          <h4 class="navbar__bottom__title" data-bind="text: modal.modalNavbarSectionTitle">baby</h4>
+        </div>
 
-          <i class="icon-baby" data-bind="attr: {class: icon}"></i>
-          <span data-bind="text: title">Bébé</span>
-        </button>
+      </div>
+      <div class="navbar__checkout" data-bind="visible: $root.folder().startsWith('check-out')" style="display: none;">
+        <a class="navbar__checkout__brand" href="javascript:void(0);" data-bind="click: $root.folder.bind($data,'')">
+          <img src="/assets/img/jibliya-logo.svg" alt="brand" />
+          <div class="navbar__checkout__brand__subtitle">
+            <span class="icon-arrow-right"></span>
+            <span>Retour aux courses</span>
+          </div>
+        </a>
+        <!-- ko with: $root.orderList -->
+
+        <ul class="navbar__checkout__info">
+          <li class="navbar__checkout__basket-total">Votre panier : <span data-bind="text: total()">211.00</span> dh
+          </li>
+          <li class="navbar__checkout__delivery">Frais de la livraison : <span
+              data-bind="text: ($root.userAccount.profile().zone.cost).toFixed(2)">25.00</span> dh</li>
+          <li class="navbar__checkout__total">
+            <span>Total : </span>
+            <span data-bind="text: $root.checkout.total().toFixed(2)">236.00</span>
+            <span>dh</span>
+          </li>
+        </ul>
+        <!-- /ko -->
+
+      </div>
+      <div class="navbar__checkout-success" data-bind="visible: $root.folder().startsWith('checkout/commande-envoyee')"
+        style="display: none;">
+        <a class="navbar__checkout-success__brand" href="javascript:void(0);"
+          data-bind="click: $root.folder.bind($data,'')">
+          <img src="/assets/img/jibliya-logo.svg" alt="brand" />
+        </a>
+      </div>
+    </nav>
+
+
+  </header>
+  <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
+  <div class="checkout" data-bind="visible: $root.folder().startsWith('check-out')">
+    <h3 class="checkout__header">Checkout</h3>
+    <div class="checkout__container">
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step1',
+          'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step1').length} ">
+          <div class="checkout__icon icon-check-circle">1</div>
+          <div>Votre panier</div>
+        </div>
+        <div id="checkout-step1" class="checkout__step__body">
+          <!-- ko with: $root.orderList -->
+          <div data-bind="foreach: purchasedProducts,visible: purchasedProducts().length">
+            <div class="checkout__item" data-bind="css: { 'checkout__item--hide': !buy() }">
+              <div class="checkout__item__container">
+                <div class="checkout__item__top">
+                  <div class="checkout__item__img">
+                    <img data-bind="attr: { src: imgURL }" alt="apres shampooing" />
+                  </div>
+                  <div class="checkout__item__description">
+                    <div class="checkout__item__title">
+                      <span data-bind="text: title">Bjorg</span>
+                      <span>-
+                      </span>
+                      <span data-bind="text: subtitle">
+                        4 céréales - DIETITIQUE</span>
+                    </div>
+                    <div class="checkout__item__quantity" data-bind="text: quantity">130 g</div>
+                    <div class="checkout__item__price">Prix unitaire :
+                      <span data-bind="text: price">29.95 Dh</span>
+                    </div>
+                  </div>
+                  <div class="checkout__order">
+                    <span>
+                      <button type="button" class="button checkout__order--plus plus-btn"
+                        data-bind="click: increment"></button>
+                    </span>
+                    <span class="checkout__order__input">
+                      <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" height="100%" autocomplete="off"
+                        value="1" data-bind="value: order" readonly="readonly" />
+                    </span>
+                    <span>
+                      <button type="button" class="button checkout__order--minus minus-btn"
+                        data-bind="click: decrement,disable: order() < 2"></button>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="checkout__item__bottom">
+                  <button type="button" class="button checkout__item__bottom__button" data-bind="toggleClick: buy">
+                    <span>X</span>
+                    <span>
+                      Enlever</span>
+                  </button>
+                  <div class="checkout__item__bottom__total">
+                    <span data-bind="text: basket">0.00</span>
+                    <span>Dh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko with: $root.checkout -->
+
+          <button class="button checkout__btn-prev" disabled>RETOUR</button>
+          <button class="button checkout__btn-next" data-bind="click:  function(){
+            hideElement.call($root.checkout, '#checkout-step1');
+            setTimeout(()=>showElement.call($root.checkout, '#checkout-step2'),450);
+            getCalendarAPI.call($root.checkout);
+            }">ÉTAPE
+            SUIVANTE</button>
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step2',
+        'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step2').length} ">
+          <div class="checkout__icon icon-check-circle">2</div>
+          <div>Date et heure de la livraison</div>
+        </div>
+        <div id="checkout-step2" class="checkout__step__body" style="height: 0;">
+          <!-- ko with: $root.checkout -->
+          <div data-bind="visible: success().filter((item)=>item === '#checkout-step1').length">
+
+            <div class="checkout__date-picker__title">Ma journée</div>
+
+            <div class="checkout__date-picker__slider">
+              <div class="checkout__date-picker__slider__container">
+
+                <div data-bind="visible: $root.loader()" style="height: 100px;">
+                  <div class="loader">Loading...</div>
+                </div>
+                <div class="checkout__date-picker__slider__dates" data-bind="foreach: datePicker">
+                  <div class="checkout__date-picker__slider__box">
+                    <button class="button checkout__date-picker__slider__box__item" data-bind="css: {'checkout__date-picker__slider__box__item--reserved': reserved,
+                      'checkout__date-picker__slider__box__item--active': $parent.data()=== $data},
+                      disable: reserved,click: function(){
+                      $parent.data($data)
+                      $parent.showTimeSpan(true)
+                    }">
+                      <div data-bind="text: dayName">Samedi</div>
+                      <div>
+                        <span data-bind="text: day">22</span>/ <span data-bind="text: monthName">Aout</span>
+                      </div>
+                      <div class="complet" data-bind="visible: reserved">Complet</div>
+                    </button>
+                  </div>
+                </div>
+                <button class="button checkout__date-picker__slider__prev"
+                  data-bind="click: slideTo.bind($root.checkout, 'left'),disable: rightArrow() - factor() < 0">&#8592;</button>
+                <button class="button checkout__date-picker__slider__next"
+                  data-bind="click: slideTo.bind($root.checkout, 'right'),disable: leftArrow() - factor() <= 0">&#8594;</button>
+              </div>
+            </div>
+
+            <div data-bind="visible: showTimeSpan()">
+              <div class="checkout__date-picker__title">Mon horaire</div>
+              <div class="checkout__date-picker__time-span"
+                data-bind="foreach: timeSpan,style: {opacity: data().activeTime() || typeof (data().activeTime())? '1' : '0'}">
+                <div class="checkouot__date-picker__hour">
+                  <div class="checkout__date-picker__hour__box" data-bind="css: {'checkout__date-picker__hour__box--reserved': $parent.data().reservedTimes().filter((n)=> n === $index()).length > 0,
+                    'checkout__date-picker__hour__box--active': $parent.data().activeTime() === $index()},
+                    click: $parent.data().activeTime.bind($data,$index()),text: $data">
+                    12:00 - 13:00</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="checkout__date-picker__subtitle"
+              data-bind="visible: data().activeTime() || typeof (data().activeTime()) === 'number',style: {opacity: data().activeTime() || typeof (data().activeTime())? '1' : '0'}">
+              Vous serez livré
+              <strong class="strong">le
+                <span data-bind="text: data().dayName">Dimanche</span>
+                , <span data-bind="text: data().day">16</span>
+                <span data-bind="text: data().monthName">aout</span>
+              </strong> entre <span data-bind="visible: typeof (data().activeTime()) !== 'number'">... et
+                ...</span>
+              <strong class="strong" data-bind="text: timeSpan[data().activeTime()]">13:00 et 14:00</strong>
+            </div>
+          </div>
+
+          <button class="button checkout__btn-prev" data-bind="click: function(){
+              hideElement.call($root.checkout, '#checkout-step2', true);
+              setTimeout(()=>showElement.call($root.checkout, '#checkout-step1'),450);
+            }">RETOUR</button>
+          <button class="button checkout__btn-next" data-bind="click: function(){
+            hideElement.call($root.checkout, '#checkout-step2');
+            setTimeout(()=>showElement.call($root.checkout, '#checkout-step3'),450);
+            },disable: typeof (data().activeTime()) !== 'number'">ÉTAPE
+            SUIVANTE</button>
+
+
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step3',
+        'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step3').length} ">
+          <div class="checkout__icon icon-check-circle">3</div>
+          <div>Voulez-vous ajouter un commentaire ?</div>
+        </div>
+        <div id="checkout-step3" class="checkout__step__body" style="height: 0;">
+          <textarea class="checkout__textarea" placeholder="Consignes, produits manquants, remarques, ..."
+            data-bind="value: $root.checkout.textarea"></textarea>
+          <!-- ko with: $root.checkout -->
+
+          <button class="button checkout__btn-prev" data-bind="click: function(){
+            hideElement.call($root.checkout, '#checkout-step3',true);
+            setTimeout(()=>showElement.call($root.checkout, '#checkout-step2'),450);
+          }">RETOUR</button>
+          <button class="button checkout__btn-next" data-bind="click: function(){
+          hideElement.call($root.checkout, '#checkout-step3');
+          setTimeout(()=>showElement.call($root.checkout, '#checkout-step4'),450);
+          }">ÉTAPE
+            SUIVANTE</button>
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <!-- ko with: $root.checkout -->
+
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': active() === '#checkout-step4',
+        'checkout__title--success': success().filter((item)=>item === '#checkout-step4').length} ">
+          <div class="checkout__icon icon-check-circle">4</div>
+          <div>Et si un produit est en rupture de stock ?</div>
+        </div>
+        <div id="checkout-step4" class="checkout__step__body" style="height: 0;"
+          data-bind="style: {opacity: $root.loader() ? '.5':'1'}">
+          <div>
+            <div class="checkout__radio">
+              <label for="agreement1">
+                <input type="radio" name="agreement" id="agreement1" value="first" data-bind="checked: agreement">
+                <span class="checkout__radio__checkmark"></span>
+                <p>J'accèpte un changement de produit si la réference que j'ai commandée est en rupture de
+                  stock.</p>
+              </label>
+            </div>
+            <div class="checkout__radio">
+              <label for="agreement2">
+                <input type="radio" name="agreement" id="agreement2" value="second" data-bind="checked: agreement">
+                <span class="checkout__radio__checkmark"></span>
+                <p>J'accèpte un changement de produit sous certaines conditions. Merci de me prévenir avant toute
+                  substitution.</p>
+              </label>
+            </div>
+            <div class="checkout__radio">
+              <label for="agreement3">
+                <input type="radio" name="agreement" id="agreement3" value="third" data-bind="checked: agreement">
+                <span class="checkout__radio__checkmark"></span>
+                <p>Je n'accepte pas de changement de produit, au risque d'avoir des produits manquants. Merci de ne
+                  faire aucune substitution.</p>
+              </label>
+            </div>
+          </div>
+          <div style="display: flex;">
+            <button class="button checkout__btn-prev" data-bind="click: function(){
+              hideElement.call($root.checkout, '#checkout-step4',true);
+              setTimeout(()=>showElement.call($root.checkout, '#checkout-step3'),450);
+            }">RETOUR</button>
+            <button class="button checkout__btn-next" data-bind="click: sendPurchase">ENVOYER<br> MA COMMANDE</button>
+          </div>
+        </div>
+        <div data-bind="visible: $root.loader()" style="height: 100px;">
+          <div class="loader">Loading...</div>
+        </div>
       </div>
       <!-- /ko -->
 
-      <div class="navbar__bottom" data-bind="visible: folder().startsWith('categorie-produit')">
-        <h4 class="navbar__bottom__title" data-bind="text: modal.modalNavbarSectionTitle">baby</h4>
+    </div>
+  </div>
+  <div class="checkout-success" data-bind="visible: $root.folder().startsWith('checkout/commande-envoyee')">
+    <h2 class="checkout-success__header">Nous avons bien reçu votre commande !</h2>
+    <!-- ko with: $root.checkout -->
+
+    <div class="checkout-success__body">
+      <p>Vous serez livré le</p>
+      <p>"
+        <span data-bind="text: data().dayName">Mercredi</span>
+        <span data-bind="text: data().day">19</span>
+        <span data-bind="text: data().monthName">aout</span>
+        <span data-bind="text: data().date[0]">2020</span>
+        entre
+        <span
+          data-bind="text: timeSpan[data().activeTime()]? timeSpan[data().activeTime()].replace('-', 'et'):null">13:00
+          et
+          14:00</span>"</p>
+      <p>"Merci pour votre confiance"</p>
+      <div class="checkout-success__body__buttons">
+        <button class="button" data-bind="click: folder.bind($data,'')">PAGE DACCUIL</button>
+        <button class="button">MES ACHATS</button>
       </div>
-    </nav>
-  </header>
-  <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
+    </div>
+    <!-- /ko -->
+  </div>
 
   <div class="main" data-bind="visible: folder()===''">
     <div class="home">
@@ -418,7 +720,7 @@
             <span>Dh</span>
           </div>
         </div>
-        <div class="gallery__item__order order-input">
+        <div class="gallery__item__order">
           <span>
             <button type="button" class="button gallery__item__order--minus minus-btn"
               data-bind="click: decrement,disable: order() < 2"></button>
@@ -588,8 +890,25 @@
                 *</span>
             </label>
             <div>
-              <input id="zone" name="zone" type="text" class="account__registration__form__control"
-                data-parsley-errors-container="#zone-1" required="required">
+              <div class="account__registration__form__zone" data-bind="with: $root.modal">
+                <input id="zone" name="zone" type="text" class="account__registration__form__control"
+                  data-parsley-errors-container="#zone-1" required="required"
+                  data-bind="value: $root.userAccount.selectedZone().zone">
+                <div class="account__registration__form__caret" data-bind="click: modalZone.bind($data, true)"></div>
+                <div class="account__registration__form__modal"
+                  data-bind="css: { 'account__registration__form__modal--open': modalZone() && backdrop()}">
+                  <ul data-bind="foreach: $root.userAccount.zone">
+                    <li class="account__registration__form__modal__list"
+                      data-bind="text: $data.zone,click: function(){
+                      $root.userAccount.selectedZone($data);
+                      $root.modal.backdrop(false);
+                      $root.formValidation.isValid.call($root.formValidation,'#register')
+                    },css: {'account__registration__form__modal__list--active': $root.userAccount.selectedZone() ===$data }">
+                      arroud</li>
+                  </ul>
+                </div>
+
+              </div>
               <label class="account__registration__form__label--error" id="zone-1"></label>
             </div>
           </div>
@@ -787,12 +1106,33 @@
               <span>
                 *</span>
             </label>
-            <div>
+
+            <div class="account__profile__form__zone" data-bind="with: $root.modal">
               <input id="zone2" name="zone" type="text" class="account__profile__form__control"
-                data-parsley-errors-container="#zone-2" data-bind="value: $root.userAccount.profile().zone"
-                required="required">
-              <label class="account__profile__form__label--error" id="zone-2"></label>
+                data-parsley-errors-container="#zone-2" required="required"
+                data-bind="value: $root.userAccount.profile().zone.zone">
+              <div class="account__profile__form__caret" data-bind="click: modalZone.bind($data, true)">
+              </div>
+
+              <div class="account__profile__form__modal"
+                data-bind="css: { 'account__profile__form__modal--open': modalZone() && backdrop()}">
+                <ul data-bind="foreach: $root.userAccount.zone">
+                  <li class="account__profile__form__modal__list"
+                    data-bind="text: $data.zone,click: function(){
+                    var profile = $root.userAccount.profile();
+                      profile.zone.zone = $data.zone;
+                      $root.userAccount.profile(profile)
+                    $root.modal.backdrop(false);
+                    $root.formValidation.isValid.call($root.formValidation,'#account-profile')
+                  },css: {'account__profile__form__modal__list--active': $root.userAccount.profile().zone.zone === $data.zone }">
+                    arroud</li>
+                </ul>
+              </div>
+
             </div>
+            <label class="account__profile__form__label--error" id="zone-2"></label>
+
+
           </div>
           <div class="account__profile__form__group">
             <label class="account__profile__form__label" for="address2">
@@ -918,10 +1258,105 @@
         </div>
       </div>
     </div>
+
+    <div class="account__purchase" data-bind="visible: folder().startsWith('mon-compte/mes-achats')">
+      <div class="account__purchase__header">
+        <h2>Mes achats</h2>
+      </div>
+      <div data-bind="visible: $root.loader()" style="height: 100px;">
+        <div class="loader">Loading...</div>
+      </div>
+      <!-- ko foreach: transactions -->
+
+      <div class="account__purchase__order">
+        <div class="account__purchase__order__row">
+          <div class="account__purchase__order__left">N° Commande</div>
+          <div class="account__purchase__order__right">#<span data-bind="text: purchaseId">00325</span></div>
+        </div>
+        <div class="account__purchase__order__row">
+          <div class="account__purchase__order__left">Date de la livraison</div>
+          <div class="account__purchase__order__right">
+            <span data-bind="text: date[2]">22</span><span>/</span>
+            <span data-bind="text: date[1] + 1">08</span><span>/</span>
+            <span data-bind="date[0]">2020</span></div>
+        </div>
+        <div class="account__purchase__order__row">
+          <div class="account__purchase__order__left">Heure de la livraison</div>
+          <div class="account__purchase__order__right" data-bind="text: $root.checkout.timeSpan[activeTime]">17:00 -
+            18:00</div>
+        </div>
+        <div class="account__purchase__order__row">
+          <div class="account__purchase__order__left">Statut</div>
+          <div class="account__purchase__order__right account__purchase__order--in-progress">En cours</div>
+        </div>
+        <div class="account__purchase__order__row account__purchase__order__row--highlight">
+          <div class="account__purchase__order__left">Sous-Total</div>
+          <div class="account__purchase__order__right">
+            <span data-bind="text: (totalBasket).toFixed(2)">216.50</span>
+            Dh</div>
+        </div>
+        <div class="account__purchase__order__row account__purchase__order__row--highlight">
+          <div class="account__purchase__order__left">Expédition</div>
+          <div class="account__purchase__order__right">
+            <span data-bind="text: (delivery).toFixed(2)">50.00</span>
+            <span> Dh</span></div>
+        </div>
+        <div class="account__purchase__order__row account__purchase__order__row--highlight">
+          <div class="account__purchase__order__left">Total</div>
+          <div class="account__purchase__order__right">
+            <strong>
+              <span data-bind="text: (total).toFixed(2)">266.50</span>
+              <span> Dh</span>
+            </strong>
+          </div>
+        </div>
+        <div class="account__purchase__order__list">
+          <!-- ko with: $root.userAccount.independentObservable() -->
+          <div class="account__purchase__order__toggle"
+            data-bind="css: {'account__purchase__order__toggle--hide': !observable()}">
+            <span class="footer__help__caret"></span>
+            <span data-bind="visible: !observable(),toggleClick: observable">Afficher la liste des produits</span>
+            <span data-bind="visible: observable(),toggleClick: observable">Masquer la liste des produits</span>
+          </div>
+          <!-- /ko -->
+
+          <div class="account__purchase__order__container" data-bind="foreach: products">
+            <div class="account__purchase__order__item">
+              <div class="account__purchase__order__img">
+                <img data-bind="attr: { src: imgURL }" alt="">
+              </div>
+              <div class="account__purchase__order__description">
+                <div class="account__purchase__order__description__title">
+                  <span data-bind="text: title">Dalaa</span>
+                  <span> - </span>
+                  <span data-bind="text: subtitle">Couches n°1 et 2 - 5-9kg - Mini</span>
+                </div>
+                <div class="account__purchase__order__description__quantity">
+                  <strong data-bind="text: quantity">64 Couches</strong>
+                </div>
+                <div class="account__purchase__order__description__price">
+                  <span>Prix unitaire : </span>
+                  <span data-bind="text: (price).toFixed(2)">65.50</span>
+                  <span> Dh</span></div>
+              </div>
+              <div class="account__purchase__order__number">
+                <span>x </span>
+                <span data-bind="text: order">1</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="button account__purchase__order__button">REFAIRE LA COMMANDE</button>
+        </div>
+      </div>
+      <!-- /ko -->
+
+    </div>
   </div>
   <!-- /ko -->
 
-  <footer class="footer">
+  <footer class="footer"
+    data-bind="visible: !$root.folder().startsWith('check-out')&&!$root.folder().startsWith('checkout/commande-envoyee')">
     <div class="footer__contact">
       <div class="footer__contact__container">
         <div class="footer__email">
@@ -969,14 +1404,18 @@
       </a>
       <a class="footer__legal__link" href="javascript:void(0);">
         <span class="footer__legal__link__bottom">Mentions légales</span></a>
-      <div class="footer__legal__help">
+      <div class="footer__legal__help" data-bind="visible: $root.folder()===''">
         <button type="button" class="button">?</button>
         <span>Aide</span>
       </div>
     </div>
   </footer>
+
+
   <!-- ko with: modal -->
   <div class="modal__backdrop" data-bind="css: { 'modal__backdrop--open': backdrop() },toggleClick: backdrop"></div>
+  <div class="modal__backdrop2" data-bind="css: { 'modal__backdrop2--open': backdrop2() },toggleClick: backdrop2">
+  </div>
 
   <div class="modal__navbar" data-bind="css: { 'modal__navbar--open': modalNavbar() && backdrop() }">
     <section>
@@ -988,7 +1427,13 @@
       <!-- /ko -->
       <div class="modal__navbar__product" data-bind="toggleClick: backdrop">
         <!-- ko foreach: modalNavbarSection -->
-        <div class="modal__navbar__product__container" data-bind="click: function(){$parent.getProductsAPI($data);}">
+        <div class="modal__navbar__product__container" data-bind="click: function(){
+          $parent.getProductsAPI($data);
+          if(window.innerWidth<460){
+            document.querySelector('.navbar__middle').classList.add('navbar__middle--hide')
+            document.querySelector('.navbar__top__menu').classList.add('navbar__top__menu--open')
+          };
+        }">
           <img class="modal__navbar__product__img" alt="apres shampooing" data-bind="attr: { src: imgURL, alt: title }">
           <span class="modal__navbar__product__title" data-bind="text: title"></span>
         </div>
@@ -1028,7 +1473,7 @@
                   <span data-bind="text: price">29.95 Dh</span>
                 </div>
               </div>
-              <div class="modal__basket__order order-input">
+              <div class="modal__basket__order">
                 <span>
                   <button type="button" class="button modal__basket__order--plus plus-btn"
                     data-bind="click: increment"></button>
@@ -1061,7 +1506,8 @@
     </div>
     <div class="modal__basket__bottom">
       <div class="modal__basket__bottom__clear">
-        <button type="button" class="button modal__basket__bottom__clear__button">
+        <button type="button" class="button modal__basket__bottom__clear__button"
+          data-bind="click: total() > 0? $root.modal.modalPurchasePanel.bind($data,'clear basket'):null">
           <span>X</span>
           <span>
             Vider</span>
@@ -1072,23 +1518,28 @@
         </div>
       </div>
       <div class="modal__basket__bottom__validate">
-        <button type="button" class="button modal__basket__bottom__validate">VALIDER MON PANIER</button>
+        <button type="button" class="button modal__basket__bottom__validate"
+          data-bind="click: 200 >= total()? $root.modal.modalPurchasePanel.bind($data,'total not valid'): function(){$root.folder('check-out'),$root.modal.backdrop(false)}">VALIDER
+          MON PANIER</button>
       </div>
     </div>
     <!-- /ko -->
   </div>
 
-  <div class="modal__account"
-    data-bind="css: { 'modal__account--open': modalAccount() },click: folder.bind($data, 'mon-compte/mes-informations'),toggleClick: backdrop">
+  <div class="modal__account" data-bind="css: { 'modal__account--open': modalAccount() },toggleClick: backdrop">
     <ul>
 
-      <li>
+      <li
+        data-bind="css: {'modal__account--active': folder()==='mon-compte/mes-informations'},click: folder.bind($data, 'mon-compte/mes-informations')">
         <a href="#" role="button">
           <span class="icon-info"></span>
           <span>Mes informations</span>
         </a>
       </li>
-      <li>
+      <li data-bind="css: {'modal__account--active': folder()==='mon-compte/mes-achats'},click: function(){
+        folder('mon-compte/mes-achats');
+        $root.userAccount.getUserPurchaseData();
+      }">
         <a href="#" role="button">
           <span class="icon-orders"></span>
           <span>Mes achats</span>
@@ -1109,7 +1560,7 @@
   </div>
 
   <div class="modal__connection"
-    data-bind="css:{ 'modal__connection--open': modalRequestSuccess() || modalRequestError() }">
+    data-bind="css:{ 'modal__connection--open': modalRequestSuccess() || modalRequestError() || modalPurchasePanel()}">
 
     <div class="modal__connection--success" data-bind="visible: modalRequestSuccess()">
       <div>
@@ -1151,6 +1602,31 @@
       <p data-bind="visible: modalRequestError()=== 'network'">Une erreur est survenue !
         Veuillez réessayer plus tard.</p>
     </div>
+    <div class="modal__connection__clean" data-bind="visible: modalPurchasePanel() === 'clear basket'">
+      <p>Vous êtes sûr de vouloir vider votre panier ?</p>
+      <div class="modal__connection__clean__container">
+        <div>
+          <button class="button modal__connection__clean__clear-btn"
+            data-bind="click: $root.orderList.clearPurchaseProducts.bind($root.orderList),toggleClick: backdrop2">vider</button>
+        </div>
+        <div>
+          <button class="button modal__connection__clean__cancel-btn"
+            data-bind="toggleClick: backdrop2">annuler</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal__connection__valid" data-bind="visible: modalPurchasePanel() === 'total not valid'">
+      <div class="sa">
+        <div class="sa-warning">
+          <div class="sa-warning-body"></div>
+          <div class="sa-warning-dot"></div>
+        </div>
+      </div>
+      <p>Le montant total minimum requis pour valider une commande est de <strong>200 Dh</strong>. Veuillez ajouter
+        d'autres produits au panier.</p>
+
+    </div>
+
 
   </div>
 

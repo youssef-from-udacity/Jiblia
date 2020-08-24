@@ -1,0 +1,568 @@
+.checkout {
+    max-width       : 1150px;
+    margin          : 120px auto 40px auto;
+    border-radius   : 30px;
+    padding         : 10px 10px 10px 20px;
+    background-color: $mainWhite;
+    line-height     : 1.4;
+    font-weight     : 300;
+
+    @include media-breakpoint-up(xs, (xs: 460px)) {
+        padding: 20px;
+    }
+
+    &__header {
+        text-align: center;
+        font-size : 32px;
+        margin-top: 20px;
+    }
+
+    &__container {
+        padding-left: 20px;
+        border-left : 1px solid rgba($color: $darkGray, $alpha: .3);
+        width       : 100%;
+
+        @include media-breakpoint-up(xs, (xs: 460px)) {
+            width : calc(100% - 25px);
+            margin: 25px 0 25px 25px;
+
+        }
+    }
+
+    &__title {
+        display         : flex;
+        background-color: $mainWhite;
+        padding         : 10px 5px;
+        position        : relative;
+        left            : -38px;
+        font-size       : 26px;
+        line-height     : 20px;
+        font-size       : 18px;
+        width           : 95vw;
+        max-width       : 900px;
+        color           : rgba($color: $darkGray, $alpha: .5);
+
+        @include media-breakpoint-up(xs, (xs: 460px)) {
+            font-size: 21px;
+
+        }
+
+        &--active {
+            color: $mainBlack;
+
+            .checkout__icon {
+                background-color: blue;
+            }
+        }
+
+        &--success {
+            color: $mainBlack;
+
+            .icon-check-circle {
+                background-color: $mainWhite;
+
+                &::before {
+                    color    : $mainGreen;
+                    display  : block !important;
+                    position : absolute;
+                    top      : 10px;
+                    font-size: 28px;
+                    left     : 3px;
+                }
+            }
+        }
+    }
+
+    &__icon {
+        min-width       : 24px;
+        height          : 24px;
+        margin-right    : 5px;
+        font-size       : 14px;
+        display         : inline-block;
+        text-align      : center;
+        line-height     : 24px;
+        vertical-align  : middle;
+        border-radius   : 50%;
+        color           : $mainWhite;
+        background-color: rgba($color: $darkGray, $alpha: .3);
+        user-select     : none;
+
+        &.icon-check-circle {
+
+            &::before {
+                display: none;
+            }
+        }
+    }
+
+    &__item {
+        @extend .modal__basket__item;
+        border-radius   : 15px;
+        border          : 1px solid rgba($color: $darkGray, $alpha: .3);
+        background-color: $mainWhite;
+        margin-bottom   : 10px;
+        padding         : 0;
+        overflow        : hidden;
+        transition      : transform .3s ease-in-out;
+
+        &--hide {
+            @extend .modal__basket__item__container--hide;
+        }
+
+        &__container {
+            @extend .modal__basket__item__container;
+            margin-bottom: 0;
+
+        }
+
+        &__top {
+            @extend .modal__basket__item__top;
+            justify-content: flex-start;
+
+        }
+
+        &__img {
+            @extend .modal__basket__item__img;
+
+            @include media-breakpoint-up(xs, (xs: 580px)) {
+                img {
+                    max-width: 115px;
+                }
+            }
+        }
+
+        &__description {
+            @extend .modal__basket__item__description;
+        }
+
+        &__title {
+            @extend .modal__basket__item__title;
+        }
+
+        &__quantity {
+            @extend .modal__basket__item__quantity;
+        }
+
+        &__price {
+            @extend .modal__basket__item__price;
+        }
+
+        &__bottom {
+            @extend .modal__basket__item__bottom;
+
+            &__button {
+                @extend .modal__basket__item__bottom__button;
+            }
+
+            &__total {
+                @extend .modal__basket__item__bottom__total;
+            }
+        }
+    }
+
+    &__order {
+        @extend .modal__basket__order;
+
+        @include media-breakpoint-up(xs, (xs: 440px)) {
+            margin-left: auto;
+            max-width  : 39px;
+        }
+
+        &--plus {
+            @extend .modal__basket__order--plus;
+        }
+
+        &--minus {
+            @extend .modal__basket__order--minus;
+        }
+
+        &__input {
+            @extend .modal__basket__order__input;
+        }
+    }
+
+    &__step {
+        margin-bottom: 20px;
+
+        &__body {
+            transition: height .5s ease-in-out 0s;
+            overflow  : hidden;
+        }
+    }
+
+    &__date-picker {
+        &__title {
+            display  : block;
+            color    : $mainGreen;
+            margin   : 20px 0;
+            font-size: 20px;
+        }
+
+        &>button {
+            display: block;
+        }
+
+        &__subtitle {
+            color        : $realOrange;
+            font-weight  : 300;
+            padding      : 10px 0;
+            margin-bottom: 10px;
+            line-height  : 1.4;
+            text-align   : center;
+            opacity      : 0;
+            transition   : opacity .3s ease-in-out;
+
+            .strong {
+                font-weight: 500;
+            }
+        }
+
+        &__slider {
+            position: relative;
+
+            &__container {
+                width   : calc(100% - 60px);
+                overflow: hidden;
+                margin  : 0 30px 40px 30px;
+            }
+
+            &__dates {
+                display  : flex;
+                flex-wrap: nowrap;
+            }
+
+            &__box {
+                min-width : 100px;
+                flex      : 0 0 50%;
+                max-width : 50%;
+                transition: all .5s ease-in-out;
+
+                @include media-breakpoint-up(xs, (xs: 426px)) {
+                    flex     : 0 0 33.33333%;
+                    max-width: 33.33333%;
+                }
+
+                @include media-breakpoint-up(sm, (sm: 600px)) {
+                    flex     : 0 0 25%;
+                    max-width: 25%;
+                }
+
+                @include media-breakpoint-up(sm, (sm: 710px)) {
+                    flex     : 0 0 20%;
+                    max-width: 20%;
+                }
+
+                &__item {
+                    padding        : 10px;
+                    margin         : 0 5px;
+                    width          : calc(100% - 10px);
+                    height         : 100%;
+                    border-radius  : 10px;
+                    display        : flex;
+                    flex-direction : column;
+                    align-items    : center;
+                    justify-content: center;
+                    cursor         : pointer;
+                    border         : 1px solid rgba($color: $darkGray, $alpha: .3);
+
+                    &--reserved {
+                        cursor          : not-allowed;
+                        pointer-events  : all !important;
+                        background-color: rgba($color: $darkGray, $alpha: .1);
+                        color           : rgba($color: $darkGray, $alpha: .5);
+                        border-color    : $mainWhite;
+
+                        @include hover-focus-active {
+                            border-color: $mainWhite !important;
+
+                            div {
+                                color: rgba($color: $darkGray, $alpha: .5);
+                            }
+
+                            .complet {
+                                color: $mainRed;
+                            }
+                        }
+
+                        .complet {
+                            color      : $mainRed;
+                            font-weight: 500;
+                        }
+                    }
+
+                    &--active {
+                        background-color: $mainGreen;
+                        color           : $mainWhite;
+
+                        @include hover-focus-active {
+                            color: $mainWhite !important;
+                        }
+                    }
+
+                    @include media-breakpoint-up(xs, (xs: 426px)) {
+                        margin: 0 10px;
+                        width : calc(100% - 20px);
+                    }
+
+                    @include hover-focus-active {
+                        border-color: $mainGreen;
+                        color       : $mainGreen;
+
+                    }
+
+                    div {
+                        margin-bottom: 10px;
+                        font-weight  : 300;
+                        font-size    : 14px;
+
+                    }
+                }
+            }
+
+            &__prev,
+            &__next {
+                font-size: 23px;
+                display  : block;
+                position : absolute;
+                z-index  : 2;
+                top      : 50%;
+                transform: translateY(-50%);
+                padding  : 10px;
+
+                &:disabled {
+                    cursor        : not-allowed;
+                    pointer-events: all !important;
+                    color         : rgba($color: $darkGray, $alpha: .3);
+                }
+            }
+
+            &__prev {
+                left: -10px;
+            }
+
+            &__next {
+                right: -10px;
+            }
+        }
+
+        &__time-span {
+            display        : flex;
+            flex-wrap      : wrap;
+            justify-content: center;
+            padding-bottom : 10px;
+            border-bottom  : 1px solid rgba($color: $darkGray, $alpha: .2);
+
+            opacity   : 0;
+            transition: opacity .5s ease-in-out;
+        }
+
+        &__hour {
+            &__box {
+                margin       : 5px;
+                padding      : 15px 10px;
+                border       : 1px solid rgba($color: $darkGray, $alpha: .2);
+                border-radius: 10px;
+                font-size    : 14px;
+                font-weight  : 300;
+                cursor       : pointer;
+
+                &--active {
+                    background-color: $mainGreen;
+                    color           : $mainWhite;
+
+                    @include hover-focus-active {
+                        color: $mainWhite !important;
+                    }
+                }
+
+                &--reserved {
+                    cursor          : not-allowed;
+                    pointer-events  : all !important;
+                    background-color: rgba($color: $darkGray, $alpha: .1);
+                    color           : rgba($color: $darkGray, $alpha: .5);
+                    border-color    : $mainWhite;
+
+                    @include hover-focus-active {
+                        color       : rgba($color: $darkGray, $alpha: .5) !important;
+                        border-color: $mainWhite !important;
+                    }
+                }
+
+                @include hover-focus-active {
+                    color       : $mainGreen;
+                    border-color: $mainGreen;
+                }
+            }
+        }
+
+
+    }
+
+    &__btn-prev,
+    &__btn-next {
+        display      : inline-block;
+        padding      : 12px 15px;
+        margin       : 10px 0;
+        border-radius: 50px;
+        border       : none;
+        font-weight  : 500;
+        font-size    : 14px;
+        color        : $mainWhite;
+        transition   : background-color .2s ease-in-out;
+
+        @include media-breakpoint-up(xs, (xs: 460px)) {
+            font-size: 15px;
+        }
+
+        &:disabled {
+            background-color: rgba($color: $darkGray, $alpha: .4) !important;
+            cursor          : not-allowed;
+            pointer-events  : all !important;
+
+        }
+    }
+
+    &__btn-prev {
+        background-color: rgba($color: $darkGray, $alpha: .7);
+
+        @include hover-focus-active {
+            background-color: $darkGray;
+
+        }
+    }
+
+    &__btn-next {
+        background-color: $mainGreen;
+        margin-left     : 15px;
+
+        @include hover-focus-active {
+            background-color: darken($color: $mainGreen, $amount: 10%);
+
+        }
+    }
+
+    &__textarea {
+        resize       : none;
+        width        : 100%;
+        height       : 200px;
+        border       : 1px solid rgba($color: $darkGray, $alpha: .3);
+        border-radius: 5px;
+        padding      : 10px;
+
+        &::placeholder {
+            font-size  : 14px;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+    }
+
+    &__radio {
+        @extend .account__profile__gender;
+        font-weight: 300;
+        margin     : 12px 0px;
+
+        @include media-breakpoint-up(xs, (xs: 460px)) {
+            margin: 12px 30px 12px 0;
+        }
+
+
+        &__checkmark {
+            @extend .account__profile__gender__checkmark;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    &-success {
+        max-width : 680px;
+        margin    : 120px auto 40px auto;
+        text-align: center;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            &__header {
+                font-size    : 30px;
+                margin-bottom: 40px;
+            }
+        }
+
+        &__body {
+            border-radius   : 15px;
+            padding         : 20px;
+            background-color: $mainWhite;
+
+
+            p {
+                font-size  : 18px;
+                font-style : italic;
+                font-weight: 300;
+                color      : rgba($color: $darkGray, $alpha: .8);
+            }
+
+            p:nth-child(2) {
+                font-weight  : 500;
+                margin-bottom: 40px;
+            }
+
+            p:nth-child(3) {
+                color: rgba($color: $darkGray, $alpha: .5);
+
+            }
+
+
+            &__buttons {
+                display        : flex;
+                flex-wrap      : wrap;
+                justify-content: center;
+
+                button {
+                    display      : block;
+                    padding      : 12px 50px;
+                    border-radius: 50px;
+                    border       : none;
+                    margin       : 20px auto;
+                    font-weight  : 500;
+                    font-size    : 15px;
+                    transition   : background-color .2s ease-in-out;
+                    flex         : 0 0 100%;
+                    max-width    : 100%;
+
+                    @include media-breakpoint-up(xs, (xs: 540px)) {
+                        flex     : 0 0 40%;
+                        max-width: calc(40% - 40px);
+                        margin   : 20px;
+                    }
+
+
+                }
+
+                button:last-child {
+                    color           : $mainWhite;
+                    background-color: $mainGreen;
+
+                    @include hover-focus-active {
+                        background-color: darken($color: $mainGreen, $amount: 10%);
+                        ;
+                    }
+                }
+
+                button:first-child {
+                    background-color: $mainYellow;
+
+                    @include hover-focus-active {
+                        background-color: darken($color: $mainYellow, $amount: 10%);
+                        ;
+                    }
+                }
+            }
+
+
+        }
+    }
+}
