@@ -8,10 +8,12 @@ class Modal {
     constructor(folder, loader) {
         this.folder = folder
         this.loader = loader
-        this.lock = null
         this.products = null
         this.navbarList = navbarList
         this.backdrop = observable(0)
+        this.backdrop2 = observable(0)
+        this.lock = null
+        this.lock2 = null
         this.modalNavbar = observable()
         this.modalNavbarHeader = observable()
         this.modalNavbarSection = observableArray()
@@ -20,24 +22,38 @@ class Modal {
         this.modalAccount = observable()
         this.modalRequestError = observable()
         this.modalRequestSuccess = observable()
+        this.modalPurchasePanel = observable()
+        this.modalZone = observable()
         this.modalClose = computed(function () {
 
             if (!this.backdrop() && this.lock) {
                 this.loader(false)
                 this.modalNavbar(false)
                 this.modalBasket(false)
+                this.modalZone(false)
                 this.modalAccount(false)
                 this.modalRequestError(false)
                 this.modalRequestSuccess(false)
                 this.lock = false
 
             }
-            if (this.modalBasket() || this.modalNavbar() || this.modalAccount() || this.modalRequestError() || this.modalRequestSuccess()) {
+            if (this.modalBasket() || this.modalNavbar() || this.modalAccount()
+                || this.modalRequestError() || this.modalRequestSuccess() || this.modalZone()) {
                 this.backdrop(true)
                 this.lock = true
             }
 
         }, this);
+        this.modalClose2 = computed(function () {
+            if (!this.backdrop2() && this.lock2) {
+                this.modalPurchasePanel(false)
+                this.lock2 = false
+            }
+            if (this.modalPurchasePanel()) {
+                this.backdrop2(true)
+                this.lock2 = true
+            }
+        }, this)
     }
     openModalAccount() {
         this.modalAccount(true)
@@ -55,12 +71,24 @@ class Modal {
     getProductsAPI(obj) {
         var obj = obj
         this.modalNavbarSectionTitle(obj.title)
-        ProductsAPI.getAll().then((products) => {
-            const category = products.filter((item) => item.id === obj.target)[0]
-            this.folder('categorie-produit/' + obj.path)
-            OrderList.arrOfProducts = category.productsList
-            OrderList.updateProductGallery();
+
+        ProductsAPI.getAll('products').then((res) => {
+            if (res.ok) {
+                res.json().then(data => data).then((products) => {
+                    const category = products.filter((item) => item.id === obj.target)[0]
+                    this.folder('categorie-produit/' + obj.path)
+                    OrderList.arrOfProducts = category.productsList
+                    OrderList.updateProductGallery();
+                })
+            } else {
+                self.modalRequestError(true)
+            }
+
+        }).catch((error) => {
+            self.modalRequestError('network')
+            console.log(error)
         })
+
     }
 
 

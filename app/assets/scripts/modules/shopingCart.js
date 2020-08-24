@@ -14,7 +14,12 @@ class ProductOrder {
         this.like = observable(obj.like);
         this.price = observable(parseInt(obj.price).toFixed(2));
         this.basket = computed(function () {
-            return this.buy() ? (this.order() * this.price()).toFixed(2) : 0;
+            if (this.buy()) {
+                return (this.order() * this.price()).toFixed(2);
+            } else {
+                this.order(this.minOrder)
+                return 0;
+            }
         }, this);
     }
 
@@ -46,10 +51,12 @@ class OrderList {
 
         this.total = computed(function () {
             const arr = this.purchasedProducts().map((val) => val.basket() * 1)
-            return arr.length ? arr.reduce((a, b) => a + b) : null;
+            return arr.length ? arr.reduce((a, b) => a + b).toFixed(2) : null;
         }, this);
     }
-
+    clearPurchaseProducts() {
+        this.purchasedProducts().forEach((product) => product.buy(false))
+    }
     updateProductGallery() {
         const self = this
         var product = null

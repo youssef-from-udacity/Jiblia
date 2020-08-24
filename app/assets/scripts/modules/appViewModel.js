@@ -3,6 +3,7 @@ import OrderList from './shopingCart';
 import UserAccount from './userAccount';
 import Modal from './modal';
 import FormValidation from './formValidation';
+import Checkout from './checkout';
 import * as ProductsAPI from './utils/ProductsAPI';
 import Sammy from 'sammy';
 
@@ -18,6 +19,7 @@ class AppViewModel {
         this.userAccount = new UserAccount(this.folder, this.loader, this.modal);
         this.orderList = OrderList;
         this.formValidation = new FormValidation();
+        this.checkout = new Checkout(this);
         this.getProductsAPI();
         this.addBinding();
         this.sammyRoute();
@@ -57,12 +59,22 @@ class AppViewModel {
 
     }
     getProductsAPI() {
-        ProductsAPI.getAll().then((products) => {
+        ProductsAPI.getAll('products').then((res) => {
             var productsCash
-            products.forEach((item) => {
-                productsCash = ProductsAPI.productsCash().filter((obj) => obj().id === item.id)
-                !productsCash.length ? ProductsAPI.productsCash.push(observable(item)) : null;
-            });
+            if (res.ok) {
+                res.json().then(data => data).then((products) => {
+                    products.forEach((item) => {
+                        productsCash = ProductsAPI.productsCash().filter((obj) => obj().id === item.id)
+                        !productsCash.length ? ProductsAPI.productsCash.push(observable(item)) : null;
+                    });
+                })
+            } else {
+                self.modalRequestError(true)
+            }
+
+        }).catch((error) => {
+            self.modalRequestError('network')
+            console.log(error)
         })
     }
     sammyRoute() {
