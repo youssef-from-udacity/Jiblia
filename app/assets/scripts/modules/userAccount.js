@@ -5,11 +5,14 @@ import * as ProductsAPI from './utils/ProductsAPI';
 
 
 class UserAccount {
-    constructor(folder, loader, modal) {
-        this.folder = folder
-        this.loader = loader
-        this.modalRequestError = modal.modalRequestError
-        this.modalRequestSuccess = modal.modalRequestSuccess
+    constructor(glob) {
+        this.global = glob
+        this.folder = glob.folder
+        this.redirect = glob.redirect
+        this.loader = glob.loader
+        this.modalResponse = glob.modal.modalResponse
+        this.modalBasket = glob.modal.modalBasket
+        this.getCollections = null
         this.isTrue = observable(true)
         this.isLogin = observable();
         this.accountLogin = observable();
@@ -76,6 +79,51 @@ class UserAccount {
             { zone: "Tamraght", cost: 45 }
         ])
         this.transactions = observableArray()
+        this.transaction = observable()
+        this.cancelCommandTime = null
+        this.modifyCommandTime = null
+        this.modifyTheCommand = observable()
+    }
+
+    modifyPurchaseStatus() {
+        const self = this
+        const data = {}
+        data.id = self.profile().id
+        data.purchaseId = self.transaction().purchaseId
+        data.date = self.transaction().date
+        data.activeTime = self.transaction().activeTime
+        data.totalBasket = self.transaction().totalBasket
+        data.delivery = self.transaction().delivery
+        data.total = self.transaction().total
+        data.textarea = self.transaction().textarea
+        data.agreement = self.transaction().agreement
+        data.status = 'Annulée'
+        data.products = self.transaction().products
+
+        this.loader(true)
+        ProductsAPI.purchase(data).then((res) => {
+            if (res.ok) {
+                self.loader(false)
+                self.getUserPurchaseData.call(self)
+                self.modalResponse('success order was successfully canceled.')
+
+            } else {
+                self.loader(false)
+                self.modalResponse('error network')
+            }
+        }).catch((error) => {
+            self.loader(false)
+            self.modalResponse('error network')
+            console.log(error)
+        })
+    }
+
+    getDate(time) {
+        const d = new Date(...time)
+        const obj = {}
+        obj.cancelCommandTime = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0)).getTime()
+        obj.modifyCommandTime = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 6, 0)).getTime()
+        return obj
     }
 
     independentObservable() {
@@ -86,6 +134,7 @@ class UserAccount {
 
     signIn(form) {
         var self = this;
+        this.getCollections = this.global.userLikes.getCollections
         var data = $(form).serializeArray().reduce(function (obj, item) {
             obj[item.name] = item.value;
             return obj;
@@ -97,18 +146,24 @@ class UserAccount {
                     const index = self.zone().findIndex((obj) => obj.zone === response.profile.zone);
                     index !== -1 ? response.profile.zone = self.zone()[index] : null;
                     localStorage.setItem('token', response.access_token)
-                    self.folder('')
+                    if (self.redirect()) {
+                        self.folder(self.redirect())
+                        self.redirect('')
+                    } else {
+                        self.folder('')
+                    }
                     self.loader(false)
                     self.isLogin(true)
                     self.profile(response.profile)
-                    self.modalRequestSuccess('login success')
+                    self.modalResponse('success login')
+                    self.getCollections.call(self.global.userLikes)
                 })
             } else {
                 self.loader(false)
-                self.modalRequestError('email or password')
+                self.modalResponse('error email or password')
             }
         }).catch((error) => {
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
 
@@ -126,13 +181,13 @@ class UserAccount {
                 localStorage.setItem('token', res.json().access_token)
                 self.folder('mon-compte/login')
                 self.loader(false)
-                self.modalRequestSuccess('register success')
+                self.modalResponse('success register')
             } else {
                 self.loader(false)
-                self.modalRequestError('email exist')
+                self.modalResponse('error email exist')
             }
         }).catch((error) => {
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
 
@@ -146,14 +201,44 @@ class UserAccount {
             if (res.ok) {
                 self.folder('mon-compte/mes-informations')
                 self.loader(false)
-                self.modalRequestSuccess('update success')
+                self.modalResponse('success update')
             } else {
-                self.modalRequestError(true)
+                self.modalResponse('error network')
             }
         }).catch((error) => {
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
+
+    }
+
+    redoCommand() {
+        const self = this
+        const ProductOrder = this.global.orderList.ProductOrder
+        var product;
+        this.globalListProducts = this.global.orderList.globalListProducts
+        self.globalListProducts().forEach((item) => item.buy(false))
+        self.transaction().products.forEach((item) => {
+            for (var i = 0; i < self.globalListProducts().length; i++) {
+                if (self.globalListProducts().length !== 0) {
+                    let observableObj = self.globalListProducts()[i]
+                    if (observableObj.id === item.id) {
+                        observableObj.order(item.order)
+                        observableObj.buy(true)
+                        return observableObj;
+                    }
+                }
+            }
+            item.buy = true
+            product = new ProductOrder(item);
+            self.globalListProducts.push(product)
+            return product;
+        })
+
+        self.modalBasket(true)
+        self.folder('')
+
+
 
     }
 
@@ -165,16 +250,23 @@ class UserAccount {
             if (res.ok) {
                 self.loader(false)
                 res.json().then(data => data).then((client) => {
+                    client.transactions.forEach((transaction) => {
+                        const getTime = this.getDate.call(self, transaction.date)
+                        transaction.cancelCommandTime = getTime.cancelCommandTime
+                        transaction.modifyCommandTime = getTime.modifyCommandTime
+                    })
+                    client.transactions = client.transactions.sort(function (a, b) { return b.purchaseId - a.purchaseId });
+
+
                     self.transactions(client.transactions)
-                    console.log(client.transactions)
                 })
             } else {
                 self.loader(false)
-                self.modalRequestError(true)
+                self.modalResponse('error network')
             }
         }).catch((error) => {
             self.loader(false)
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
 
@@ -191,12 +283,12 @@ class UserAccount {
         ProductsAPI.reset(data).then((res) => {
             if (res.ok) {
                 self.loader(false)
-                self.modalRequestSuccess('update password success')
+                self.modalResponse('success update password')
             } else {
-                self.modalRequestError('password mismatched')
+                self.modalResponse('error password mismatched')
             }
         }).catch((error) => {
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
     }

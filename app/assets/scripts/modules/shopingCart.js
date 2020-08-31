@@ -10,7 +10,7 @@ class ProductOrder {
         this.imgURL = obj.imgURL
         this.minOrder = parseInt(obj.minOrder)
         this.buy = observable(obj.buy);
-        this.order = observable(parseInt(obj.order && this.buy() ? obj.order : obj.minOrder));
+        this.order = observable(parseInt(obj.order ? obj.order : obj.minOrder));
         this.like = observable(obj.like);
         this.price = observable(parseInt(obj.price).toFixed(2));
         this.basket = computed(function () {
@@ -36,6 +36,7 @@ class OrderList {
     constructor() {
         var self = this
         this.arrOfProducts = null;
+        this.ProductOrder = ProductOrder
         this.listProducts = observableArray([])
         this.globalListProducts = observableArray([])
         this.purchasedProducts = observableArray([]);

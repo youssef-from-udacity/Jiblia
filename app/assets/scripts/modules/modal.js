@@ -20,9 +20,9 @@ class Modal {
         this.modalNavbarSectionTitle = observable()
         this.modalBasket = observable()
         this.modalAccount = observable()
-        this.modalRequestError = observable()
-        this.modalRequestSuccess = observable()
-        this.modalPurchasePanel = observable()
+        this.modalResponse = observable()
+        this.modalResponse2 = observable()
+        this.modalLikes = observable()
         this.modalZone = observable()
         this.modalClose = computed(function () {
 
@@ -31,25 +31,25 @@ class Modal {
                 this.modalNavbar(false)
                 this.modalBasket(false)
                 this.modalZone(false)
+                this.modalLikes(false)
                 this.modalAccount(false)
-                this.modalRequestError(false)
-                this.modalRequestSuccess(false)
+                this.modalResponse(false)
                 this.lock = false
-
             }
             if (this.modalBasket() || this.modalNavbar() || this.modalAccount()
-                || this.modalRequestError() || this.modalRequestSuccess() || this.modalZone()) {
+                || this.modalResponse() || this.modalZone() || this.modalLikes()) {
                 this.backdrop(true)
                 this.lock = true
             }
 
         }, this);
+
         this.modalClose2 = computed(function () {
             if (!this.backdrop2() && this.lock2) {
-                this.modalPurchasePanel(false)
+                this.modalResponse2(false)
                 this.lock2 = false
             }
-            if (this.modalPurchasePanel()) {
+            if (this.modalResponse2()) {
                 this.backdrop2(true)
                 this.lock2 = true
             }
@@ -81,11 +81,11 @@ class Modal {
                     OrderList.updateProductGallery();
                 })
             } else {
-                self.modalRequestError(true)
+                self.modalResponse('error network')
             }
 
         }).catch((error) => {
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
 

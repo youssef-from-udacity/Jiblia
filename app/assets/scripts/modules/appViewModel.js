@@ -4,6 +4,7 @@ import UserAccount from './userAccount';
 import Modal from './modal';
 import FormValidation from './formValidation';
 import Checkout from './checkout';
+import UserLikes from './userLikes';
 import * as ProductsAPI from './utils/ProductsAPI';
 import Sammy from 'sammy';
 
@@ -11,15 +12,17 @@ import Sammy from 'sammy';
 class AppViewModel {
     constructor() {
         this.folder = observable('');
+        this.redirect = observable('');
         this.loader = observable();
         this.location = computed(function () {
             location.hash = this.folder();
         }, this)
         this.modal = new Modal(this.folder, this.loader);
-        this.userAccount = new UserAccount(this.folder, this.loader, this.modal);
+        this.userAccount = new UserAccount(this);
         this.orderList = OrderList;
         this.formValidation = new FormValidation();
         this.checkout = new Checkout(this);
+        this.userLikes = new UserLikes(this);
         this.getProductsAPI();
         this.addBinding();
         this.sammyRoute();

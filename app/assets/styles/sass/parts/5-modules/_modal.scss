@@ -135,8 +135,8 @@
 
             &__container {
                 display         : flex;
-                justify-content : center;
-                align-items     : center;
+                flex-direction  : column;
+                justify-content : flex-start;
                 background-color: $mainBeige;
                 overflow        : auto;
                 width           : 100%;
@@ -207,6 +207,7 @@
 
         &__empty {
             opacity: 0.7;
+            margin : auto;
 
             img {
                 transform: translatey(0px);
@@ -301,9 +302,17 @@
                 &__button {
                     @extend .modal__basket__bottom__clear__button;
 
+                    @include hover-focus-active {
+                        span {
+                            color: $mainRed;
+                        }
+                    }
+
                     span {
                         color: rgba($color: $darkGray, $alpha: 0.5);
+
                     }
+
                 }
 
                 &__total {
@@ -425,6 +434,45 @@
                 }
             }
         }
+
+        &__modify-command {
+            width           : calc(100% - 20px);
+            background-color: $mainRed;
+            border-radius   : 5px;
+            padding         : 15px;
+            margin          : 5px 10px 0 10px;
+            display         : flex;
+            color           : $mainWhite;
+            font-weight     : 300;
+            font-size       : 14px;
+
+            @include media-breakpoint-up(sm, (sm: 600px)) {
+                font-size: 15px;
+            }
+
+            &__panel {
+                max-width: 80%;
+                flex     : 0 0 80%;
+            }
+
+            &__button {
+                display         : block;
+                text-align      : right;
+                flex            : 0 0 20%;
+                max-width       : 20%;
+                color           : $mainWhite;
+                background-color: $mainRed;
+                transition      : color .2 ease-in-out;
+
+                @include hover-focus-active {
+                    color: $mainBlack;
+                }
+            }
+
+            strong {
+                font-weight: 700;
+            }
+        }
     }
 
     &__account {
@@ -481,8 +529,8 @@
         }
     }
 
-    &__connection {
-        max-width  : 450px;
+    &__response {
+        max-width  : 550px;
         width      : 100%;
         padding    : 10px;
         position   : fixed;
@@ -516,12 +564,12 @@
         }
 
         &--success {
-            @extend .modal__connection--error;
+            @extend .modal__response--error;
             background-color: $mainGreen;
         }
 
         &__clean {
-            @extend .modal__connection--error;
+            @extend .modal__response--error;
             color           : $mainBlack;
             background-color: $mainWhite;
 
@@ -536,7 +584,7 @@
                     max-width: 100%;
                     width    : 100%;
 
-                    @include media-breakpoint-up(xs, (xs: 420px)) {
+                    @include media-breakpoint-up(xs, (xs: 460px)) {
 
                         flex     : 0 0 50%;
                         max-width: 50%;
@@ -547,15 +595,19 @@
             button {
                 width        : calc(100% - 20px);
                 display      : inline-block;
-                padding      : 12px 50px;
+                padding      : 12px 30px;
                 border-radius: 50px;
                 border       : none;
                 margin       : 20px 10px;
                 font-weight  : 500;
-                font-size    : 18px;
+                font-size    : 14px;
                 color        : #ffffff;
                 transition   : background-color .2s ease-in-out;
                 cursor       : pointer;
+
+                @include media-breakpoint-up(sm, (sm: 600px)) {
+                    font-size: 16px;
+                }
             }
 
             &__clear-btn {
@@ -573,12 +625,154 @@
                     background-color: darken($color: gray, $amount: 10%);
                 }
             }
+
+            p {
+                white-space: initial;
+
+            }
         }
 
         &__valid {
-            @extend .modal__connection--error;
+            @extend .modal__response--error;
             background-color: $realOrange;
         }
 
+        &__add-group {
+            border-radius   : 10px;
+            width           : 100%;
+            height          : 100%;
+            padding         : 20px;
+            background-color: $mainWhite;
+            color           : $mainBlack;
+
+            &__title {
+                text-align   : center;
+                font-weight  : 500;
+                margin-bottom: 10px;
+                font-size    : 20px;
+            }
+
+            &__label {
+                font-weight: 300;
+                padding    : 15px 0;
+                display    : block;
+            }
+
+            &__input {
+                width        : 100%;
+                padding      : 13px;
+                border-radius: 5px;
+                border       : 1px solid rgba($color: $darkGray, $alpha: 0.2);
+                outline      : transparent;
+
+                &::placeholder {
+                    font-weight: 300;
+                    font-size  : 14px;
+                }
+
+            }
+
+            &__btn {
+                display        : flex;
+                justify-content: space-between;
+                padding        : 10px;
+
+                button {
+                    display      : block;
+                    padding      : 12px 25px;
+                    border-radius: 50px;
+                    border       : none;
+                    margin       : 20px auto;
+                    font-weight  : 500;
+                    font-size    : 15px;
+                    transition   : background-color .2s ease-in-out;
+                    color        : $mainWhite;
+
+                    &:first-child {
+                        background-color: $mainGreen;
+                    }
+
+                    &:last-child {
+                        background-color: rgba($color: $darkGray, $alpha: 0.5);
+                    }
+                }
+            }
+        }
+
+    }
+
+    &__likes {
+        overflow-x   : hidden;
+        overflow-y   : auto;
+        position     : fixed;
+        padding      : 20px;
+        border-radius: 5px 5px 0 0;
+        left         : 0;
+        bottom       : 0;
+        z-index      : 1050;
+        width        : 100%;
+        max-height   : 80vh;
+
+        outline         : 0;
+        background-color: $mainBeige;
+        transform       : translateY(100%);
+        transition      : all 0.2s ease-in-out;
+
+        &--open {
+            transform: translateY(0);
+        }
+
+        &__title {
+            text-align    : center;
+            border-bottom : 1px solid rgba($color: $darkGray, $alpha: 0.2);
+            padding-bottom: 20px;
+            margin        : 0 auto 20px auto;
+        }
+
+        &__row {
+            display    : flex;
+            align-items: center;
+            margin     : 20px 0;
+            cursor     : pointer;
+
+            @include hover-focus-active {
+                & .modal__likes__row__title {
+                    color: $mainGreen;
+                }
+            }
+        }
+
+        &__plus-icon {
+            height          : 40px;
+            width           : 40px;
+            background-color: #dcd8d8;
+            border-radius   : 50%;
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+            margin-right    : 10px;
+
+            &::before {
+                content  : '+';
+                font-size: 24px;
+                display  : block;
+            }
+        }
+
+        &__icon {
+            height          : 40px;
+            width           : 40px;
+            background-color: $mainGreen;
+            border-radius   : 5px;
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+            margin-right    : 10px;
+
+            div {
+                color    : $mainWhite;
+                font-size: 24px;
+            }
+        }
     }
 }

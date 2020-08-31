@@ -8,12 +8,14 @@ class StickyHeader {
     this.navbarTop = $('.navbar__top');
     this.navbarBottom = $('.navbar__bottom');
     this.navbarMenu = $('.navbar__top__menu');
+    this.modifyCommandCheckout = $('#modify-command-checkout');
     this.offset = this.navbarTop.outerHeight() + 50;
     this.window = $(window);
     this.windowWidth = this.window.width()
     this.windowPosition = this.window.scrollTop();
     this.directionIsDown = false;
     this.sticky;
+    this.sticky2
     this.createHeaderWaypoint();
     this.event();
   }
@@ -34,6 +36,7 @@ class StickyHeader {
     this.window = $(window);
     this.windowPosition = this.window.scrollTop();
     this.sticky ? this.sticky.destroy() : null;
+    this.sticky2 ? this.sticky2.destroy() : null;
     this.createHeaderWaypoint();
   }
 
@@ -56,7 +59,7 @@ class StickyHeader {
 
       } else if (scroll < this.previousPosition && this.directionIsDown) {
 
-        this.windowWidth > 720 ? this.navbarMiddle.removeClass('navbar__middle--hide') : null;
+        this.windowWidth >= 720 ? this.navbarMiddle.removeClass('navbar__middle--hide') : null;
         this.directionIsDown = false;
 
       }
@@ -67,10 +70,15 @@ class StickyHeader {
   createHeaderWaypoint() {
     let self = this;
 
-    if (this.windowWidth > 720) {
+    if (this.windowWidth >= 720) {
       this.sticky = new Waypoint.Sticky({
         element: self.navbarMiddle,
         offset: 55,
+      });
+
+      this.sticky2 = new Waypoint.Sticky({
+        element: self.modifyCommandCheckout,
+        offset: 80,
       });
     }
   }

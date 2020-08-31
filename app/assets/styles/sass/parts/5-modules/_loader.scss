@@ -13,6 +13,15 @@
     animation-fill-mode: both;
     animation          : load7 1.8s infinite ease-in-out;
 
+    &__container {
+        height   : 100px;
+        position : fixed;
+        left     : 50%;
+        top      : 50%;
+        transform: translate(-50%, -50%);
+        z-index  : 1060;
+    }
+
     &:before {
         border-radius          : 50%;
         width                  : 2.5em;

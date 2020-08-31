@@ -11,6 +11,21 @@
         padding: 20px;
     }
 
+    #modify-command-checkout {
+        position : absolute;
+        width    : calc(100% - 40px);
+        max-width: calc(1150px - 40px);
+        margin   : auto;
+        z-index  : 1039;
+
+
+        &.stuck {
+            position: fixed !important;
+            top     : 82px;
+        }
+
+    }
+
     &__header {
         text-align: center;
         font-size : 32px;
@@ -187,6 +202,10 @@
         &__body {
             transition: height .5s ease-in-out 0s;
             overflow  : hidden;
+
+            p {
+                font-size: 15px;
+            }
         }
     }
 

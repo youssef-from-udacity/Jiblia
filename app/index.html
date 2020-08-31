@@ -134,266 +134,10 @@
 
 
   </header>
-  <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
-  <div class="checkout" data-bind="visible: $root.folder().startsWith('check-out')">
-    <h3 class="checkout__header">Checkout</h3>
-    <div class="checkout__container">
-      <div class="checkout__step">
-        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step1',
-          'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step1').length} ">
-          <div class="checkout__icon icon-check-circle">1</div>
-          <div>Votre panier</div>
-        </div>
-        <div id="checkout-step1" class="checkout__step__body">
-          <!-- ko with: $root.orderList -->
-          <div data-bind="foreach: purchasedProducts,visible: purchasedProducts().length">
-            <div class="checkout__item" data-bind="css: { 'checkout__item--hide': !buy() }">
-              <div class="checkout__item__container">
-                <div class="checkout__item__top">
-                  <div class="checkout__item__img">
-                    <img data-bind="attr: { src: imgURL }" alt="apres shampooing" />
-                  </div>
-                  <div class="checkout__item__description">
-                    <div class="checkout__item__title">
-                      <span data-bind="text: title">Bjorg</span>
-                      <span>-
-                      </span>
-                      <span data-bind="text: subtitle">
-                        4 céréales - DIETITIQUE</span>
-                    </div>
-                    <div class="checkout__item__quantity" data-bind="text: quantity">130 g</div>
-                    <div class="checkout__item__price">Prix unitaire :
-                      <span data-bind="text: price">29.95 Dh</span>
-                    </div>
-                  </div>
-                  <div class="checkout__order">
-                    <span>
-                      <button type="button" class="button checkout__order--plus plus-btn"
-                        data-bind="click: increment"></button>
-                    </span>
-                    <span class="checkout__order__input">
-                      <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" height="100%" autocomplete="off"
-                        value="1" data-bind="value: order" readonly="readonly" />
-                    </span>
-                    <span>
-                      <button type="button" class="button checkout__order--minus minus-btn"
-                        data-bind="click: decrement,disable: order() < 2"></button>
-                    </span>
-                  </div>
-                </div>
-
-                <div class="checkout__item__bottom">
-                  <button type="button" class="button checkout__item__bottom__button" data-bind="toggleClick: buy">
-                    <span>X</span>
-                    <span>
-                      Enlever</span>
-                  </button>
-                  <div class="checkout__item__bottom__total">
-                    <span data-bind="text: basket">0.00</span>
-                    <span>Dh</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /ko -->
-          <!-- ko with: $root.checkout -->
-
-          <button class="button checkout__btn-prev" disabled>RETOUR</button>
-          <button class="button checkout__btn-next" data-bind="click:  function(){
-            hideElement.call($root.checkout, '#checkout-step1');
-            setTimeout(()=>showElement.call($root.checkout, '#checkout-step2'),450);
-            getCalendarAPI.call($root.checkout);
-            }">ÉTAPE
-            SUIVANTE</button>
-          <!-- /ko -->
-
-        </div>
-      </div>
-      <div class="checkout__step">
-        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step2',
-        'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step2').length} ">
-          <div class="checkout__icon icon-check-circle">2</div>
-          <div>Date et heure de la livraison</div>
-        </div>
-        <div id="checkout-step2" class="checkout__step__body" style="height: 0;">
-          <!-- ko with: $root.checkout -->
-          <div data-bind="visible: success().filter((item)=>item === '#checkout-step1').length">
-
-            <div class="checkout__date-picker__title">Ma journée</div>
-
-            <div class="checkout__date-picker__slider">
-              <div class="checkout__date-picker__slider__container">
-
-                <div data-bind="visible: $root.loader()" style="height: 100px;">
-                  <div class="loader">Loading...</div>
-                </div>
-                <div class="checkout__date-picker__slider__dates" data-bind="foreach: datePicker">
-                  <div class="checkout__date-picker__slider__box">
-                    <button class="button checkout__date-picker__slider__box__item" data-bind="css: {'checkout__date-picker__slider__box__item--reserved': reserved,
-                      'checkout__date-picker__slider__box__item--active': $parent.data()=== $data},
-                      disable: reserved,click: function(){
-                      $parent.data($data)
-                      $parent.showTimeSpan(true)
-                    }">
-                      <div data-bind="text: dayName">Samedi</div>
-                      <div>
-                        <span data-bind="text: day">22</span>/ <span data-bind="text: monthName">Aout</span>
-                      </div>
-                      <div class="complet" data-bind="visible: reserved">Complet</div>
-                    </button>
-                  </div>
-                </div>
-                <button class="button checkout__date-picker__slider__prev"
-                  data-bind="click: slideTo.bind($root.checkout, 'left'),disable: rightArrow() - factor() < 0">&#8592;</button>
-                <button class="button checkout__date-picker__slider__next"
-                  data-bind="click: slideTo.bind($root.checkout, 'right'),disable: leftArrow() - factor() <= 0">&#8594;</button>
-              </div>
-            </div>
-
-            <div data-bind="visible: showTimeSpan()">
-              <div class="checkout__date-picker__title">Mon horaire</div>
-              <div class="checkout__date-picker__time-span"
-                data-bind="foreach: timeSpan,style: {opacity: data().activeTime() || typeof (data().activeTime())? '1' : '0'}">
-                <div class="checkouot__date-picker__hour">
-                  <div class="checkout__date-picker__hour__box" data-bind="css: {'checkout__date-picker__hour__box--reserved': $parent.data().reservedTimes().filter((n)=> n === $index()).length > 0,
-                    'checkout__date-picker__hour__box--active': $parent.data().activeTime() === $index()},
-                    click: $parent.data().activeTime.bind($data,$index()),text: $data">
-                    12:00 - 13:00</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="checkout__date-picker__subtitle"
-              data-bind="visible: data().activeTime() || typeof (data().activeTime()) === 'number',style: {opacity: data().activeTime() || typeof (data().activeTime())? '1' : '0'}">
-              Vous serez livré
-              <strong class="strong">le
-                <span data-bind="text: data().dayName">Dimanche</span>
-                , <span data-bind="text: data().day">16</span>
-                <span data-bind="text: data().monthName">aout</span>
-              </strong> entre <span data-bind="visible: typeof (data().activeTime()) !== 'number'">... et
-                ...</span>
-              <strong class="strong" data-bind="text: timeSpan[data().activeTime()]">13:00 et 14:00</strong>
-            </div>
-          </div>
-
-          <button class="button checkout__btn-prev" data-bind="click: function(){
-              hideElement.call($root.checkout, '#checkout-step2', true);
-              setTimeout(()=>showElement.call($root.checkout, '#checkout-step1'),450);
-            }">RETOUR</button>
-          <button class="button checkout__btn-next" data-bind="click: function(){
-            hideElement.call($root.checkout, '#checkout-step2');
-            setTimeout(()=>showElement.call($root.checkout, '#checkout-step3'),450);
-            },disable: typeof (data().activeTime()) !== 'number'">ÉTAPE
-            SUIVANTE</button>
-
-
-          <!-- /ko -->
-
-        </div>
-      </div>
-      <div class="checkout__step">
-        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step3',
-        'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step3').length} ">
-          <div class="checkout__icon icon-check-circle">3</div>
-          <div>Voulez-vous ajouter un commentaire ?</div>
-        </div>
-        <div id="checkout-step3" class="checkout__step__body" style="height: 0;">
-          <textarea class="checkout__textarea" placeholder="Consignes, produits manquants, remarques, ..."
-            data-bind="value: $root.checkout.textarea"></textarea>
-          <!-- ko with: $root.checkout -->
-
-          <button class="button checkout__btn-prev" data-bind="click: function(){
-            hideElement.call($root.checkout, '#checkout-step3',true);
-            setTimeout(()=>showElement.call($root.checkout, '#checkout-step2'),450);
-          }">RETOUR</button>
-          <button class="button checkout__btn-next" data-bind="click: function(){
-          hideElement.call($root.checkout, '#checkout-step3');
-          setTimeout(()=>showElement.call($root.checkout, '#checkout-step4'),450);
-          }">ÉTAPE
-            SUIVANTE</button>
-          <!-- /ko -->
-
-        </div>
-      </div>
-      <!-- ko with: $root.checkout -->
-
-      <div class="checkout__step">
-        <div class="checkout__title" data-bind="css: {'checkout__title--active': active() === '#checkout-step4',
-        'checkout__title--success': success().filter((item)=>item === '#checkout-step4').length} ">
-          <div class="checkout__icon icon-check-circle">4</div>
-          <div>Et si un produit est en rupture de stock ?</div>
-        </div>
-        <div id="checkout-step4" class="checkout__step__body" style="height: 0;"
-          data-bind="style: {opacity: $root.loader() ? '.5':'1'}">
-          <div>
-            <div class="checkout__radio">
-              <label for="agreement1">
-                <input type="radio" name="agreement" id="agreement1" value="first" data-bind="checked: agreement">
-                <span class="checkout__radio__checkmark"></span>
-                <p>J'accèpte un changement de produit si la réference que j'ai commandée est en rupture de
-                  stock.</p>
-              </label>
-            </div>
-            <div class="checkout__radio">
-              <label for="agreement2">
-                <input type="radio" name="agreement" id="agreement2" value="second" data-bind="checked: agreement">
-                <span class="checkout__radio__checkmark"></span>
-                <p>J'accèpte un changement de produit sous certaines conditions. Merci de me prévenir avant toute
-                  substitution.</p>
-              </label>
-            </div>
-            <div class="checkout__radio">
-              <label for="agreement3">
-                <input type="radio" name="agreement" id="agreement3" value="third" data-bind="checked: agreement">
-                <span class="checkout__radio__checkmark"></span>
-                <p>Je n'accepte pas de changement de produit, au risque d'avoir des produits manquants. Merci de ne
-                  faire aucune substitution.</p>
-              </label>
-            </div>
-          </div>
-          <div style="display: flex;">
-            <button class="button checkout__btn-prev" data-bind="click: function(){
-              hideElement.call($root.checkout, '#checkout-step4',true);
-              setTimeout(()=>showElement.call($root.checkout, '#checkout-step3'),450);
-            }">RETOUR</button>
-            <button class="button checkout__btn-next" data-bind="click: sendPurchase">ENVOYER<br> MA COMMANDE</button>
-          </div>
-        </div>
-        <div data-bind="visible: $root.loader()" style="height: 100px;">
-          <div class="loader">Loading...</div>
-        </div>
-      </div>
-      <!-- /ko -->
-
-    </div>
+  <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
+    <div class="loader">Loading...</div>
   </div>
-  <div class="checkout-success" data-bind="visible: $root.folder().startsWith('checkout/commande-envoyee')">
-    <h2 class="checkout-success__header">Nous avons bien reçu votre commande !</h2>
-    <!-- ko with: $root.checkout -->
-
-    <div class="checkout-success__body">
-      <p>Vous serez livré le</p>
-      <p>"
-        <span data-bind="text: data().dayName">Mercredi</span>
-        <span data-bind="text: data().day">19</span>
-        <span data-bind="text: data().monthName">aout</span>
-        <span data-bind="text: data().date[0]">2020</span>
-        entre
-        <span
-          data-bind="text: timeSpan[data().activeTime()]? timeSpan[data().activeTime()].replace('-', 'et'):null">13:00
-          et
-          14:00</span>"</p>
-      <p>"Merci pour votre confiance"</p>
-      <div class="checkout-success__body__buttons">
-        <button class="button" data-bind="click: folder.bind($data,'')">PAGE DACCUIL</button>
-        <button class="button">MES ACHATS</button>
-      </div>
-    </div>
-    <!-- /ko -->
-  </div>
-
-  <div class="main" data-bind="visible: folder()===''">
+  <div class="main" data-bind="visible: folder()===''" style="display: none;">
     <div class="home">
       <div class="home__features">
         <div class="home__features__item">
@@ -700,13 +444,19 @@
       </div>
     </div>
   </div>
+
+  <div class="faq" data-bind="visible: $root.folder().startsWith('faq')" style="display: none;">
+    <div class="faq__body"></div>
+  </div>
+
   <!-- ko with: orderList -->
   <div class="gallery"
-    data-bind="foreach: listProducts, visible: listProducts().length > 0 && $root.folder().startsWith('categorie-produit')">
+    data-bind="foreach: listProducts, visible: listProducts().length > 0 && $root.folder().startsWith('categorie-produit'),style: {'opacity': $root.loader()? 0.5 : 1}""
+    style=" display: none;">
     <div class="gallery__item" data-bind="css: { 'gallery__item--overlay': buy() }">
       <div class="gallery__item__top">
         <button class="button gallery__item__like" type="button"
-          data-bind="css: { 'gallery__item__like--true': like() },toggleClick: like">
+          data-bind="css: { 'gallery__item__like--true': like() },click: $root.userLikes.getLikeStatus.bind($root.userLikes, $data)">
           <span class="icon-heart"></span>
         </button>
         <div class="gallery__item__img">
@@ -749,7 +499,7 @@
   <!-- /ko -->
 
   <!-- ko with: userAccount -->
-  <div class="account" data-bind="visible: $root.folder().startsWith('mon-compte')">
+  <div class="account" data-bind="visible: $root.folder().startsWith('mon-compte')" style="display: none;">
     <div class="account__login" data-bind="visible: $root.folder().startsWith('mon-compte/login')">
       <h4 class="account__login__header">Me Connecter à mon compte</h4>
       <form class="account__login__form" id="login"
@@ -783,7 +533,9 @@
         </div>
         <div class="account__login__form__bottom">
           <div class="account__login__form__group">
-            <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
+            <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
+              <div class="loader">Loading...</div>
+            </div>
             <button class="button" type="submit" data-bind="disable: !$root.formValidation.formValid()">ME
               CONNECTER</button>
             <div class="account__login__form__bottom--register">
@@ -800,7 +552,8 @@
       </form>
     </div>
 
-    <div class="account__registration" data-bind="visible: folder().startsWith('mon-compte/register')">
+    <div class="account__registration" data-bind="visible: folder().startsWith('mon-compte/register')"
+      style="display: none;">
       <h4 class="account__registration__header">Créer mon compte</h4>
       <form id="register" class="account__registration__form form" method="post"
         data-parsley-validate="data-parsley-validate"
@@ -985,7 +738,8 @@
     </div>
 
     <div class="account__retrieval"
-      data-bind="visible: folder().startsWith('mon-compte/demande-reinitilalisation-mot-de-passe')">
+      data-bind="visible: folder().startsWith('mon-compte/demande-reinitilalisation-mot-de-passe')"
+      style="display: none;">
       <h4 class="account__retrieval__header">Demande de réinitialiser le mot de passe</h4>
       <form class="account__retrieval__form" action="/retrieval" method="post">
         <div class="account__retrieval__body">
@@ -1010,7 +764,8 @@
       </form>
     </div>
 
-    <div class="account__profile" data-bind="visible: folder().startsWith('mon-compte/mes-informations')">
+    <div class="account__profile" data-bind="visible: folder().startsWith('mon-compte/mes-informations')"
+      style="display: none;">
       <h4 class="account__profile__header">Mes informations</h4>
       <!-- ko with: $root.userAccount.independentObservable() -->
       <form class="account__profile__form" id="account-profile" method="POST"
@@ -1241,8 +996,9 @@
                   <li>Les deux mots de passe ne sont pas identiques</li>
                 </ul>
               </div>
-              <div class="loader" data-bind="visible: $root.loader()">Loading...</div>
-
+              <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
+                <div class="loader">Loading...</div>
+              </div>
               <button type="submit" class="button" data-bind="disable: !observable()">METTRE Á JOUR</button>
 
             </div>
@@ -1259,11 +1015,12 @@
       </div>
     </div>
 
-    <div class="account__purchase" data-bind="visible: folder().startsWith('mon-compte/mes-achats')">
+    <div class="account__purchase" data-bind="visible: folder().startsWith('mon-compte/mes-achats')"
+      style="display: none;">
       <div class="account__purchase__header">
         <h2>Mes achats</h2>
       </div>
-      <div data-bind="visible: $root.loader()" style="height: 100px;">
+      <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
         <div class="loader">Loading...</div>
       </div>
       <!-- ko foreach: transactions -->
@@ -1278,7 +1035,7 @@
           <div class="account__purchase__order__right">
             <span data-bind="text: date[2]">22</span><span>/</span>
             <span data-bind="text: date[1] + 1">08</span><span>/</span>
-            <span data-bind="date[0]">2020</span></div>
+            <span data-bind="text: date[0]">2020</span></div>
         </div>
         <div class="account__purchase__order__row">
           <div class="account__purchase__order__left">Heure de la livraison</div>
@@ -1287,7 +1044,10 @@
         </div>
         <div class="account__purchase__order__row">
           <div class="account__purchase__order__left">Statut</div>
-          <div class="account__purchase__order__right account__purchase__order--in-progress">En cours</div>
+          <div class="account__purchase__order__right" data-bind="text: status,css:{'account__purchase__order--in-progress': status === 'En cours',
+            'account__purchase__order--canceled': status === 'Annulée',
+            'account__purchase__order--delivered': status === 'delivered'
+          }">En cours</div>
         </div>
         <div class="account__purchase__order__row account__purchase__order__row--highlight">
           <div class="account__purchase__order__left">Sous-Total</div>
@@ -1336,7 +1096,7 @@
                 </div>
                 <div class="account__purchase__order__description__price">
                   <span>Prix unitaire : </span>
-                  <span data-bind="text: (price).toFixed(2)">65.50</span>
+                  <span data-bind="text: price">65.50</span>
                   <span> Dh</span></div>
               </div>
               <div class="account__purchase__order__number">
@@ -1345,8 +1105,113 @@
               </div>
             </div>
           </div>
+          <div class="account__purchase__order__btn-container">
+            <button class="button" data-bind="visible: Date.now() < cancelCommandTime && status === 'En cours',click: function(){
+              $parent.transaction($data)
+              $root.modal.modalResponse2(`cancel the command`)
+            }">ANUNULER LA COMMANDE
+              *</button>
+            <button class="button" data-bind="visible: Date.now() < modifyCommandTime,click: function(){
+              $parent.transaction($data)
+              $root.modal.modalResponse2(`modify the command`)
+            }">modifier LA COMMANDE
+              **</button>
+            <button class="button" data-bind="click: function(){
+                $parent.transaction($data)
+                $root.modal.modalResponse2(`redo the command`)
+              }">REFAIRE LA COMMANDE</button>
+          </div>
+          <p class="account__purchase__order__notes"
+            data-bind="visible: Date.now() < cancelCommandTime && status === 'En cours'">* Vous
+            avez le droit d'annuler cette commande avant le 00:00 du
+            jour
+            <span data-bind="text: date[2]">22</span><span>/</span>
+            <span data-bind="text: date[1] + 1">08</span><span>/</span>
+            <span data-bind="text: date[0]">2020</span>.</p>
+          <p class="account__purchase__order__notes" data-bind="visible: Date.now() < modifyCommandTime">** Vous
+            avez le droit de modifier cette commande avant le 06:00 du
+            jour
+            <span data-bind="text: date[2]">22</span><span>/</span>
+            <span data-bind="text: date[1] + 1">08</span><span>/</span>
+            <span data-bind="text: date[0]">2020</span>.</p>
+        </div>
+      </div>
+      <!-- /ko -->
 
-          <button class="button account__purchase__order__button">REFAIRE LA COMMANDE</button>
+    </div>
+
+    <div class="account__collection" data-bind="visible: folder().startsWith('mon-compte/mes-collections')">
+      <h4 class="account__collection__header">Mes collections</h4>
+      <!-- ko with: $root.userLikes -->
+      <div data-bind="visible: group(),style: {'opacity': $root.loader()? 0.5 : 1}">
+        <div class="account__collection__title__btn">
+          <span
+            data-bind="click: $root.userLikes.setFocusFlag.bind($root.userLikes),visible: groupTitle() && group()? groupTitle() === group().name() : null">modifier
+            le titre</span>
+          <span
+            data-bind="click: changeCollectionTitle.bind($root.userLikes),visible: groupTitle() && group() ? groupTitle() !== group().name() : null">Enregistrer</span>
+        </div>
+        <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+        <input type="text" class="account__collection__title" data-bind="textInput: groupTitle,
+            hasFocus: $root.userLikes.titleFlag,event: {'keyup': function(){
+              groupTitle().length ? groupTitle(groupTitle()[0].toUpperCase() + groupTitle().slice(1)): null;
+            }}">
+
+        <div class="account__collection__products">
+          <div data-bind="visible: group() ? group().products().length ===0 : null">Cette collection ne contient
+            aucun produit !</div>
+          <div class="account__collection__products__container"
+            data-bind="visible: group() ? group().products().length !== 0 : null,foreach: group()? group().products : null">
+
+            <div class="account__collection__products__item">
+              <div class="account__collection__products__img">
+                <img data-bind="attr: { src: imgURL }" alt="">
+              </div>
+              <div class="account__collection__products__description">
+                <div class="account__collection__products__description__title">
+                  <span data-bind="text: title">Dalaa</span>
+                  <span> - </span>
+                  <span data-bind="text: subtitle">Couches n°1 et 2 - 5-9kg - Mini</span>
+                </div>
+                <div class="account__collection__products__description__quantity">
+                  <strong data-bind="text: quantity">64 Couches</strong>
+                </div>
+              </div>
+              <div class="account__collection__products__button">
+                <button type="button" class="button"
+                  data-bind="click: $parent.removeProductFromCollection.bind($parent)">
+                  <span>X</span>
+                  <span>
+                    Enlever</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="account__collection__btn">
+          <button class="button account__collection__btn-prev" data-bind="click: group.bind($data,false)">RETOUR AUX
+            COLLECTIONS</button>
+          <button class="button account__collection__btn-next"
+            data-bind="visible: group() ? group().products().length: null, click: addCollectionToBasket.bind($root.userLikes)">AJOUTER
+            À MON PANIER</button>
+          <button class="button account__collection__btn-center"
+            data-bind="click: modalResponse2.bind($data,'remove collection')">
+            <span>X</span>
+            <span>Supprimer la collections</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="account__collection__body" data-bind="foreach: $root.userLikes.collections,visible: !group()">
+        <div class="account__collection__item" data-bind="click: $parent.group.bind($data)">
+          <div class="account__collection__item__container">
+            <div class="account__collection__item__icon" data-bind="text: name()[0]">T</div>
+            <div class="account__collection__item__name" data-bind="text: name()">Too</div>
+            <div class="account__collection__item__products"><span data-bind="text: products().length">4</span> produits
+            </div>
+          </div>
         </div>
       </div>
       <!-- /ko -->
@@ -1355,8 +1220,284 @@
   </div>
   <!-- /ko -->
 
+  <div class="checkout" data-bind="visible: $root.folder().startsWith('check-out')" style="display: none;">
+    <div id="modify-command-checkout" class="modal__basket__modify-command"
+      data-bind="visible: $root.userAccount.modifyTheCommand() && $root.orderList.purchasedProducts().length">
+      <div class="modal__basket__modify-command__panel">
+        <span>Vous êtes entrain de modifier la commande <strong><span>N° #</span>
+            <span
+              data-bind="text: $root.userAccount.transaction() ? $root.userAccount.transaction().purchaseId : null">00325</span>
+          </strong></span>
+      </div>
+      <button class="button modal__basket__modify-command__button"
+        data-bind="click: $root.userAccount.modifyTheCommand.bind($data,false)">Annuler l'édition</button>
+    </div>
+    <div style="height: 51px;"
+      data-bind="visible: $root.userAccount.modifyTheCommand() && $root.orderList.purchasedProducts().length"></div>
+    <h3 class="checkout__header">Checkout</h3>
+    <div class="checkout__container">
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step1',
+          'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step1').length} ">
+          <div class="checkout__icon icon-check-circle">1</div>
+          <div>Votre panier</div>
+        </div>
+        <div id="checkout-step1" class="checkout__step__body">
+          <!-- ko with: $root.orderList -->
+          <div data-bind="foreach: purchasedProducts,visible: purchasedProducts().length">
+            <div class="checkout__item" data-bind="css: { 'checkout__item--hide': !buy() }">
+              <div class="checkout__item__container">
+                <div class="checkout__item__top">
+                  <div class="checkout__item__img">
+                    <img data-bind="attr: { src: imgURL }" alt="apres shampooing" />
+                  </div>
+                  <div class="checkout__item__description">
+                    <div class="checkout__item__title">
+                      <span data-bind="text: title">Bjorg</span>
+                      <span>-
+                      </span>
+                      <span data-bind="text: subtitle">
+                        4 céréales - DIETITIQUE</span>
+                    </div>
+                    <div class="checkout__item__quantity" data-bind="text: quantity">130 g</div>
+                    <div class="checkout__item__price">Prix unitaire :
+                      <span data-bind="text: price">29.95 Dh</span>
+                    </div>
+                  </div>
+                  <div class="checkout__order">
+                    <span>
+                      <button type="button" class="button checkout__order--plus plus-btn"
+                        data-bind="click: increment"></button>
+                    </span>
+                    <span class="checkout__order__input">
+                      <input class="input-spin" aria-valuemax="99999" aria-valuemin="1" height="100%" autocomplete="off"
+                        value="1" data-bind="value: order" readonly="readonly" />
+                    </span>
+                    <span>
+                      <button type="button" class="button checkout__order--minus minus-btn"
+                        data-bind="click: decrement,disable: order() < 2"></button>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="checkout__item__bottom">
+                  <button type="button" class="button checkout__item__bottom__button" data-bind="toggleClick: buy">
+                    <span>X</span>
+                    <span>
+                      Enlever</span>
+                  </button>
+                  <div class="checkout__item__bottom__total">
+                    <span data-bind="text: basket">0.00</span>
+                    <span>Dh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko with: $root.checkout -->
+
+          <button class="button checkout__btn-prev" disabled>RETOUR</button>
+          <button class="button checkout__btn-next" data-bind="click:  function(){
+            hideElement.call($root.checkout, '#checkout-step1');
+            setTimeout(()=>showElement.call($root.checkout, '#checkout-step2'),450);
+            getCalendarAPI.call($root.checkout);
+            }">ÉTAPE
+            SUIVANTE</button>
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step2',
+        'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step2').length} ">
+          <div class="checkout__icon icon-check-circle">2</div>
+          <div>Date et heure de la livraison</div>
+        </div>
+        <div id="checkout-step2" class="checkout__step__body" style="height: 0;">
+          <!-- ko with: $root.checkout -->
+          <div data-bind="visible: success().filter((item)=>item === '#checkout-step1').length">
+
+            <div class="checkout__date-picker__title">Ma journée</div>
+
+            <div class="checkout__date-picker__slider">
+              <div class="checkout__date-picker__slider__container">
+
+                <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
+                  <div class="loader">Loading...</div>
+                </div>
+                <div class="checkout__date-picker__slider__dates" data-bind="foreach: datePicker">
+                  <div class="checkout__date-picker__slider__box">
+                    <button class="button checkout__date-picker__slider__box__item" data-bind="css: {'checkout__date-picker__slider__box__item--reserved': reserved,
+                      'checkout__date-picker__slider__box__item--active': $parent.data()=== $data},
+                      disable: reserved,click: function(){
+                      $parent.data($data)
+                      $parent.showTimeSpan(true)
+                    }">
+                      <div data-bind="text: dayName">Samedi</div>
+                      <div>
+                        <span data-bind="text: day">22</span>/ <span data-bind="text: monthName">Aout</span>
+                      </div>
+                      <div class="complet" data-bind="visible: reserved">Complet</div>
+                    </button>
+                  </div>
+                </div>
+                <button class="button checkout__date-picker__slider__prev"
+                  data-bind="click: slideTo.bind($root.checkout, 'left'),disable: rightArrow() - factor() < 0">&#8592;</button>
+                <button class="button checkout__date-picker__slider__next"
+                  data-bind="click: slideTo.bind($root.checkout, 'right'),disable: leftArrow() - factor() <= 0">&#8594;</button>
+              </div>
+            </div>
+
+            <div data-bind="visible: showTimeSpan()">
+              <div class="checkout__date-picker__title">Mon horaire</div>
+              <div class="checkout__date-picker__time-span"
+                data-bind="foreach: timeSpan,style: {opacity: data().activeTime() || typeof (data().activeTime())? '1' : '0'}">
+                <div class="checkouot__date-picker__hour">
+                  <div class="checkout__date-picker__hour__box" data-bind="css: {'checkout__date-picker__hour__box--reserved': $parent.data().reservedTimes().filter((n)=> n === $index()).length > 0,
+                    'checkout__date-picker__hour__box--active': $parent.data().activeTime() === $index()},
+                    click: $parent.data().activeTime.bind($data,$index()),text: $data">
+                    12:00 - 13:00</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="checkout__date-picker__subtitle"
+              data-bind="visible: data().activeTime() || typeof (data().activeTime()) === 'number',style: {opacity: data().activeTime() || typeof (data().activeTime())? '1' : '0'}">
+              Vous serez livré
+              <strong class="strong">le
+                <span data-bind="text: data().dayName">Dimanche</span>
+                , <span data-bind="text: data().day">16</span>
+                <span data-bind="text: data().monthName">aout</span>
+              </strong> entre <span data-bind="visible: typeof (data().activeTime()) !== 'number'">... et
+                ...</span>
+              <strong class="strong" data-bind="text: timeSpan[data().activeTime()]">13:00 et 14:00</strong>
+            </div>
+          </div>
+
+          <button class="button checkout__btn-prev" data-bind="click: function(){
+              hideElement.call($root.checkout, '#checkout-step2', true);
+              setTimeout(()=>showElement.call($root.checkout, '#checkout-step1'),450);
+            }">RETOUR</button>
+          <button class="button checkout__btn-next" data-bind="click: function(){
+            hideElement.call($root.checkout, '#checkout-step2');
+            setTimeout(()=>showElement.call($root.checkout, '#checkout-step3'),450);
+            },disable: typeof (data().activeTime()) !== 'number' || !showTimeSpan()">ÉTAPE
+            SUIVANTE</button>
+
+
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': $root.checkout.active() === '#checkout-step3',
+        'checkout__title--success': $root.checkout.success().filter((item)=>item === '#checkout-step3').length} ">
+          <div class="checkout__icon icon-check-circle">3</div>
+          <div>Voulez-vous ajouter un commentaire ?</div>
+        </div>
+        <div id="checkout-step3" class="checkout__step__body" style="height: 0;">
+          <textarea class="checkout__textarea" placeholder="Consignes, produits manquants, remarques, ..."
+            data-bind="value: $root.checkout.textarea"></textarea>
+          <!-- ko with: $root.checkout -->
+
+          <button class="button checkout__btn-prev" data-bind="click: function(){
+            hideElement.call($root.checkout, '#checkout-step3',true);
+            setTimeout(()=>showElement.call($root.checkout, '#checkout-step2'),450);
+          }">RETOUR</button>
+          <button class="button checkout__btn-next" data-bind="click: function(){
+          hideElement.call($root.checkout, '#checkout-step3');
+          setTimeout(()=>showElement.call($root.checkout, '#checkout-step4'),450);
+          }">ÉTAPE
+            SUIVANTE</button>
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <!-- ko with: $root.checkout -->
+
+      <div class="checkout__step">
+        <div class="checkout__title" data-bind="css: {'checkout__title--active': active() === '#checkout-step4',
+        'checkout__title--success': success().filter((item)=>item === '#checkout-step4').length} ">
+          <div class="checkout__icon icon-check-circle">4</div>
+          <div>Et si un produit est en rupture de stock ?</div>
+        </div>
+        <div id="checkout-step4" class="checkout__step__body" style="height: 0;"
+          data-bind="style: {opacity: $root.loader() ? '.5':'1'}">
+          <div>
+            <div class="checkout__radio">
+              <label for="agreement1">
+                <input type="radio" name="agreement" id="agreement1" value="first" data-bind="checked: agreement">
+                <span class="checkout__radio__checkmark"></span>
+                <p>J'accèpte un changement de produit si la réference que j'ai commandée est en rupture de
+                  stock.</p>
+              </label>
+            </div>
+            <div class="checkout__radio">
+              <label for="agreement2">
+                <input type="radio" name="agreement" id="agreement2" value="second" data-bind="checked: agreement">
+                <span class="checkout__radio__checkmark"></span>
+                <p>J'accèpte un changement de produit sous certaines conditions. Merci de me prévenir avant toute
+                  substitution.</p>
+              </label>
+            </div>
+            <div class="checkout__radio">
+              <label for="agreement3">
+                <input type="radio" name="agreement" id="agreement3" value="third" data-bind="checked: agreement">
+                <span class="checkout__radio__checkmark"></span>
+                <p>Je n'accepte pas de changement de produit, au risque d'avoir des produits manquants. Merci de ne
+                  faire aucune substitution.</p>
+              </label>
+            </div>
+          </div>
+          <div style="display: flex;">
+            <button class="button checkout__btn-prev" data-bind="click: function(){
+              hideElement.call($root.checkout, '#checkout-step4',true);
+              setTimeout(()=>showElement.call($root.checkout, '#checkout-step3'),450);
+            }">RETOUR</button>
+            <button class="button checkout__btn-next" data-bind="click: function(){
+              $root.userAccount.modifyTheCommand() ? $root.modal.modalResponse2('modify the command checkout') : sendPurchase.call($root.checkout)
+            }">ENVOYER<br> MA COMMANDE</button>
+          </div>
+        </div>
+        <div class="loader__container" data-bind="visible: $root.loader()" style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+      <!-- /ko -->
+
+    </div>
+  </div>
+  <div class="checkout-success" data-bind="visible: $root.folder().startsWith('checkout/commande-envoyee')"
+    style="display: none;">
+    <h2 class="checkout-success__header">Nous avons bien reçu votre commande !</h2>
+    <!-- ko with: $root.checkout -->
+
+    <div class="checkout-success__body">
+      <p>Vous serez livré le</p>
+      <p>"
+        <span data-bind="text: data().dayName">Mercredi</span>
+        <span data-bind="text: data().day">19</span>
+        <span data-bind="text: data().monthName">aout</span>
+        <span data-bind="text: data().date[0]">2020</span>
+        entre
+        <span
+          data-bind="text: timeSpan[data().activeTime()]? timeSpan[data().activeTime()].replace('-', 'et'):null">13:00
+          et
+          14:00</span>"</p>
+      <p>"Merci pour votre confiance"</p>
+      <div class="checkout-success__body__buttons">
+        <button class="button" data-bind="click: folder.bind($data,'')">PAGE DACCUIL</button>
+        <button class="button" data-bind="click: folder.bind($data,'mon-compte/mes-achats')">MES ACHATS</button>
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+
+
   <footer class="footer"
-    data-bind="visible: !$root.folder().startsWith('check-out')&&!$root.folder().startsWith('checkout/commande-envoyee')">
+    data-bind="visible: !$root.folder().startsWith('check-out')&&!$root.folder().startsWith('checkout/commande-envoyee')"
+    style="display: none;">
     <div class="footer__contact">
       <div class="footer__contact__container">
         <div class="footer__email">
@@ -1404,7 +1545,7 @@
       </a>
       <a class="footer__legal__link" href="javascript:void(0);">
         <span class="footer__legal__link__bottom">Mentions légales</span></a>
-      <div class="footer__legal__help" data-bind="visible: $root.folder()===''">
+      <div class="footer__legal__help" data-bind="visible: $root.folder()===''" style="display: none;">
         <button type="button" class="button">?</button>
         <span>Aide</span>
       </div>
@@ -1429,7 +1570,7 @@
         <!-- ko foreach: modalNavbarSection -->
         <div class="modal__navbar__product__container" data-bind="click: function(){
           $parent.getProductsAPI($data);
-          if(window.innerWidth<460){
+          if(window.innerWidth<720){
             document.querySelector('.navbar__middle').classList.add('navbar__middle--hide')
             document.querySelector('.navbar__top__menu').classList.add('navbar__top__menu--open')
           };
@@ -1453,6 +1594,19 @@
           <img src="/assets/img/svg/empty-cart.svg" alt="empty cart" />
           <span>Panier vide !</span>
         </div>
+
+        <div class="modal__basket__modify-command"
+          data-bind="visible: $root.userAccount.modifyTheCommand() && purchasedProducts().length">
+          <div class="modal__basket__modify-command__panel">
+            <span>Vous êtes entrain de modifier la commande <strong><span>N° #</span>
+                <span
+                  data-bind="text: $root.userAccount.transaction() ? $root.userAccount.transaction().purchaseId : null">00325</span>
+              </strong></span>
+          </div>
+          <button class="button modal__basket__modify-command__button"
+            data-bind="click: $root.userAccount.modifyTheCommand.bind($data,false)">Annuler l'édition</button>
+        </div>
+
         <div class="modal__basket__item" data-bind="foreach: purchasedProducts,visible: purchasedProducts().length">
           <div class="modal__basket__item__container"
             data-bind="css: { 'modal__basket__item__container--hide': !buy() }">
@@ -1507,7 +1661,7 @@
     <div class="modal__basket__bottom">
       <div class="modal__basket__bottom__clear">
         <button type="button" class="button modal__basket__bottom__clear__button"
-          data-bind="click: total() > 0? $root.modal.modalPurchasePanel.bind($data,'clear basket'):null">
+          data-bind="click: total() > 0? $root.modal.modalResponse2.bind($data,'clear basket'):null">
           <span>X</span>
           <span>
             Vider</span>
@@ -1518,8 +1672,22 @@
         </div>
       </div>
       <div class="modal__basket__bottom__validate">
-        <button type="button" class="button modal__basket__bottom__validate"
-          data-bind="click: 200 >= total()? $root.modal.modalPurchasePanel.bind($data,'total not valid'): function(){$root.folder('check-out'),$root.modal.backdrop(false)}">VALIDER
+        <button type="button" class="button modal__basket__bottom__validate" data-bind="click: function(){
+
+          if (total() < 200){
+              $root.modal.modalResponse2.call($data,'warning total not valid')
+            }else{
+              if($root.userAccount.isLogin()){
+                $root.folder('check-out')
+                $root.modal.backdrop(false)
+            }else{
+                $root.modal.backdrop(false)
+                $root.redirect('check-out')
+                $root.folder('mon-compte/login')
+              }
+            }
+        }
+          ">VALIDER
           MON PANIER</button>
       </div>
     </div>
@@ -1545,13 +1713,15 @@
           <span>Mes achats</span>
         </a>
       </li>
-      <li>
+      <li data-bind="css: {'modal__account--active': folder()==='mon-compte/mes-collections'},click: function(){
+        folder('mon-compte/mes-collections');
+      }">
         <a href="#" role="button">
           <span class="icon-heart"></span>
           <span>Mes collections</span>
         </a>
       </li>
-      <li>
+      <li data-bind="click: $root.userAccount.isLogin.bind($data, false)">
         <a href="#" role="button">
           <span>Déconnexion</span>
         </a>
@@ -1559,77 +1729,218 @@
     </ul>
   </div>
 
-  <div class="modal__connection"
-    data-bind="css:{ 'modal__connection--open': modalRequestSuccess() || modalRequestError() || modalPurchasePanel()}">
-
-    <div class="modal__connection--success" data-bind="visible: modalRequestSuccess()">
+  <div class="modal__response" data-bind="css:{ 'modal__response--open': modalResponse() || modalResponse2()}">
+    <div class="modal__response--success"
+      data-bind="visible: modalResponse() ? modalResponse().startsWith('success'): false">
       <div>
         <label class="label">
           <div class="check-icon">
           </div>
         </label>
       </div>
-      <div data-bind="visible: modalRequestSuccess()=== 'register success'">
+      <div data-bind="visible: modalResponse()=== 'success register'">
         <h4>Votre compte a été créé</h4>
         <h6>Merci pour votre inscription !</h6>
         <p>Votre compte sera approuvé dans un délai de 2 heures par l'équipe jibliya,
           nous vous enverrons une notification par email afin de pouvoir
           activer votre compte et de passer des commandes sur la plate-forme.</p>
       </div>
-      <p data-bind="visible: modalRequestSuccess()=== 'update password success' ">Votre mot de passe a été
+      <p data-bind="visible: modalResponse()=== 'success update password' ">Votre mot de passe a été
         réinitilaliser avec succès</p>
-      <p data-bind="visible: modalRequestSuccess()=== 'login success' ">Félicitations !<br>Vous êtes maintenant
+      <p data-bind="visible: modalResponse()=== 'success login' ">Félicitations !<br>Vous êtes maintenant
         connecté</p>
-      <p data-bind="visible: modalRequestSuccess()=== 'update success' ">Votre profil a été mis à jour.
-      </p>
+      <p data-bind="visible: modalResponse()=== 'success order was successfully canceled.' ">Votre commande a été
+        annulée
+        avec success.</p>
+      <p></p>
     </div>
 
-    <div class="modal__connection--error" data-bind="visible: modalRequestError()">
+    <div class="modal__response--success"
+      data-bind="visible: modalResponse2() ? modalResponse2().startsWith('success'): false">
+      <div>
+        <label class="label">
+          <div class="check-icon">
+          </div>
+        </label>
+      </div>
+      <p data-bind="text: modalResponse2()? modalResponse2().replace('success ','') : null"></p>
+    </div>
+
+    <div class="modal__response--error"
+      data-bind="visible: modalResponse() ? modalResponse().startsWith('error'): false">
       <div style="text-align: center;">
         <label class="label">
           <div class="cross-icon">
           </div>
         </label>
       </div>
-      <p data-bind="visible: modalRequestError()=== 'password mismatched'">Cette valeur doit être le mot de passe
+      <p data-bind="visible: modalResponse()=== 'error password mismatched'">Cette valeur doit être le mot de passe
         actuel de l'utilisateur.</p>
-      <p data-bind="visible: modalRequestError()=== 'email or password'">L'email ou le mot de passe n'est pas
+      <p data-bind="visible: modalResponse()=== 'error email or password'">L'email ou le mot de passe n'est pas
         correct. Veuillez réessayer.</p>
-      <p data-bind="visible: modalRequestError()=== 'email exist'">Un compte est déjà associé à cette
+      <p data-bind="visible: modalResponse()=== 'error email exist'">Un compte est déjà associé à cette
         adresse mail. Si vous possédez un compte, connectez-vous ou récupérez votre
         mot de passe en cas d’oubli dans l’espace dédié à la réinitialisation du mot de passe.</p>
 
-      <p data-bind="visible: modalRequestError()=== 'network'">Une erreur est survenue !
+      <p data-bind="visible: modalResponse()=== 'error network'">Une erreur est survenue !
         Veuillez réessayer plus tard.</p>
     </div>
-    <div class="modal__connection__clean" data-bind="visible: modalPurchasePanel() === 'clear basket'">
+
+    <div class="modal__response--error" data-bind="visible: modalResponse2()=== 'error collection exist'">
+      <div style="text-align: center;">
+        <label class="label">
+          <div class="cross-icon">
+          </div>
+        </label>
+      </div>
+      <p>cette collection existe déjà</p>
+    </div>
+
+    <div class="modal__response__clean" data-bind="visible: modalResponse2() === 'clear basket'">
       <p>Vous êtes sûr de vouloir vider votre panier ?</p>
-      <div class="modal__connection__clean__container">
+      <div class="modal__response__clean__container">
         <div>
-          <button class="button modal__connection__clean__clear-btn"
+          <button class="button modal__response__clean__clear-btn"
             data-bind="click: $root.orderList.clearPurchaseProducts.bind($root.orderList),toggleClick: backdrop2">vider</button>
         </div>
         <div>
-          <button class="button modal__connection__clean__cancel-btn"
-            data-bind="toggleClick: backdrop2">annuler</button>
+          <button class="button modal__response__clean__cancel-btn" data-bind="toggleClick: backdrop2">annuler</button>
         </div>
       </div>
     </div>
-    <div class="modal__connection__valid" data-bind="visible: modalPurchasePanel() === 'total not valid'">
+
+    <div class="modal__response__clean" data-bind="visible: modalResponse2() === 'remove collection'">
+      <p>Vous êtes sûr(e) de vouloir supprimer cette collection ?</p>
+      <div class="modal__response__clean__container">
+        <div>
+          <button class="button modal__response__clean__clear-btn"
+            data-bind="click: $root.userLikes.removeCollection.bind($root.userLikes),toggleClick: backdrop2">vider</button>
+        </div>
+        <div>
+          <button class="button modal__response__clean__cancel-btn" data-bind="toggleClick: backdrop2">annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal__response__clean"
+      data-bind="visible: modalResponse2() === 'redo the command' || modalResponse2() === 'modify the command'">
+      <P style="font-size: 16px;">Votre panier sera effacé et rempli par les produits de la commande</P>
+      <P><strong>N° #<span
+            data-bind="text: $root.userAccount.transaction() ? $root.userAccount.transaction().purchaseId : null">00325</span></strong>
+      </P>
+      <p>Êtes vous sûr(e) de vouloir continuer ?</p>
+      <div class="modal__response__clean__container">
+        <div>
+          <button class="button modal__response__clean__clear-btn" data-bind="click: function(){
+              $root.userAccount.redoCommand.call($root.userAccount)
+              modalResponse2() === 'modify the command' ? $root.userAccount.modifyTheCommand(true) : null
+            },toggleClick: backdrop2">OUI,
+            JE
+            SUIS SÛR(E)</button>
+        </div>
+        <div>
+          <button class="button modal__response__clean__cancel-btn" data-bind="toggleClick: backdrop2">FERMER</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal__response__clean" data-bind="visible: modalResponse2() === 'modify the command checkout'">
+      <p style="font-size: 16px;">
+        <span>Êtes-vous sûr(e) de vouloir modifier la commande</span>
+        <strong><span>N° #</span>
+          <span
+            data-bind="text: $root.userAccount.transaction() ? $root.userAccount.transaction().purchaseId : null">00325</span>
+        </strong>
+        <span> ?</span>
+      </p>
+      <div class="modal__response__clean__container">
+        <div>
+          <button class="button modal__response__clean__clear-btn"
+            data-bind="click: $root.checkout.sendPurchase.bind($root.checkout),toggleClick: backdrop2">OUI,
+            JE
+            SUIS SÛR(E)</button>
+        </div>
+        <div>
+          <button class="button modal__response__clean__cancel-btn" data-bind="toggleClick: backdrop2">FERMER</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal__response__clean" data-bind="visible: modalResponse2() === 'cancel the command'">
+      <p style="font-size: 16px;">
+        <span>Êtes-vous sûr(e) de vouloir annuler la commande </span>
+        <strong><span>N° #</span>
+          <span
+            data-bind="text: $root.userAccount.transaction() ? $root.userAccount.transaction().purchaseId : null">00325</span>
+        </strong>
+        <span> ?</span>
+      </p>
+      <div class="modal__response__clean__container">
+        <div>
+          <button class="button modal__response__clean__clear-btn"
+            data-bind="click: $root.userAccount.modifyPurchaseStatus.bind($root.userAccount),toggleClick: backdrop2">OUI,
+            JE
+            SUIS SÛR(E)</button>
+        </div>
+        <div>
+          <button class="button modal__response__clean__cancel-btn" data-bind="toggleClick: backdrop2">FERMER</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal__response__valid"
+      data-bind="visible: modalResponse2() ? modalResponse2().startsWith('warning'): false">
       <div class="sa">
         <div class="sa-warning">
           <div class="sa-warning-body"></div>
           <div class="sa-warning-dot"></div>
         </div>
       </div>
-      <p>Le montant total minimum requis pour valider une commande est de <strong>200 Dh</strong>. Veuillez ajouter
-        d'autres produits au panier.</p>
-
+      <p data-bind="visible: modalResponse2() === 'warning total not valid'">Le montant total minimum requis pour
+        valider une commande est de <strong>200 Dh</strong>. Veuillez ajouter d'autres produits au panier.</p>
+      <p data-bind="visible: modalResponse2() === 'warning not connected'">
+        Vous devez être connecté avant d'ajouter le produit à votre collection.
+      </p>
     </div>
 
+    <div class="modal__response__add-group" data-bind="visible: modalResponse2() === 'add group'">
+      <div class="modal__response__add-group__title">Ajouter à une collection</div>
+      <label class="modal__response__add-group__label" for="collection">
+        <span>Entrez le nom de votre collection</span>
+      </label>
+      <div>
+        <input id="collection" name="collection" type="text" class="modal__response__add-group__input"
+          placeholder="Nom de la collection" data-bind="value: $root.userLikes.value">
+      </div>
+      <div class="modal__response__add-group__btn">
+        <button class="button" data-bind="click: function(){
+            $root.modal.backdrop2(false);
+            setTimeout(()=>$root.userLikes.addCollection.call($root.userLikes),100);
+          }">AJOUTER</button>
+        <button class="button">ANUNULER</button>
+      </div>
+    </div>
 
   </div>
 
+  <div class="modal__likes" data-bind="css: {'modal__likes--open': modalLikes()}">
+    <h4 class="modal__likes__title">Ajouter à une collection</h4>
+    <div class="modal__likes__row" data-bind="click: modalResponse2.bind($data,'add group')">
+      <div class="modal__likes__plus-icon"></div>
+      <div class="modal__likes__row__title"><strong>Nouvelle Collection</strong></div>
+    </div>
+    <!-- ko foreach: $root.userLikes.collections -->
+    <div class="modal__likes__row" data-bind="click: $root.userLikes.addLikeToCollection.bind($root.userLikes,$data)">
+      <div class="modal__likes__icon">
+        <div data-bind="text: name()[0]">B</div>
+      </div>
+      <div class="modal__likes__row__title">
+        <strong data-bind="text: name()">Babies</strong>
+      </div>
+    </div>
+    <!-- /ko -->
+
+  </div>
   <!-- /ko -->
 
   <!--build:js assets/scripts/App.js-->

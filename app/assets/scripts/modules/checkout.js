@@ -12,7 +12,8 @@ class Checkout {
         this.folder = global.folder;
         this.orderList = global.orderList;
         this.userAccount = global.userAccount;
-        this.modalRequestError = global.modal.modalRequestError
+        this.modalResponse = global.modal.modalResponse
+        this.globalListProducts = global.orderList.globalListProducts
         this.parent = document.querySelector('.checkout__date-picker__slider__dates');
         this.active = observable('#checkout-step1')
         this.monthsNames = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
@@ -98,18 +99,17 @@ class Checkout {
         this.loader(true);
 
         ProductsAPI.getAll('calendar').then((res) => {
-            var productsCash
             if (res.ok) {
                 res.json().then(data => data).then((calendar) => {
                     self.getDate(calendar)
                     self.loader(false)
                 })
             } else {
-                self.modalRequestError(true)
+                self.modalResponse('error network')
             }
 
         }).catch((error) => {
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
     }
@@ -129,6 +129,7 @@ class Checkout {
             obj.reservedTimes = observableArray(server[i].reservedTimes)
             obj.activeTime = observable(true)
             obj.date = server[i].day
+            //obj.status = 'in progress'
             arrayOfDates.push(obj)
         }
         this.datePicker(arrayOfDates)
@@ -136,8 +137,10 @@ class Checkout {
 
     sendPurchase() {
         const self = this
-        var arr = this.orderList.globalListProducts().filter((item) => item.buy())
         const data = {}
+        var arr = self.globalListProducts().filter((item) => item.buy())
+
+        self.userAccount.modifyTheCommand ? data.purchaseId = self.userAccount.transaction().purchaseId : null
         data.id = this.userAccount.profile().id
         data.date = this.data().date
         data.activeTime = this.data().activeTime()
@@ -146,30 +149,42 @@ class Checkout {
         data.total = data.totalBasket + data.delivery
         data.textarea = this.textarea()
         data.agreement = this.agreement()
+        data.status = 'En cours'
         data.products = arr.map(element => {
             return {
                 id: element.id,
                 order: element.order(),
                 imgURL: element.imgURL,
+                minOrder: element.minOrder,
                 quantity: element.quantity,
                 subtitle: element.subtitle,
                 title: element.title,
-                price: parseInt(element.price()),
+                price: parseInt(element.price())
             }
         });
 
         this.loader(true)
         ProductsAPI.purchase(data).then((res) => {
             if (res.ok) {
+                const arr = ['#checkout-step4', '#checkout-step3', '#checkout-step2']
                 self.loader(false)
                 self.folder('checkout/commande-envoyee')
+                arr.forEach((ele) => self.hideElement(ele, true))
+                self.showElement('#checkout-step1')
+                self.data({ reservedTimes: observableArray(), activeTime: observable(0), dayName: 'lundi', day: 10, monthName: 'octobre', date: [2020, 5, 20], })
+                self.datePicker([])
+                self.showTimeSpan(false)
+                self.globalListProducts().forEach((item) => item.buy(false))
+                self.userAccount.getUserPurchaseData.call(self.userAccount)
+
+
             } else {
                 self.loader(false)
-                self.modalRequestError('network')
+                self.modalResponse('error network')
             }
         }).catch((error) => {
             self.loader(false)
-            self.modalRequestError('network')
+            self.modalResponse('error network')
             console.log(error)
         })
     }
