@@ -41,13 +41,10 @@ class OrderList {
         this.globalListProducts = observableArray([])
         this.purchasedProducts = observableArray([]);
         this.productsCount = computed(function () {
-            const arr = this.listProducts().filter((product) => {
-                product.buy()
-            });
-            const arr2 = this.globalListProducts().filter((product) => product.buy());
+            const arr = this.globalListProducts().filter((product) => product.buy());
 
-            setTimeout(() => self.purchasedProducts(arr2), 300)
-            return arr2.length;
+            setTimeout(() => self.purchasedProducts(arr), 300)
+            return arr.length;
         }, this);
 
         this.total = computed(function () {

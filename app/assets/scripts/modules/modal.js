@@ -88,10 +88,7 @@ class Modal {
             self.modalResponse('error network')
             console.log(error)
         })
-
     }
-
-
 
 }
 

@@ -140,7 +140,9 @@ class Checkout {
         const data = {}
         var arr = self.globalListProducts().filter((item) => item.buy())
 
-        self.userAccount.modifyTheCommand ? data.purchaseId = self.userAccount.transaction().purchaseId : null
+        self.userAccount.modifyTheCommand() ? data.purchaseId = self.userAccount.transaction().purchaseId : null
+
+
         data.id = this.userAccount.profile().id
         data.date = this.data().date
         data.activeTime = this.data().activeTime()
