@@ -234,6 +234,10 @@
                 color: $mainRed;
             }
 
+            &--active {
+                color: $mainRed;
+            }
+
             [class^="icon-"] {
                 font-size    : 1.7rem;
                 margin-bottom: 5px;

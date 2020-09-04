@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import ko, { observable, observableArray, computed } from 'knockout';
 import * as ProductsAPI from './utils/ProductsAPI';
+import 'jquery-smooth-scroll';
 
 
 
@@ -83,6 +84,7 @@ class UserAccount {
         this.cancelCommandTime = null
         this.modifyCommandTime = null
         this.modifyTheCommand = observable()
+        this.faqRow = observable()
     }
 
     modifyPurchaseStatus() {
@@ -118,6 +120,27 @@ class UserAccount {
         })
     }
 
+    showAndHideRow(element) {
+        const self = this
+        if (this.faqRow() === element) {
+            this.faqRow('')
+        } else {
+            this.faqRow(element)
+        }
+
+    }
+
+    scrollToElement(element) {
+
+        setTimeout(function () {
+            $.smoothScroll({
+                offset: -window.innerHeight / 3,
+                scrollTarget: $(element),
+                speed: 700,
+            });
+        }, 200);
+    }
+
     getDate(time) {
         const d = new Date(...time)
         const obj = {}
@@ -146,6 +169,8 @@ class UserAccount {
                     const index = self.zone().findIndex((obj) => obj.zone === response.profile.zone);
                     index !== -1 ? response.profile.zone = self.zone()[index] : null;
                     localStorage.setItem('token', response.access_token)
+                    ProductsAPI.setToken()
+
                     if (self.redirect()) {
                         self.folder(self.redirect())
                         self.redirect('')

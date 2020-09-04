@@ -1,7 +1,242 @@
 .faq {
-    height: 700px;
+
+    &__center {
+        max-width: 1180px;
+        margin   : auto;
+        padding  : 20px 5px;
+
+        @include media-breakpoint-up(xs, (xs: 540px)) {
+            padding: 20px;
+        }
+    }
+
+    &__title {
+        display        : flex;
+        justify-content: center;
+        flex-wrap      : wrap;
+        margin         : 40px 0;
+        text-align     : center;
+
+        @include media-breakpoint-up(xs, (xs: 800px)) {
+            flex-direction: row-reverse;
+        }
+
+        h2 {
+            font-size: 24px;
+            flex     : 0 0 100%;
+            max-width: 100%;
+
+            @include media-breakpoint-up(xs, (xs: 540px)) {
+                font-size: 40px;
+            }
+
+            @include media-breakpoint-up(xs, (xs: 800px)) {
+                flex     : 0 0 70%;
+                max-width: 70%;
+            }
+        }
+
+
+        div {
+            flex      : 0 0 100%;
+            max-width : 100%;
+            text-align: center;
+
+            img {
+                max-width: 300px;
+            }
+
+            @include media-breakpoint-up(xs, (xs: 800px)) {
+                flex     : 0 0 30%;
+                max-width: 30%;
+            }
+        }
+    }
 
     &__body {
-        max-width: 1140px;
+        display  : flex;
+        flex-wrap: wrap;
+
+        &__item {
+            flex            : 0 0 100%;
+            max-width       : calc(100% - 10px);
+            display         : flex;
+            flex-direction  : column;
+            background-color: $mainWhite;
+            border-radius   : 5px;
+            margin          : 10px 5px;
+            padding         : 10px 5px;
+            font-size       : 15px;
+
+            @include media-breakpoint-up(xs, (xs: 540px)) {
+                font-size: 16px;
+                padding  : 10px;
+            }
+
+            @include media-breakpoint-up(xs, (xs: 800px)) {
+                flex     : 0 0 50%;
+                max-width: calc(50% - 10px);
+            }
+
+            &__header {
+                text-align     : center;
+                text-align     : center;
+                display        : flex;
+                justify-content: center;
+                align-items    : center;
+                margin-bottom  : 20px;
+                cursor         : pointer;
+
+                &__icon {
+                    display: inline-block;
+                    width  : 44px;
+                    margin : 10px;
+                }
+
+                &__text {
+
+                    font-size  : 18px;
+                    font-weight: 700;
+
+                }
+
+            }
+
+            &__caret {
+                @extend .footer__help__caret;
+            }
+
+            p {
+                display    : flex;
+                align-items: center;
+                transition : color .2 ease-in-out;
+                font-weight: 300;
+                line-height: 1.5;
+                color      : rgba($color: $darkGray, $alpha: .8);
+                margin-top : 0;
+                cursor     : pointer;
+
+                span:first-child {
+                    color       : $mainGreen;
+                    margin-right: 5px;
+                }
+
+                @include hover-focus-active {
+                    color: $mainGreen;
+                }
+            }
+
+            p:last-child {
+                margin     : auto 0 10px 10px;
+                padding-top: 20px;
+
+                a {
+                    color      : $mainGreen;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    &__footer {
+        margin-top      : 40px;
+        padding         : 20px 10px;
+        background-color: rgba($color: $darkGray, $alpha: .1);
+        font-size       : 18px;
+        display         : flex;
+        flex-direction  : column;
+        align-items     : center;
+        text-align      : center;
+        line-height     : 1.5;
+
+        @include media-breakpoint-up(xs, (xs: 460px)) {
+            padding  : 20px;
+            font-size: 24px;
+        }
+
+        div:first-child {
+            display       : flex;
+            align-items   : center;
+            flex-direction: column;
+            margin-bottom : 10px;
+
+            @include media-breakpoint-up(xs, (xs: 670px)) {
+                flex-direction: row;
+            }
+        }
+
+        div:last-child {
+            span:last-child {
+                font-weight: 700;
+            }
+        }
+
+    }
+
+    &__row {
+
+        padding    : 20px 5px 15px 5px;
+        border-top : 1px solid rgba($color: $darkGray, $alpha: .1);
+        line-height: 1.5;
+        font-size  : 14px;
+        opacity    : .8;
+
+        ul,
+        ol {
+            padding-left: 20px;
+            line-height : 1.7;
+        }
+
+        @include media-breakpoint-up(xs, (xs: 460px)) {
+            padding  : 25px 25px 15px 25px;
+            font-size: 16px;
+
+            ul,
+            ol {
+                padding-left: 40px;
+            }
+        }
+
+        &__title {
+            color          : $mainGreen;
+            display        : flex;
+            justify-content: space-between;
+            font-size      : 16px;
+            cursor         : pointer;
+
+            @include media-breakpoint-up(xs, (xs: 460px)) {
+                font-size: 18px;
+            }
+
+        }
+
+        &__body {
+            font-weight: 300;
+            color      : $darkGray;
+            transition : all .3s ease-in-out;
+            overflow   : hidden;
+
+            &--hide {
+                height: 0;
+            }
+        }
+
+        &__link {
+            color : $mainGreen;
+            cursor: pointer;
+
+            @include hover-focus-active {
+                text-decoration: underline;
+            }
+        }
+
+        strong {
+            font-weight: 700;
+        }
+    }
+
+    &__container {
+        background-color: $mainWhite;
+        margin          : 40px 0;
     }
 }

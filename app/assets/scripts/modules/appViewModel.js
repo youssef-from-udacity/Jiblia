@@ -9,6 +9,7 @@ import * as ProductsAPI from './utils/ProductsAPI';
 import Sammy from 'sammy';
 
 
+
 class AppViewModel {
     constructor() {
         this.folder = observable('');
@@ -17,12 +18,14 @@ class AppViewModel {
         this.location = computed(function () {
             location.hash = this.folder();
         }, this)
-        this.modal = new Modal(this.folder, this.loader);
+        this.modal = new Modal(this);
         this.userAccount = new UserAccount(this);
-        this.orderList = OrderList;
+        this.orderList = new OrderList(this);
         this.formValidation = new FormValidation();
         this.checkout = new Checkout(this);
         this.userLikes = new UserLikes(this);
+        this.productsAPI = ProductsAPI
+        this.productsCash = observableArray()
         this.getProductsAPI();
         this.addBinding();
         this.sammyRoute();
@@ -33,7 +36,7 @@ class AppViewModel {
             'init': function (element, valueAccessor, allBindings, viewModel, bindingContext) {
                 var show = ko.utils.unwrapObservable(valueAccessor());
                 if (!show) {
-                    element.style.display = 'none';
+                    //element.style.display = 'none';
                 }
             },
             //On update, see if fade in/fade out should be triggered. Factor in current visibility 
@@ -62,13 +65,15 @@ class AppViewModel {
 
     }
     getProductsAPI() {
+        const self = this
+
         ProductsAPI.getAll('products').then((res) => {
-            var productsCash
+            var arr
             if (res.ok) {
                 res.json().then(data => data).then((products) => {
                     products.forEach((item) => {
-                        productsCash = ProductsAPI.productsCash().filter((obj) => obj().id === item.id)
-                        !productsCash.length ? ProductsAPI.productsCash.push(observable(item)) : null;
+                        arr = self.productsCash().filter((obj) => obj().id === item.id)
+                        !arr.length ? self.productsCash.push(observable(item)) : null;
                     });
                 })
             } else {
@@ -90,6 +95,9 @@ class AppViewModel {
                 self.folder(this.params.folder);
             });
             this.notFound = function () { };
+            this.get("", function () {
+                this.path === '/' ? self.folder('') : self.folder(this.path.replace('/#', ''))
+            });
         }).run();
 
     }

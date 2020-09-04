@@ -5,15 +5,51 @@ import OrderList from './shopingCart';
 
 
 class Modal {
-    constructor(folder, loader) {
-        this.folder = folder
-        this.loader = loader
-        this.products = null
+    constructor(glob) {
+        this.global = glob
+        this.folder = this.global.folder
+        this.loader = this.global.loader
         this.navbarList = navbarList
+        this.mostVisitedItems = [
+            {
+                "path": "market/fruits",
+                "target": "fruits",
+                "title": "Fruits",
+                "imgURL": "/assets/img/featured/fruits.jpg"
+            },
+            {
+                "path": "market/legumes",
+                "target": "legumes",
+                "title": "Légumes",
+                "imgURL": "/assets/img/featured/veggies.jpg"
+            },
+            {
+                "path": "meat/boucherie-de-ville",
+                "target": "boucherie-de-ville",
+                "title": "Boucherie de ville",
+                "imgURL": "/assets/img/featured/meat.jpg"
+            },
+            {
+                "path": "water/eaux-plates",
+                "target": "eaux-plates",
+                "title": "Eaux plates",
+                "imgURL": "/assets/img/featured/water.jpg"
+            },
+            {
+                "path": "animal/chiens",
+                "target": "chiens",
+                "title": "Chiens",
+                "imgURL": "/assets/img/featured/dogs.jpg"
+            },
+            {
+                "path": "dietetique-et-sans-glute/fruidietetiquets",
+                "target": "fruidietetiquets",
+                "title": "Bio && Diététique",
+                "imgURL": "/assets/img/featured/bio.jpg"
+            }
+        ]
         this.backdrop = observable(0)
         this.backdrop2 = observable(0)
-        this.lock = null
-        this.lock2 = null
         this.modalNavbar = observable()
         this.modalNavbarHeader = observable()
         this.modalNavbarSection = observableArray()
@@ -24,8 +60,11 @@ class Modal {
         this.modalResponse2 = observable()
         this.modalLikes = observable()
         this.modalZone = observable()
+        this.orderList = null
+        this.products = null
+        this.lock = null
+        this.lock2 = null
         this.modalClose = computed(function () {
-
             if (!this.backdrop() && this.lock) {
                 this.loader(false)
                 this.modalNavbar(false)
@@ -59,26 +98,26 @@ class Modal {
         this.modalAccount(true)
     }
     openNavbarModal(data) {
-        var arr = ProductsAPI.productsCash().filter((obj) => obj().id === data.path)
+        var arr = this.global.productsCash().filter((obj) => obj().id === data.path)
         arr = arr.length ? arr[0]().productsList : null;
-        const modalNavbar = this.modalNavbar
         this.modalNavbarHeader(data)
         this.modalNavbarSection(arr)
         this.backdrop(true)
-        modalNavbar(true)
+        this.modalNavbar(true)
     }
 
     getProductsAPI(obj) {
-        var obj = obj
-        this.modalNavbarSectionTitle(obj.title)
+        var self = this
+        self.modalNavbarSectionTitle(obj.title)
+        self.orderList = self.global.orderList
 
         ProductsAPI.getAll('products').then((res) => {
             if (res.ok) {
                 res.json().then(data => data).then((products) => {
                     const category = products.filter((item) => item.id === obj.target)[0]
-                    this.folder('categorie-produit/' + obj.path)
-                    OrderList.arrOfProducts = category.productsList
-                    OrderList.updateProductGallery();
+                    self.folder('categorie-produit/' + obj.path)
+                    self.orderList.arrOfProducts = category.productsList
+                    self.orderList.updateProductGallery();
                 })
             } else {
                 self.modalResponse('error network')

@@ -35,7 +35,8 @@ class Checkout {
 
     hideElement(element, removeElementFromSuccess) {
         const scrollHeight = document.querySelector(element).scrollHeight;
-        $(element).css('height', scrollHeight);
+        const offsetHeight = document.querySelector(element).offsetHeight
+        offsetHeight ? $(element).css('height', scrollHeight) : null;
         setTimeout(function () {
             $(element).css({
                 height: '0',

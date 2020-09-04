@@ -197,7 +197,7 @@ class UserLikes {
                 })
             } else {
                 self.loader(false)
-                setTimeout(self.getCollections, 1000)
+                setTimeout(self.getCollections.bind(self), 1000)
             }
         }).catch((error) => {
             self.loader(false)

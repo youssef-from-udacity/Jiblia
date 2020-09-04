@@ -4,13 +4,16 @@ const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8000'
 
 let token = localStorage.token
 
-
 const headers = {
   'Accept': 'application/json',
   'Authorization': `Bearer ${token}`
 }
 
-export var productsCash = observableArray()
+export const setToken = () => {
+  token = localStorage.token
+  headers.Authorization = `Bearer ${token}`
+}
+
 
 export const getAll = (link) =>
   fetch(`${api}/${link}`, { headers })

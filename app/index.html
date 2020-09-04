@@ -25,7 +25,7 @@
         data-bind="visible: !$root.folder().startsWith('check-out') && !$root.folder().startsWith('checkout/commande-envoyee')"
         style="display: none;">
         <ul class="navbar__top">
-          <li>
+          <li data-bind="click: $root.folder.bind($data,'')">
             <a class="navbar__top__brand" href="javascript:void(0);">
               <img src="/assets/img/jibliya-logo.svg" alt="brand" />
             </a>
@@ -86,7 +86,7 @@
           <!-- /ko -->
 
           <button type="button" class="button navbar__middle__icon"
-            data-bind="click: $parent.openNavbarModal.bind($parent, $data)">
+            data-bind="css: {'navbar__middle__icon--active': $root.folder().startsWith(`categorie-produit/${$data.path}`)},click: $parent.openNavbarModal.bind($parent, $data)">
 
             <i class="icon-baby" data-bind="attr: {class: icon}"></i>
             <span data-bind="text: title">Bébé</span>
@@ -342,13 +342,15 @@
       </div>
       <div class="home__popular">
         <h4 class="home__popular__title">Nos rayons les plus visités</h4>
-        <div class="home__popular__products">
-          <div class="home__popular__products__item">
+        <div class="home__popular__products" data-bind="foreach: $root.modal.mostVisitedItems">
+          <div class="home__popular__products__item"
+            data-bind="click: $root.modal.getProductsAPI.bind($root.modal,$data)">
             <div class="home__popular__products__item__container">
-              <img src="./assets/img/featured/fruits.jpg" alt="fruits" />
-              <span>Fruits</span>
+              <img src="./assets/img/featured/fruits.jpg" alt="fruits" data-bind="attr: { src: imgURL, alt: title }" />
+              <span data-bind="text: title">Fruits</span>
             </div>
           </div>
+          <!-- 
           <div class="home__popular__products__item">
             <div class="home__popular__products__item__container">
               <img src="./assets/img/featured/bio.jpg" alt="fruits" />
@@ -379,6 +381,7 @@
               <span>Alimentation pour chiens</span>
             </div>
           </div>
+           -->
         </div>
       </div>
       <div class="home__delivery">
@@ -406,7 +409,14 @@
                 </div>
                 <div class="home__delivery__cost__footer">
                   <p>* Les frais peuvent varier en fonction de votre zone de livraison.
-                    <a href="javascript:void(0);">En savoir plus</a>
+
+                    <span data-bind="click: function(){
+                      $root.folder('faq/service-jibliya')
+                      $root.userAccount.showAndHideRow.call($root.userAccount,'#faq__row-3')
+                      $root.userAccount.scrollToElement('#faq__row-3')
+                    }">
+                      <a href="javascript:void(0);">En savoir plus</a>
+                    </span>
                   </p>
                 </div>
               </div>
@@ -446,7 +456,518 @@
   </div>
 
   <div class="faq" data-bind="visible: $root.folder().startsWith('faq')" style="display: none;">
-    <div class="faq__body"></div>
+
+    <div data-bind="visible: $root.folder() === 'faq'">
+      <div class="faq__center">
+        <div class="faq__title">
+          <div><img src="/assets/img/svg/faq.svg" alt="frequent questions"></div>
+          <h2>Comment pouvons-nous vous aider ?</h2>
+        </div>
+        <div class="faq__body">
+          <div class="faq__body__item">
+            <div class="faq__body__item__header">
+              <span class="faq__body__item__header__icon">
+                <img src="/assets/img/svg/client-service.svg" alt="client Service">
+              </span>
+              <span class="faq__body__item__header__text">Gérer mon compte</span>
+            </div>
+            <p data-bind="click: function(){
+              $root.folder('faq/mon-compte/1')
+              $root.userAccount.scrollToElement('#faq__row1')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Pourquoi et comment créer un compte personnel ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/mon-compte/2')
+              $root.userAccount.scrollToElement('#faq__row2')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Comment faire des commandes ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/mon-compte/3')
+              $root.userAccount.scrollToElement('#faq__row3')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Qu’est-ce qu’un mot de passe et comment faire si je l’ai perdu ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/mon-compte/4')
+              $root.userAccount.scrollToElement('#faq__row4')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Je suis déjà inscrit comment faire pour commencer mes courses ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/mon-compte/5')
+              $root.userAccount.scrollToElement('#faq__row5')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Comment modifier mes informations personnelles ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/mon-compte/6')
+              $root.userAccount.scrollToElement('#faq__row6')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Quels sont les différents moyens de faire mes courses sur le site Jibliya.ma ?</span>
+            </p>
+            <p>
+              <span class="faq__body__item__caret"></span>
+              <a data-bind="click: $root.folder.bind($data,'faq/mon-compte')">Voir plus</a>
+            </p>
+          </div>
+          <div class="faq__body__item">
+            <div class="faq__body__item__header">
+              <span class="faq__body__item__header__icon">
+                <img src="/assets/img/svg/delivery.svg" alt="client Service">
+              </span>
+              <span class="faq__body__item__header__text">Gérer mon compte</span>
+            </div>
+            <p data-bind="click: function(){
+              $root.folder('faq/service-jibliya/1')
+              $root.userAccount.scrollToElement('#faq__row-1')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Pourquoi choisir Jibliya ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/service-jibliya/2')
+              $root.userAccount.scrollToElement('#faq__row-2')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>D’où viennent mes produits ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/service-jibliya/3')
+              $root.userAccount.scrollToElement('#faq__row-3')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Zones de livraison</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/service-jibliya/4')
+              $root.userAccount.scrollToElement('#faq__row-4')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Quels sont les horaires de livraison ?</span>
+            </p>
+            <p data-bind="click: function(){
+              $root.folder('faq/service-jibliya/5')
+              $root.userAccount.scrollToElement('#faq__row-5')
+            }">
+              <span class="icon-arrow-right"></span>
+              <span>Quels sont les moyens de payement disponibles ?</span>
+            </p>
+            <p>
+              <span class="faq__body__item__caret"></span>
+              <a data-bind="click: $root.folder.bind($data,'faq/service-jibliya')">Voir plus</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq__footer">
+        <div>
+          <span class="faq__body__item__header__icon">
+            <img src="/assets/img/svg/client-service.svg" alt="client Service">
+          </span>
+          <span>Vous n'avez pas trouvé la réponse à votre question ?</span>
+        </div>
+        <div>
+          <span>Appelez le</span>
+          <span>06 44 40 88 88</span>
+        </div>
+      </div>
+    </div>
+
+    <div data-bind="visible: $root.folder().startsWith('faq/mon-compte')">
+      <div class="faq__container">
+        <div class="faq__center">
+          <div class="faq__title">
+            <h2>FAQ - Gérer mon compte</h2>
+          </div>
+          <!-- ko with: $root -->
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/1' ? folder('faq/mon-compte') : folder('faq/mon-compte/1')
+            }">
+              <span>Pourquoi et comment créer un compte personnel ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/1' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row1" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/1' ? $root.checkout.showElement('#faq__row1') : $root.checkout.hideElement('#faq__row1')}">
+              <p>Grâce à votre compte, nous vous proposerons des offres qui vous correspondent.
+                Vous pourrez également sauvegarder votre panier, accéder à votre liste de favoris
+                et vos anciennes commandes. Bien entendu, ces informations sont strictement confidentielles
+                et ne seront jamais diffusées. Nous devons aussi connaître votre adresse de facturation ou
+                de livraison pour pouvoir créer votre compte.</p>
+              <p>Pour créer votre compte <span class="faq__row__link" data-bind="click: function(){
+                    if($root.userAccount.isLogin()){
+                      $root.folder('')
+                    }else{
+                      $root.folder('mon-compte/login')
+                    }
+                  }">cliquez ici</span></p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/2' ? folder('faq/mon-compte') : folder('faq/mon-compte/2')
+            }">
+              <span>Puis-je commander sur Jibliya.ma sans créer de compte ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/2' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row2" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/2'? $root.checkout.showElement('#faq__row2') : $root.checkout.hideElement('#faq__row2')}">
+              <p>Vous pouvez naviguer sur le site afin de découvrir nos rayons, nos produits et services ou demander des
+                informations sans vous inscrire.</p>
+              <p>pour passer une commande et pour sauvegarder vos listes, il faudra créer un compte.</p>
+              <p>Pour créer votre compte <span class="faq__row__link" data-bind="click: function(){
+                    if($root.userAccount.isLogin()){
+                      $root.folder('')
+                    }else{
+                      $root.folder('mon-compte/login')
+                    }
+                  }">cliquez ici</span></p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/3' ? folder('faq/mon-compte') : folder('faq/mon-compte/3')
+            }">
+              <span>Qu’est-ce qu’un mot de passe et comment faire si je l’ai perdu ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/3' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row3" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/3'? $root.checkout.showElement('#faq__row3') : $root.checkout.hideElement('#faq__row3')}">
+              <p>Le mot de passe est un champ de 8 caractères minimum, 1 majuscule, 1 minuscule et 1 caractère spécial
+                (@, &, …), que vous renseignez quand vous vous enregistrez.</p>
+
+              <p> devez répéter ces caractères dans la zone de vérification afin d’être certain que cette information
+                soit exacte.</p>
+
+              <p>mot de passe permet d’interdire à quelqu’un d’autre d’accéder à vos informations personnelles, telles
+                que vos listes de courses, vos historiques de commandes. Jibliya.ma n’a pas accès au mot de passe.</p>
+
+              <p>Si vous avez perdu votre mot de passe, cliquer sur <strong>"Mot de passe oublié"</strong> dans la
+                rubrique <strong>« Me connecter »</strong> après avoir saisi votre e-mail. Un nouveau mot de passe vous
+                sera automatiquement envoyé par email.</p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/4' ? folder('faq/mon-compte') : folder('faq/mon-compte/4')
+            }">
+              <span>Je suis déjà inscrit comment faire pour commencer mes courses ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/4' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row4" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/4'? $root.checkout.showElement('#faq__row4') : $root.checkout.hideElement('#faq__row4')}">
+              <p>Depuis n’importe quelle page du site, vous pouvez cliquer en haut à droite de votre écran sur « Mon
+                compte » et saisir vos identifiants et mot de passe.</p>
+
+              <p>Vous retrouverez ensuite toutes vos informations personnelles et vos historiques de commandes.</p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/5' ? folder('faq/mon-compte') : folder('faq/mon-compte/5')
+            }">
+              <span>Comment modifier mes informations personnelles ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/5' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row5" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/5'? $root.checkout.showElement('#faq__row5') : $root.checkout.hideElement('#faq__row5')}">
+              <p>Depuis n’importe quelle page du site, vous pouvez cliquer en haut à droite de votre écran sur « Mon
+                compte » et saisir vos identifiants et mot de passe.</p>
+              <p>Vous retrouverez ensuite toutes vos informations personnelles et vos historiques de commandes.</p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/6' ? folder('faq/mon-compte') : folder('faq/mon-compte/6')
+            }">
+              <span>Quels sont les différents moyens de faire mes courses sur le site Jibliya.ma ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/6' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row6" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/6'? $root.checkout.showElement('#faq__row6') : $root.checkout.hideElement('#faq__row6')}">
+              <p>
+                Sur le site, vous pouvez choisir de faire vos courses en accédant directement à chacun des rayons ou
+                d’utiliser le moteur de recherche en saisissant des mots clés.
+              </p>
+
+              <p>
+                Vous pourrez ainsi faire votre choix parmi de nombreuses références.
+              </p>
+
+              <p>
+                Si vous êtes déjà client, vous pouvez retrouver vos achats fréquents, votre liste de courses et vos
+                précédentes commandes dans votre compte.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/7' ? folder('faq/mon-compte') : folder('faq/mon-compte/7')
+            }">
+              <span>Comment puis-je trouver rapidement un article en particulier ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/7' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row7" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/7'? $root.checkout.showElement('#faq__row7') : $root.checkout.hideElement('#faq__row7')}">
+              <p>Si vous cherchez un article en particulier, il vous suffit de taper le nom du produit dans le moteur de
+                recherche pour accéder directement à ce produit.</p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/8' ? folder('faq/mon-compte') : folder('faq/mon-compte/8')
+            }">
+              <span>A quoi sert « Ma liste de courses » et comment la consulter ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/8' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row8" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/8'? $root.checkout.showElement('#faq__row8') : $root.checkout.hideElement('#faq__row8')}">
+              <p>
+                Votre liste de courses vous permettra d’accéder plus rapidement aux articles que vous avez au préalable
+                sélectionnés et que vous achetez régulièrement.
+              </p>
+
+              <p>
+                Ainsi faire vos courses ne vous prendra que quelques minutes
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/9' ? folder('faq/mon-compte') : folder('faq/mon-compte/9')
+            }">
+              <span>Comment ajouter ou supprimer un article à ma liste de courses ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/9' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row9" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/9'? $root.checkout.showElement('#faq__row9') : $root.checkout.hideElement('#faq__row9')}">
+              <p>
+                Vous pouvez ajouter un produit à votre liste à tout moment pendant votre navigation dans nos rayons en
+                cliquant sur le bouton sous forme de <strong>coeur</strong> à côté de l'image de chaque produit.
+              </p>
+
+              <p>
+                Pour supprimer un produit de votre liste, il vous suffit de cliquer sur le même bouton.
+              </p>
+
+              <p>
+                Vous pouvez également le faire directement depuis votre liste dans votre espace personnel.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/10' ? folder('faq/mon-compte') : folder('faq/mon-compte/10')
+            }">
+              <span>Comment consulter mes historiques de commande ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/10' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row10" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/10'? $root.checkout.showElement('#faq__row10') : $root.checkout.hideElement('#faq__row10')}">
+              <p>
+                L’historique de commande vous permet de consulter la liste des produits que vous avez déjà achetés chez
+                Jibliya.ma.
+              </p>
+
+              <p>
+                Vous pouvez ainsi reconstituer un nouveau panier très rapidement.
+              </p>
+
+              <p>
+                Vous retrouverez vos historiques de commandes en cliquant sur Votre Prénom en haut à droite, puis
+                <strong>« Mes achats »</strong> à gauche. Celles-ci sont triées de la plus récente à la moins récente.
+              </p>
+
+              <p>
+                Cliquez sur <strong>"Afficher la liste des produits"</strong> pour faire apparaître tous les produits
+                commandés de votre commande déja effectuée.
+              </p>
+
+              <p>
+                A noter que les quantités de chaque article sont identiques à l’ancienne commande dans les historiques
+                de commande.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/mon-compte/11' ? folder('faq/mon-compte') : folder('faq/mon-compte/11')
+            }">
+              <span>Comment transformer un historique en panier ? </span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/mon-compte/11' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row11" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/mon-compte/11' ? $root.checkout.showElement('#faq__row11') : $root.checkout.hideElement('#faq__row11')}">
+              <p>
+                Dans l’historique des commandes accessible depuis Votre prénom en haut à droite, puis <strong>« Mes
+                  achats »</strong> à
+                gauche, vous pouvez transformer le contenu d’une de vos précédentes commandes en panier en cliquant sur
+                le bouton <strong>"Refaire la commande"</strong>.
+              </p>
+
+              <p>
+                À noter que les quantités de chaque article sont identiques à votre précédente commande
+              </p>
+
+              <p>
+                Pensez à ajuster les quantités de chaque article dans le détail du panier.
+              </p>
+
+            </div>
+          </div>
+          <!-- /ko -->
+
+        </div>
+      </div>
+    </div>
+
+    <div data-bind="visible: $root.folder().startsWith('faq/service-jibliya')">
+      <div class="faq__container">
+        <div class="faq__center">
+          <div class="faq__title">
+            <h2>FAQ - Service Jibliya</h2>
+          </div>
+          <!-- ko with: $root -->
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/service-jibliya/1'? folder('faq/service-jibliya') : folder('faq/service-jibliya/1')
+            }">
+              <span>Pourquoi choisir Jibliya ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/service-jibliya/1' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row-1" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/service-jibliya/1' ? checkout.showElement('#faq__row-1') : checkout.hideElement('#faq__row-1')}">
+              <ol>
+                <li>Gain de temps</li>
+                <li>Pas de déplacement</li>
+                <li>Pas d’achats impolsifs</li>
+                <li>Qualité et fraicheur des produits collectés</li>
+                <li>Prix du service très abordable</li>
+                <li>Service client à l’écoute</li>
+                <li>Satisfait ou remboursé</li>
+                <li>Livraison sur RDV</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/service-jibliya/2'? folder('faq/service-jibliya') : folder('faq/service-jibliya/2')
+            }">
+              <span>D’où vient mes produits ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/service-jibliya/2' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row-2" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/service-jibliya/2'? $root.checkout.showElement('#faq__row-2') : $root.checkout.hideElement('#faq__row-2')}">
+              <ul>
+                <li>Fruits, légumes et herbes : <strong>"Souk El Had"</strong></li>
+                <li>Epices, olives, dattes, patte pastilla, grains, etc… : <strong>"Souk El Had"</strong></li>
+                <li>Viandes rouges : <strong>"Sodivias"</strong> (Tassila), <strong>"Boucherie de ville"</strong> (hay
+                  Mohammadi)</li>
+                <li>Volaille : <strong>"Koutoubiya"</strong> (Al massira)</li>
+                <li>Autres : <strong>"Marjan"</strong>, <strong>"Aswak Assalam"</strong>, <strong>"Carrefour"</strong>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/service-jibliya/3'? folder('faq/service-jibliya') : folder('faq/service-jibliya/3')
+            }">
+              <span>Les zones de livraison</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/service-jibliya/3' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row-3" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/service-jibliya/3'? $root.checkout.showElement('#faq__row-3') : $root.checkout.hideElement('#faq__row-3')}">
+              <img src="/assets/img/zones-map.png" alt="zones de livraison">
+
+              <p><strong>Zone 1 ( 25 Dhs )</strong></p>
+              <ul data-bind="foreach: $root.userAccount.zone().filter((item)=>item.cost === 25)">
+                <li data-bind="text: zone"></li>
+              </ul>
+              <p><strong>Zone 2 ( 35 Dhs )</strong></p>
+              <ul data-bind="foreach: $root.userAccount.zone().filter((item)=>item.cost === 35)">
+                <li data-bind="text: zone"></li>
+              </ul>
+              <p><strong>Zone 3 ( 45 Dhs )</strong></p>
+              <ul data-bind="foreach: $root.userAccount.zone().filter((item)=>item.cost === 45)">
+                <li data-bind="text: zone"></li>
+              </ul>
+              <p>Si votre quartier n’est pas parmi la liste ci-dessus, veuillez nous contacter au <span
+                  class="faq__row__link">0644 408 888</span> ou par
+                email sur : <span class="faq__row__link">contact@jibliya.ma</span></p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/service-jibliya/4'? folder('faq/service-jibliya') : folder('faq/service-jibliya/4')
+            }">
+              <span>Quels sont les horaires de livraison ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/service-jibliya/4' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row-4" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/service-jibliya/4'? $root.checkout.showElement('#faq__row-4') : $root.checkout.hideElement('#faq__row-4')}">
+              <p>Pour la livraison standard : Du Mardi au Dimanche de 12H à 20H</p>
+            </div>
+          </div>
+
+          <div class="faq__row">
+            <div class="faq__row__title" data-bind="click: function(){
+              folder() === 'faq/service-jibliya/5'? folder('faq/service-jibliya') : folder('faq/service-jibliya/5')
+            }">
+              <span>Quels sont les moyens de payement disponibles ?</span>
+              <span class="icon-arrow"
+                data-bind="style:{transform: folder() === 'faq/service-jibliya/5' ? '' : 'rotate(180deg)'}"></span>
+            </div>
+            <div id="faq__row-5" class="faq__row__body"
+              data-bind="style:{color: folder() === 'faq/service-jibliya/5'? $root.checkout.showElement('#faq__row-5') : $root.checkout.hideElement('#faq__row-5')}">
+              <p>Le paiement à la livraison en espèces est la méthode disponible actuellement pour régler vos commandes.
+              </p>
+            </div>
+          </div>
+          <!-- /ko -->
+
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ko with: orderList -->
@@ -1378,6 +1899,7 @@
           <button class="button checkout__btn-prev" data-bind="click: function(){
               hideElement.call($root.checkout, '#checkout-step2', true);
               setTimeout(()=>showElement.call($root.checkout, '#checkout-step1'),450);
+              showTimeSpan(false);
             }">RETOUR</button>
           <button class="button checkout__btn-next" data-bind="click: function(){
             hideElement.call($root.checkout, '#checkout-step2');
@@ -1522,14 +2044,14 @@
         </div>
       </div>
     </div>
-    <div class="footer__help">
+    <div class="footer__help" data-bind="hidden: $root.folder() === 'faq'">
       <div class="footer__help__img">
         <img src="/assets/img/svg/faq.svg" alt="frequent questions" />
       </div>
       <div class="footer__help__container">
         <h6 class="footer__help__title">Aide et Service Client</h6>
         <span class="footer__help__question">Vous rencontrez des difficultés sur notre site ?</span>
-        <span class="footer__help__link">
+        <span class="footer__help__link" data-bind="click: $root.folder.bind($data,'faq')">
           <span class="footer__help__caret"></span>
           <a href="javascript:void(0);">Accéder à l'aide</a>
         </span>

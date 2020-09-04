@@ -33,12 +33,17 @@ class ProductOrder {
 }
 
 class OrderList {
-    constructor() {
+    constructor(glob) {
         var self = this
         this.arrOfProducts = null;
         this.ProductOrder = ProductOrder
         this.listProducts = observableArray([])
         this.globalListProducts = observableArray([])
+        this.toLocalStorage = computed(function () {
+            const productsCashToJson = ko.toJSON(this.globalListProducts)
+            this.globalListProducts().length ? localStorage.setItem('globalListProducts', productsCashToJson) : null
+
+        }, this)
         this.purchasedProducts = observableArray([]);
         this.productsCount = computed(function () {
             const arr = this.globalListProducts().filter((product) => product.buy());
@@ -51,6 +56,13 @@ class OrderList {
             const arr = this.purchasedProducts().map((val) => val.basket() * 1)
             return arr.length ? arr.reduce((a, b) => a + b).toFixed(2) : null;
         }, this);
+        this.loadLocalStorage()
+    }
+
+    loadLocalStorage() {
+        if (!this.globalListProducts().length && localStorage.globalListProducts && Array.isArray(JSON.parse((localStorage.globalListProducts)))) {
+            this.globalListProducts(JSON.parse(localStorage.globalListProducts).map((item) => new ProductOrder(item)))
+        }
     }
     clearPurchaseProducts() {
         this.purchasedProducts().forEach((product) => product.buy(false))
@@ -58,6 +70,7 @@ class OrderList {
     updateProductGallery() {
         const self = this
         var product = null
+
         if (this.arrOfProducts) {
             const mappedList = this.arrOfProducts.map((item) => {
                 for (var i = 0; i < self.globalListProducts().length; i++) {
@@ -77,5 +90,5 @@ class OrderList {
     }
 }
 
-export default new OrderList();
+export default OrderList;
 
