@@ -16,7 +16,7 @@
     "popper.js": "^1.16.1",
     "rfs": "^9.0.3",
     "sammy": "^0.7.6",
-    "scss-concat": "^0.3.7",
+    "scss-concat": "^0.3.9",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "gulp-if": "^3.0.0",
     "gulp-image-resize": "^0.13.1",
     "gulp-imagemin": "6.2.0",
-    "gulp-modernizr": "3.4.0",
+    "gulp-modernizr": "4.0.4",
     "gulp-postcss": "8.0.0",
     "gulp-rev": "9.0.0",
     "gulp-sass": "^4.1.0",
